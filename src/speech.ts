@@ -32,6 +32,7 @@ let playing: AbortController | undefined
 let currentUtterance: SpeechSynthesisUtterance | undefined
 
 export function stopSpeaking() {
+  stopDictionaryAudio()
   playing?.abort()
 }
 
@@ -204,6 +205,7 @@ export async function makeWav(blob: Blob) {
   }
 }
 import { playBritishNeural, unlockBritishAudio } from './neuralSpeech'
+import { stopDictionaryAudio } from './dictionaryAudio'
 
 export { unlockBritishAudio }
 export const britishLocale = 'en-GB'

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   AudioLines,
   BookOpen,
+  BookA,
   ChevronDown,
   CircleHelp,
   Globe2,
@@ -21,6 +22,7 @@ import type { Lang, Level, Mode, Role, Topic } from '../shared/lessons'
 import { api } from './api'
 import type { Capabilities } from './api'
 import AcademyPicker from './AcademyPicker'
+import AcademyDictionary from './AcademyDictionary'
 import Practice from './Practice'
 import Pronunciation from './Pronunciation'
 import { stopSpeaking } from './speech'
@@ -146,7 +148,9 @@ export default function App() {
     chat: false,
     pronunciation: null,
   })
-  const [screen, setScreen] = useState<Mode | 'home' | 'teacher'>('home')
+  const [screen, setScreen] = useState<
+    Mode | 'home' | 'teacher' | 'dictionary'
+  >('home')
   const [role, setRole] = useState<Role>('shop')
   const [attempt, setAttempt] = useState(0)
   const [access, setAccess] = useState('')
@@ -236,7 +240,7 @@ export default function App() {
           </button>
           <nav aria-label={t('Основная навигация', 'Main navigation')}>
             <button
-              className={`nav-button ${screen !== 'teacher' && screen !== 'free' ? 'current' : ''}`}
+              className={`nav-button ${!['teacher', 'free', 'dictionary'].includes(screen) ? 'current' : ''}`}
               onClick={() => navigate('home')}
             >
               <BookOpen size={18} />
@@ -247,6 +251,12 @@ export default function App() {
               onClick={() => navigate('free')}
             >
               <MessageCircle size={18} /> <span>{freeTitle}</span>
+            </button>
+            <button
+              className={`nav-button ${screen === 'dictionary' ? 'current' : ''}`}
+              onClick={() => navigate('dictionary')}
+            >
+              <BookA size={18} /> <span>{t('Словарь', 'Dictionary')}</span>
             </button>
             <button
               className={`nav-button ${screen === 'teacher' ? 'current' : ''}`}
@@ -382,6 +392,16 @@ export default function App() {
                 </button>
               </div>
             </section>
+          </>
+        )}
+
+        {screen === 'dictionary' && (
+          <>
+            <h1 className="page-title" tabIndex={-1} ref={titleRef}>
+              {t('Словарь Academy Stars', 'Academy Stars Dictionary')}
+            </h1>
+            {curriculumPicker}
+            <AcademyDictionary unit={academy} t={t} />
           </>
         )}
 

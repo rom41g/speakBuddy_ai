@@ -25,7 +25,9 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   if (endpoint == null) throw new Error('unconfigured')
   const response = await fetch(`${endpoint}/api/${path}`, {
     ...init,
-    signal: AbortSignal.timeout(28000),
+    signal: init?.signal
+      ? AbortSignal.any([init.signal, AbortSignal.timeout(28000)])
+      : AbortSignal.timeout(28000),
   })
   if (!response.ok) throw new Error(String(response.status))
   return response.json() as Promise<T>

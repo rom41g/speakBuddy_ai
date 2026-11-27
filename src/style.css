@@ -586,16 +586,6 @@ footer button:hover {
   background: #eee8ff;
   color: #4b2aa3;
 }
-.model-prompt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 17px;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-}
 .chat-header p {
   color: var(--muted);
   font-size: 0.83rem;
@@ -667,6 +657,42 @@ footer button:hover {
   color: #5532b4;
   font-size: 0.88rem;
   text-decoration: underline;
+}
+.dictionary-audio {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: 9px;
+  vertical-align: middle;
+}
+.dictionary-audio .icon-button {
+  width: 34px;
+  height: 34px;
+}
+.dictionary-card .word-translation {
+  color: #493a68;
+}
+.dictionary-section {
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+  margin: 18px 0;
+}
+.dictionary-section input {
+  width: min(100%, 440px);
+}
+.dictionary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.dictionary-grid > li {
+  padding: 13px 15px;
 }
 .uk-ipa {
   font-size: 0.76rem;

@@ -10,10 +10,12 @@ import {
 } from 'lucide-react'
 import { academyPronunciations } from '../shared/academy'
 import type { AcademyUnit } from '../shared/academy'
+import { britishPronunciation } from '../shared/britishDictionary'
 import { phrases } from '../shared/lessons'
 import { api } from './api'
 import type { Assessment } from './api'
 import type { Progress, Translate } from './App'
+import DictionaryCard from './DictionaryCard'
 import { makeWav, playbackMessage, speak, stopSpeaking } from './speech'
 import type { BritishVoice, PlaybackStatus } from './speech'
 
@@ -51,6 +53,8 @@ export default function Pronunciation({
   const timer = useRef<number>(0)
   const mounted = useRef(false)
   const phrase = references[id]
+  const wordEntry =
+    academy && id === 'word' ? britishPronunciation(phrase.text) : undefined
 
   useEffect(() => {
     mounted.current = true
@@ -235,18 +239,24 @@ export default function Pronunciation({
           </select>
           <ChevronDown size={17} />
         </div>
-        <blockquote lang="en">{phrase.text}</blockquote>
-        {phrase.ru && (
-          <p>{t(phrase.ru, 'Try the whole sentence at your own pace.')}</p>
+        {wordEntry ? (
+          <DictionaryCard entry={wordEntry} t={t} />
+        ) : (
+          <>
+            <blockquote lang="en">{phrase.text}</blockquote>
+            {phrase.ru && (
+              <p>{t(phrase.ru, 'Try the whole sentence at your own pace.')}</p>
+            )}
+            <button
+              className="secondary"
+              disabled={stage !== 'idle'}
+              onClick={() => listen(phrase.text)}
+            >
+              <Volume2 size={19} />
+              {t('Послушать образец', 'Hear the example')}
+            </button>
+          </>
         )}
-        <button
-          className="secondary"
-          disabled={stage !== 'idle'}
-          onClick={() => listen(phrase.text)}
-        >
-          <Volume2 size={19} />
-          {t('Послушать образец', 'Hear the example')}
-        </button>
         {audioStatus && (
           <p className="status" role="status">
             {audioStatus}

@@ -18,19 +18,8 @@ import {
   pronunciationQuestion,
 } from '../shared/britishDictionary'
 import type { BritishPronunciation } from '../shared/britishDictionary'
-import {
-  freeChatOpening,
-  freePreparedReply,
-  guidedInterruption,
-  socialReply,
-} from '../shared/conversation'
-import {
-  containsContact,
-  lesson,
-  picture,
-  scriptReply,
-  topics,
-} from '../shared/lessons'
+import { freeChatOpening } from '../shared/chatPrompt'
+import { containsContact, lesson, picture, topics } from '../shared/lessons'
 import type {
   ChatRequest,
   Level,
@@ -41,12 +30,9 @@ import type {
 } from '../shared/lessons'
 import { api } from './api'
 import DictionaryCard from './DictionaryCard'
-import {
-  browserChat,
-  browserModelAvailability,
-  enableBrowserModel,
-} from './browserChat'
-import type { ModelAvailability } from './browserChat'
+import { browserChat } from './browserChat'
+import type { ModelStatus } from './localChat'
+import { playDictionaryAudio } from './dictionaryAudio'
 import type { Progress, Translate } from './App'
 import {
   britishLocale,
@@ -194,7 +180,6 @@ export default function Practice({
     { role: 'assistant', content: question },
   ])
   const [turn, setTurn] = useState(0)
-  const [lessonQuestion, setLessonQuestion] = useState(question)
   const [draft, setDraft] = useState('')
   const [listening, setListening] = useState(false)
   const [speechConsent, setSpeechConsent] = useState(false)
@@ -204,9 +189,7 @@ export default function Practice({
   const [finished, setFinished] = useState(false)
   const [hintShown, setHintShown] = useState(false)
   const [playback, setPlayback] = useState<PlaybackStatus>()
-  const [availability, setAvailability] =
-    useState<ModelAvailability>('unavailable')
-  const [modelLoading, setModelLoading] = useState(false)
+  const [modelStatus, setModelStatus] = useState<ModelStatus>()
   const recognizer = useRef<InstanceType<
     NonNullable<typeof SpeechRecognition>
   > | null>(null)
@@ -217,8 +200,11 @@ export default function Practice({
 
   useEffect(() => {
     mounted.current = true
+    const controller = new AbortController()
+    localModel.current = controller
     return () => {
       mounted.current = false
+      controller.abort()
       stopSpeaking()
       const active = recognizer.current
       if (active) {
@@ -227,15 +213,6 @@ export default function Practice({
       }
     }
   }, [])
-  useEffect(() => {
-    if (!open) return
-    const controller = new AbortController()
-    localModel.current = controller
-    browserModelAvailability().then((state) => {
-      if (!controller.signal.aborted) setAvailability(state)
-    })
-    return () => controller.abort()
-  }, [open])
   useEffect(() => {
     if (transcript.current)
       transcript.current.scrollTop = transcript.current.scrollHeight
@@ -250,27 +227,6 @@ export default function Practice({
       },
       britishVoice,
     )
-  }
-
-  async function connectBrowserModel() {
-    const signal = localModel.current?.signal
-    if (!signal || modelLoading) return
-    setModelLoading(true)
-    setError('')
-    try {
-      await enableBrowserModel(signal)
-      if (!signal.aborted) setAvailability('available')
-    } catch {
-      if (!signal.aborted)
-        setError(
-          t(
-            'Браузер не смог запустить локальный ИИ.',
-            'The browser could not start its local model.',
-          ),
-        )
-    } finally {
-      if (!signal.aborted) setModelLoading(false)
-    }
   }
 
   function startMic() {
@@ -343,13 +299,9 @@ export default function Practice({
     if (!spoken) setDraft('')
     const history: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(history)
-    report({ turns: 1, voice: spoken ? 1 : 0 })
     let done = false
     let reply: Message
     const headword = pronunciationQuestion(text)
-    const interruption = open
-      ? socialReply(text)
-      : mode !== 'guess' && guidedInterruption(text, lessonQuestion)
     const step = turn + 1
 
     if (headword) {
@@ -372,8 +324,6 @@ export default function Practice({
         content: `British pronunciation of ${headword}.`,
         pronunciation,
       }
-    } else if (interruption) {
-      reply = { role: 'assistant', content: interruption }
     } else if (mode === 'guess') {
       const result = card
         ? academyGuess(card, text, step)
@@ -382,73 +332,65 @@ export default function Practice({
       reply = { role: 'assistant', content: result.content }
     } else {
       done = !open && step >= target
-      reply = open
-        ? {
-            role: 'assistant',
-            content: freePreparedReply(
-              text,
-              messages[messages.length - 1].content,
-            ),
-          }
-        : scriptReply(mode, topic, role, text, step, target, academy)
-      const browserReady = open && availability === 'available' && !modelLoading
-      if (access || browserReady) {
-        setPending(true)
-        const recent = history.slice(-8)
-        const payload: ChatRequest = {
-          mode,
-          topic,
-          role,
-          level,
-          history: recent,
-          academy: academy?.id,
-          step: open ? undefined : step,
-        }
-        let generated: Message | undefined
-        if (access) {
-          generated = await api<Message>('chat', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Demo-Code': access,
-            },
-            body: JSON.stringify(payload),
-          }).catch(() => undefined)
-        }
-        if (
-          !generated &&
-          browserReady &&
-          localModel.current &&
-          mounted.current
-        ) {
-          generated = await browserChat(
-            recent,
-            localModel.current.signal,
-          ).catch(() => undefined)
-        }
-        if (!mounted.current) return
-        setPending(false)
-        if (generated) reply = generated
-        else
-          setError(
-            t(
-              'ИИ сейчас недоступен. Включён базовый режим.',
-              'AI is unavailable. Basic mode is active.',
-            ),
-          )
+      const signal = localModel.current?.signal
+      if (!signal) return
+      setPending(true)
+      const payload: ChatRequest = {
+        mode,
+        topic,
+        role,
+        level,
+        history: history
+          .slice(-8)
+          .map(({ role, content }) => ({ role, content })),
+        academy: academy?.id,
+        step: open ? undefined : step,
       }
+      const generated =
+        (access
+          ? await api<Message>('chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Demo-Code': access,
+              },
+              body: JSON.stringify(payload),
+              signal,
+            }).catch(() => undefined)
+          : undefined) ??
+        (await browserChat(payload, signal, (status) => {
+          if (!signal.aborted) setModelStatus(status)
+        }).catch(() => undefined))
+      if (signal.aborted) return
+      setPending(false)
+      setModelStatus(undefined)
+      if (!generated) {
+        setMessages(messages)
+        setDraft(text)
+        setError(
+          t(
+            'Не удалось получить ответ ИИ. Проверь подключение и отправь реплику ещё раз.',
+            'Could not get an AI reply. Check your connection and send your message again.',
+          ),
+        )
+        return
+      }
+      reply = generated
     }
     if (!mounted.current) return
-    if (!open && !interruption && !headword) {
-      setTurn(step)
-      setLessonQuestion(reply.content)
-    }
+    report({ turns: 1, voice: spoken ? 1 : 0 })
+    if (!open && !headword) setTurn(step)
     setMessages([...history, { ...reply, voiceOnly: spoken }])
-    if (autoSpeak || spoken)
-      listen(
-        reply.pronunciation?.word ??
-          [reply.content, reply.correction].filter(Boolean).join(' '),
-      )
+    if (autoSpeak || spoken) {
+      const form = reply.pronunciation?.forms[0]
+      if (form?.file || form?.audio) {
+        void playDictionaryAudio(form).then((status) => {
+          if (mounted.current && status === 'blocked') setPlayback('blocked')
+        })
+      } else if (!reply.pronunciation) {
+        listen([reply.content, reply.correction].filter(Boolean).join(' '))
+      }
+    }
     if (done) {
       setFinished(true)
       report({ finished: 1 })
@@ -512,13 +454,9 @@ export default function Practice({
           <div>
             <strong>Buddy</strong>
             <p>
-              {mode !== 'guess' && access
-                ? t('ИИ-режим', 'AI mode')
-                : open
-                  ? availability === 'available'
-                    ? t('ИИ в браузере', 'On-device AI')
-                    : t('Базовый чат', 'Basic chat')
-                  : t('Учебный сценарий', 'Prepared lesson')}
+              {mode === 'guess'
+                ? t('Словарная игра', 'Vocabulary game')
+                : t('ИИ-диалог', 'AI conversation')}
             </p>
           </div>
           <div className="chat-tools">
@@ -550,29 +488,6 @@ export default function Practice({
             )}
           </div>
         </div>
-        {open &&
-          !access &&
-          (modelLoading ||
-            availability === 'downloadable' ||
-            availability === 'downloading') && (
-            <div className="model-prompt">
-              <span>
-                {t(
-                  'Браузер может скачать модель для свободного диалога.',
-                  'Your browser can download a model for open conversation.',
-                )}
-              </span>
-              <button
-                className="secondary"
-                disabled={modelLoading}
-                onClick={connectBrowserModel}
-              >
-                {modelLoading
-                  ? t('Загружаю модель…', 'Loading the model…')
-                  : t('Включить ИИ в браузере', 'Enable on-device AI')}
-              </button>
-            </div>
-          )}
         <div
           className="transcript"
           ref={transcript}
@@ -592,16 +507,15 @@ export default function Practice({
                   />
                 )}
               </div>
-              {message.role === 'assistant' && (
+              {message.role === 'assistant' && !message.pronunciation && (
                 <button
                   className="icon-button"
                   aria-label={t('Озвучить реплику Бадди', 'Play Buddy’s reply')}
                   onClick={() =>
                     listen(
-                      message.pronunciation?.word ??
-                        [message.content, message.correction]
-                          .filter(Boolean)
-                          .join(' '),
+                      [message.content, message.correction]
+                        .filter(Boolean)
+                        .join(' '),
                     )
                   }
                 >
@@ -612,7 +526,15 @@ export default function Practice({
           ))}
           {pending && (
             <p className="status">
-              {t('Бадди готовит ответ…', 'Buddy is thinking…')}
+              {modelStatus?.phase === 'loading'
+                ? t(
+                    'Загружаю модель ИИ в браузер (около 397 МБ)',
+                    'Downloading the AI model (about 397 MB)',
+                  ) +
+                  (modelStatus.percent === undefined
+                    ? '…'
+                    : ` · ${modelStatus.percent}%`)
+                : t('Бадди готовит ответ…', 'Buddy is thinking…')}
             </p>
           )}
         </div>

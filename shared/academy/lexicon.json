@@ -1,0 +1,4276 @@
+{
+  "April": {
+    "ru": "апрель",
+    "forms": [
+      {
+        "ipa": "ˈeɪ.pɹɪl",
+        "file": "april.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/April#English"
+  },
+  "August": {
+    "ru": "август",
+    "forms": [
+      {
+        "ipa": "ˈɔː.ɡəst",
+        "file": "august.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/August#English"
+  },
+  "Australia": {
+    "ru": "Австралия",
+    "forms": [
+      {
+        "ipa": "ɒˈstɹeɪliə",
+        "file": "australia.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a6/LL-Q1860_%28eng%29-Soundguys-Australia.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Soundguys-Australia.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Australia#English"
+  },
+  "China": {
+    "ru": "Китай",
+    "forms": [
+      {
+        "ipa": "ˈtʃaɪnə",
+        "file": "china.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/20/En-gb-china.oga",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-gb-china.oga"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/China#English"
+  },
+  "December": {
+    "ru": "декабрь",
+    "forms": [
+      {
+        "ipa": "dɪˈsɛmbə",
+        "file": "december.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/December#English"
+  },
+  "English": {
+    "ru": "английский язык",
+    "forms": [
+      {
+        "ipa": "ˈɪŋɡlɪʃ",
+        "file": "english.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2d/En-uk-English.oga",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-English.oga"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/English#English"
+  },
+  "February": {
+    "ru": "февраль",
+    "forms": [
+      {
+        "ipa": "ˈfɛb.ɹʊ.ə.ɹi",
+        "file": "february.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/18/En-uk-february.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-february.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/February#English"
+  },
+  "Friday": {
+    "ru": "пятница",
+    "forms": [
+      {
+        "ipa": "ˈfɹaɪ.deɪ",
+        "file": "friday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/22/En-uk-Friday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Friday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Friday#English"
+  },
+  "India": {
+    "ru": "Индия",
+    "forms": [
+      {
+        "ipa": "ˈɪndiə",
+        "file": "india.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e8/LL-Q1860_%28eng%29-Soundguys-India.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Soundguys-India.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/India#English"
+  },
+  "January": {
+    "ru": "январь",
+    "forms": [
+      {
+        "ipa": "ˈdʒæn.jʊ.ə.ɹi",
+        "file": "january.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/January#English"
+  },
+  "July": {
+    "ru": "июль",
+    "forms": [
+      {
+        "ipa": "dʒʊˈlaɪ",
+        "file": "july.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/July#English"
+  },
+  "June": {
+    "ru": "июнь",
+    "forms": [
+      {
+        "ipa": "dʒuːn",
+        "file": "june.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/June#English"
+  },
+  "March": {
+    "ru": "март",
+    "forms": [
+      {
+        "ipa": "mɑːtʃ",
+        "file": "march.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/March#English"
+  },
+  "May": {
+    "ru": "май",
+    "forms": [
+      {
+        "ipa": "meɪ",
+        "file": "may.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/May#English"
+  },
+  "Monday": {
+    "ru": "понедельник",
+    "forms": [
+      {
+        "ipa": "ˈmʌndeɪ",
+        "file": "monday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/ef/En-uk-Monday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Monday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Monday#English"
+  },
+  "November": {
+    "ru": "ноябрь",
+    "forms": [
+      {
+        "ipa": "nəʊˈvɛmbə",
+        "file": "november.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/November#English"
+  },
+  "October": {
+    "ru": "октябрь",
+    "forms": [
+      {
+        "ipa": "ɒkˈtəʊ.bə",
+        "file": "october.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/October#English"
+  },
+  "PE": {
+    "ru": "физкультура",
+    "forms": [
+      {
+        "ipa": "ˌpiːˈiː",
+        "file": "pe.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/6b/LL-Q1860_%28eng%29-Vealhurl-PE.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-PE.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/PE#English"
+  },
+  "Russia": {
+    "ru": "Россия",
+    "forms": [
+      {
+        "ipa": "ˈɹʌʃə",
+        "file": "russia.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f0/LL-Q1860_%28eng%29-Soundguys-Russia.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Soundguys-Russia.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Russia#English"
+  },
+  "Saturday": {
+    "ru": "суббота",
+    "forms": [
+      {
+        "ipa": "ˈsæt.ə.deɪ",
+        "file": "saturday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/9c/En-uk-Saturday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Saturday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Saturday#English"
+  },
+  "September": {
+    "ru": "сентябрь",
+    "forms": [
+      {
+        "ipa": "sɛpˈtɛmbə",
+        "file": "september.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/September#English"
+  },
+  "Sunday": {
+    "ru": "воскресенье",
+    "forms": [
+      {
+        "ipa": "ˈsʌndeɪ",
+        "file": "sunday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/4d/En-uk-Sunday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Sunday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Sunday#English"
+  },
+  "T-shirt": {
+    "ru": "футболка",
+    "forms": [
+      {
+        "ipa": "ˈtiːʃɜːt",
+        "file": "t-shirt.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/T-shirt#English"
+  },
+  "TV": {
+    "ru": "телевизор; телевидение",
+    "forms": [
+      {
+        "ipa": "ˌtiːˈviː",
+        "file": "tv.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/21/LL-Q1860_%28eng%29-Vealhurl-TV.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-TV.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/TV#English"
+  },
+  "Thursday": {
+    "ru": "четверг",
+    "forms": [
+      {
+        "ipa": "ˈθɜːz.deɪ",
+        "file": "thursday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/ed/En-uk-Thursday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Thursday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Thursday#English"
+  },
+  "Tuesday": {
+    "ru": "вторник",
+    "forms": [
+      {
+        "ipa": "ˈtjuːz.deɪ",
+        "file": "tuesday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5e/En-uk-Tuesday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Tuesday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Tuesday#English"
+  },
+  "Wednesday": {
+    "ru": "среда",
+    "forms": [
+      {
+        "ipa": "ˈwɛnz.deɪ",
+        "file": "wednesday.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d3/En-uk-Wednesday.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-Wednesday.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/Wednesday#English"
+  },
+  "across": {
+    "ru": "через; поперёк",
+    "forms": [
+      {
+        "ipa": "əˈkɹɒs",
+        "file": "across.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/across#English"
+  },
+  "angry": {
+    "ru": "сердитый",
+    "forms": [
+      {
+        "ipa": "ˈæŋ.ɡɹi",
+        "file": "angry.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/angry#English"
+  },
+  "aquarium": {
+    "ru": "аквариум",
+    "forms": [
+      {
+        "ipa": "əˈkweəɹiəm",
+        "file": "aquarium.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/aquarium#English",
+    "compiled": true
+  },
+  "arm": {
+    "ru": "рука (от плеча до кисти)",
+    "forms": [
+      {
+        "ipa": "ɑːm",
+        "file": "arm.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/arm#English"
+  },
+  "art": {
+    "ru": "искусство; изобразительное искусство",
+    "forms": [
+      {
+        "ipa": "ɑːt",
+        "file": "art.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/9f/En-uk-art.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-art.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/art#English"
+  },
+  "art gallery": {
+    "ru": "художественная галерея",
+    "forms": [
+      {
+        "ipa": "ˈɑːt ˌɡæləɹi",
+        "file": "art-gallery.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0c/LL-Q1860_%28eng%29-Vealhurl-art_gallery.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-art_gallery.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/art_gallery#English",
+    "compiled": true
+  },
+  "artist": {
+    "ru": "художник",
+    "forms": [
+      {
+        "ipa": "ˈɑːtɪst",
+        "file": "artist.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/artist#English"
+  },
+  "autumn": {
+    "ru": "осень",
+    "forms": [
+      {
+        "ipa": "ˈɔːtəm",
+        "file": "autumn.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a3/En-uk-autumn.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-autumn.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/autumn#English"
+  },
+  "baby": {
+    "ru": "малыш; младенец",
+    "forms": [
+      {
+        "ipa": "ˈbeɪ.bi",
+        "file": "baby.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/18/En-uk-baby.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-baby.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/baby#English"
+  },
+  "bag": {
+    "ru": "сумка",
+    "forms": [
+      {
+        "ipa": "bæɡ",
+        "file": "bag.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bag#English"
+  },
+  "banana": {
+    "ru": "банан",
+    "forms": [
+      {
+        "ipa": "bəˈnɑːnə",
+        "file": "banana.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/67/En-uk-banana.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-banana.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/banana#English"
+  },
+  "bank": {
+    "ru": "банк",
+    "forms": [
+      {
+        "ipa": "ˈbæŋk",
+        "file": "bank.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bank#English"
+  },
+  "basket": {
+    "ru": "корзина",
+    "forms": [
+      {
+        "ipa": "ˈbɑːskɪt",
+        "file": "basket.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/basket#English"
+  },
+  "bat": {
+    "ru": "бита (для игры)",
+    "forms": [
+      {
+        "ipa": "bæt",
+        "file": "bat.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bat#English"
+  },
+  "bathroom": {
+    "ru": "ванная комната",
+    "forms": [
+      {
+        "ipa": "ˈbɑːθɹuːm",
+        "file": "bathroom.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c0/En-uk-bathroom.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-bathroom.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bathroom#English"
+  },
+  "beach": {
+    "ru": "пляж",
+    "forms": [
+      {
+        "ipa": "biːtʃ",
+        "file": "beach.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/3/3d/En-uk-beach.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-beach.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/beach#English"
+  },
+  "beans": {
+    "ru": "фасоль; бобы",
+    "forms": [
+      {
+        "ipa": "biːnz",
+        "file": "beans.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/beans#English"
+  },
+  "bear": {
+    "ru": "медведь",
+    "forms": [
+      {
+        "ipa": "beə",
+        "file": "bear.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bear#English"
+  },
+  "beard": {
+    "ru": "борода",
+    "forms": [
+      {
+        "ipa": "bɪəd",
+        "file": "beard.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/beard#English"
+  },
+  "bed": {
+    "ru": "кровать",
+    "forms": [
+      {
+        "ipa": "bɛd",
+        "file": "bed.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/fa/En-uk-bed.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-bed.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bed#English"
+  },
+  "bell": {
+    "ru": "колокольчик; звонок",
+    "forms": [
+      {
+        "ipa": "bɛl",
+        "file": "bell.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bell#English"
+  },
+  "big": {
+    "ru": "большой",
+    "forms": [
+      {
+        "ipa": "bɪɡ",
+        "file": "big.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/12/En-uk-big.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-big.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/big#English"
+  },
+  "bike": {
+    "ru": "велосипед",
+    "forms": [
+      {
+        "ipa": "baɪk",
+        "file": "bike.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bike#English"
+  },
+  "biscuit": {
+    "ru": "печенье",
+    "forms": [
+      {
+        "ipa": "ˈbɪskɪt",
+        "file": "biscuit.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/50/En-uk-biscuit.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-biscuit.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/biscuit#English"
+  },
+  "boat": {
+    "ru": "лодка",
+    "forms": [
+      {
+        "ipa": "bəʊt",
+        "file": "boat.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/boat#English"
+  },
+  "book": {
+    "ru": "книга",
+    "forms": [
+      {
+        "ipa": "bʊk",
+        "file": "book.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/70/En-uk-book.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-book.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/book#English"
+  },
+  "bookcase": {
+    "ru": "книжный шкаф",
+    "forms": [
+      {
+        "ipa": "ˈbʊkˌkeɪs",
+        "file": "bookcase.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2c/LL-Q1860_%28eng%29-Vealhurl-bookcase.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-bookcase.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bookcase#English"
+  },
+  "bottle": {
+    "ru": "бутылка",
+    "forms": [
+      {
+        "ipa": "ˈbɒtəl",
+        "file": "bottle.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0e/En-uk-London-bottle.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-London-bottle.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bottle#English"
+  },
+  "bowl": {
+    "ru": "миска",
+    "forms": [
+      {
+        "ipa": "bəʊl",
+        "file": "bowl.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bowl#English"
+  },
+  "bowling alley": {
+    "ru": "зал для боулинга",
+    "forms": [
+      {
+        "ipa": "ˈbəʊlɪŋ ˌæli",
+        "file": "bowling-alley.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bowling_alley#English",
+    "compiled": true
+  },
+  "boy": {
+    "ru": "мальчик",
+    "forms": [
+      {
+        "ipa": "bɔɪ",
+        "file": "boy.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/boy#English"
+  },
+  "bracelet": {
+    "ru": "браслет",
+    "forms": [
+      {
+        "ipa": "ˈbɹeɪslət",
+        "file": "bracelet.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/85/LL-Q1860_%28eng%29-Vealhurl-bracelet.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-bracelet.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bracelet#English"
+  },
+  "brakes": {
+    "ru": "тормоза",
+    "forms": [
+      {
+        "ipa": "bɹeɪks",
+        "file": "brakes.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/brakes#English"
+  },
+  "branch": {
+    "ru": "ветка",
+    "forms": [
+      {
+        "ipa": "bɹɑːntʃ",
+        "file": "branch.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/branch#English"
+  },
+  "break time": {
+    "ru": "перемена",
+    "forms": [
+      {
+        "ipa": "ˈbɹeɪk taɪm",
+        "file": "break-time.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/break_time#English",
+    "compiled": true
+  },
+  "broken arm": {
+    "ru": "перелом руки; сломанная рука",
+    "forms": [
+      {
+        "ipa": "ˌbɹəʊkən ˈɑːm",
+        "file": "broken-arm.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/broken_arm#English",
+    "compiled": true
+  },
+  "brother": {
+    "ru": "брат",
+    "forms": [
+      {
+        "ipa": "ˈbɹʌðə",
+        "file": "brother.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d9/En-uk-brother.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-brother.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/brother#English"
+  },
+  "bucket": {
+    "ru": "ведро",
+    "forms": [
+      {
+        "ipa": "ˈbʌkɪt",
+        "file": "bucket.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bucket#English"
+  },
+  "building": {
+    "ru": "здание",
+    "forms": [
+      {
+        "ipa": "ˈbɪl.dɪŋ",
+        "file": "building.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0b/En-uk-building.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-building.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/building#English"
+  },
+  "burger": {
+    "ru": "бургер",
+    "forms": [
+      {
+        "ipa": "ˈbɜːɡə",
+        "file": "burger.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c9/LL-Q1860_%28eng%29-Vealhurl-burger.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-burger.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/burger#English"
+  },
+  "bus": {
+    "ru": "автобус",
+    "forms": [
+      {
+        "ipa": "bʌs",
+        "file": "bus.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bus#English"
+  },
+  "bus stop": {
+    "ru": "автобусная остановка",
+    "forms": [
+      {
+        "ipa": "ˈbʌs stɒp",
+        "file": "bus-stop.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bus_stop#English",
+    "compiled": true
+  },
+  "businessman": {
+    "ru": "бизнесмен",
+    "forms": [
+      {
+        "ipa": "ˈbɪznəsmən",
+        "file": "businessman.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/businessman#English"
+  },
+  "businesswoman": {
+    "ru": "бизнесвумен; предпринимательница",
+    "forms": [
+      {
+        "ipa": "ˈbɪznəsˌwʊmən",
+        "file": "businesswoman.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/businesswoman#English",
+    "compiled": true
+  },
+  "café": {
+    "ru": "кафе",
+    "forms": [
+      {
+        "ipa": "ˈkæfeɪ",
+        "file": "cafe.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f0/LL-Q1860_%28eng%29-Vealhurl-caf%C3%A9.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-caf%C3%A9.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/caf%C3%A9#English"
+  },
+  "cake": {
+    "ru": "торт; пирог",
+    "forms": [
+      {
+        "ipa": "keɪk",
+        "file": "cake.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/fa/En-uk-cake.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-cake.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cake#English"
+  },
+  "came": {
+    "ru": "пришёл; приехал (прош. от come)",
+    "forms": [
+      {
+        "ipa": "ˈkeɪm",
+        "file": "came.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/came#English"
+  },
+  "camel": {
+    "ru": "верблюд",
+    "forms": [
+      {
+        "ipa": "ˈkæməl",
+        "file": "camel.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/camel#English"
+  },
+  "camera": {
+    "ru": "фотоаппарат; камера",
+    "forms": [
+      {
+        "ipa": "ˈkæməɹə",
+        "file": "camera.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/camera#English"
+  },
+  "campfire": {
+    "ru": "костёр",
+    "forms": [
+      {
+        "ipa": "ˈkæmpˌfaɪə",
+        "file": "campfire.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/00/LL-Q1860_%28eng%29-Vealhurl-campfire.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-campfire.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/campfire#English"
+  },
+  "campsite": {
+    "ru": "место для палаток; кемпинг",
+    "forms": [
+      {
+        "ipa": "ˈkæmpsaɪt",
+        "file": "campsite.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/campsite#English",
+    "compiled": true
+  },
+  "car": {
+    "ru": "автомобиль",
+    "forms": [
+      {
+        "ipa": "kɑː",
+        "file": "car.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/car#English"
+  },
+  "carrot": {
+    "ru": "морковь",
+    "forms": [
+      {
+        "ipa": "ˈkæɹət",
+        "file": "carrot.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/carrot#English"
+  },
+  "catch": {
+    "ru": "ловить; поймать",
+    "forms": [
+      {
+        "ipa": "kætʃ",
+        "file": "catch.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/catch#English"
+  },
+  "chair": {
+    "ru": "стул",
+    "forms": [
+      {
+        "ipa": "tʃɛə",
+        "file": "chair.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/11/En-uk-chair.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-chair.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/chair#English"
+  },
+  "charger": {
+    "ru": "зарядное устройство",
+    "forms": [
+      {
+        "ipa": "ˈtʃɑːdʒə",
+        "file": "charger.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/6a/LL-Q1860_%28eng%29-Vealhurl-charger.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-charger.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/charger#English"
+  },
+  "cheese": {
+    "ru": "сыр",
+    "forms": [
+      {
+        "ipa": "tʃiːz",
+        "file": "cheese.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cheese#English"
+  },
+  "chef": {
+    "ru": "повар; шеф-повар",
+    "forms": [
+      {
+        "ipa": "ʃɛf",
+        "file": "chef.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/chef#English"
+  },
+  "cinema": {
+    "ru": "кинотеатр",
+    "forms": [
+      {
+        "ipa": "ˈsɪn.ɪ.mə",
+        "file": "cinema.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/81/En-uk-cinema.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-cinema.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cinema#English"
+  },
+  "clean": {
+    "ru": "чистый; чистить",
+    "forms": [
+      {
+        "ipa": "kliːn",
+        "file": "clean.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/83/En-uk-clean.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-clean.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/clean#English"
+  },
+  "climb": {
+    "ru": "взбираться; карабкаться",
+    "forms": [
+      {
+        "ipa": "ˈklaɪm",
+        "file": "climb.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/climb#English"
+  },
+  "clock": {
+    "ru": "часы",
+    "forms": [
+      {
+        "ipa": "klɒk",
+        "file": "clock.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/79/En-uk-clock.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-clock.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/clock#English"
+  },
+  "cloud": {
+    "ru": "облако",
+    "forms": [
+      {
+        "ipa": "ˈklaʊd",
+        "file": "cloud.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5c/En-uk-cloud.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-cloud.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cloud#English"
+  },
+  "coconut": {
+    "ru": "кокос",
+    "forms": [
+      {
+        "ipa": "ˈkəʊ.kə.nʌt",
+        "file": "coconut.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/coconut#English"
+  },
+  "coin": {
+    "ru": "монета",
+    "forms": [
+      {
+        "ipa": "ˈkoɪn",
+        "file": "coin.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/coin#English"
+  },
+  "cold": {
+    "ru": "холодный; холодно",
+    "forms": [
+      {
+        "ipa": "kəʊld",
+        "file": "cold.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/9a/En-uk-cold.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-cold.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cold#English"
+  },
+  "computer": {
+    "ru": "компьютер",
+    "forms": [
+      {
+        "ipa": "kəmˈpjuː.tə",
+        "file": "computer.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5c/En-uk-computer.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-computer.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/computer#English"
+  },
+  "computer studies": {
+    "ru": "информатика",
+    "forms": [
+      {
+        "ipa": "kəmˈpjuːtə ˌstʌdiz",
+        "file": "computer-studies.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/computer_studies#English",
+    "compiled": true
+  },
+  "concert": {
+    "ru": "концерт",
+    "forms": [
+      {
+        "ipa": "ˈkɒnsət",
+        "file": "concert.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/8e/LL-Q1860_%28eng%29-Vealhurl-concert.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-concert.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/concert#English"
+  },
+  "cough": {
+    "ru": "кашель; кашлять",
+    "forms": [
+      {
+        "ipa": "kɒf",
+        "file": "cough.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/fd/LL-Q1860_%28eng%29-Vealhurl-cough.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-cough.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cough#English"
+  },
+  "countryside": {
+    "ru": "сельская местность",
+    "forms": [
+      {
+        "ipa": "ˈkʌn.tɹiˌsaɪd",
+        "file": "countryside.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/04/En-uk-countryside.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-countryside.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/countryside#English"
+  },
+  "crab": {
+    "ru": "краб",
+    "forms": [
+      {
+        "ipa": "kɹæb",
+        "file": "crab.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/crab#English"
+  },
+  "crocodile": {
+    "ru": "крокодил",
+    "forms": [
+      {
+        "ipa": "ˈkɹɒkədaɪl",
+        "file": "crocodile.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5e/LL-Q1860_%28eng%29-Vealhurl-crocodile.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-crocodile.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/crocodile#English"
+  },
+  "cup": {
+    "ru": "чашка",
+    "forms": [
+      {
+        "ipa": "ˈkʌp",
+        "file": "cup.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/72/LL-Q1860_%28eng%29-Vealhurl-cup.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-cup.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cup#English"
+  },
+  "curly hair": {
+    "ru": "кудрявые волосы",
+    "forms": [
+      {
+        "ipa": "ˌkɜːli ˈheə",
+        "file": "curly-hair.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/curly_hair#English",
+    "compiled": true
+  },
+  "cut": {
+    "ru": "резать",
+    "forms": [
+      {
+        "ipa": "kʌt",
+        "file": "cut.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0b/LL-Q1860_%28eng%29-Vealhurl-cut.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-cut.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cut#English"
+  },
+  "cyclist": {
+    "ru": "велосипедист",
+    "forms": [
+      {
+        "ipa": "ˈsaɪ.klɪst",
+        "file": "cyclist.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d8/LL-Q1860_%28eng%29-Vealhurl-cyclist.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-cyclist.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/cyclist#English"
+  },
+  "dad": {
+    "ru": "папа",
+    "forms": [
+      {
+        "ipa": "dæd",
+        "file": "dad.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dad#English"
+  },
+  "dark hair": {
+    "ru": "тёмные волосы",
+    "forms": [
+      {
+        "ipa": "ˌdɑːk ˈheə",
+        "file": "dark-hair.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dark_hair#English",
+    "compiled": true
+  },
+  "daughter": {
+    "ru": "дочь",
+    "forms": [
+      {
+        "ipa": "ˈdɔːtə",
+        "file": "daughter.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/48/En-uk-daughter.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-daughter.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/daughter#English"
+  },
+  "dentist": {
+    "ru": "стоматолог",
+    "forms": [
+      {
+        "ipa": "ˈdɛntɪst",
+        "file": "dentist.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dentist#English"
+  },
+  "desk": {
+    "ru": "парта; письменный стол",
+    "forms": [
+      {
+        "ipa": "dɛsk",
+        "file": "desk.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/desk#English"
+  },
+  "diamond ring": {
+    "ru": "кольцо с бриллиантом",
+    "forms": [
+      {
+        "ipa": "ˌdaɪəmənd ˈɹɪŋ",
+        "file": "diamond-ring.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/diamond_ring#English",
+    "compiled": true
+  },
+  "dining room": {
+    "ru": "столовая",
+    "forms": [
+      {
+        "ipa": "ˈdaɪnɪŋ ˌɹuːm",
+        "file": "dining-room.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/52/LL-Q1860_%28eng%29-Vealhurl-dining_room.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-dining_room.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dining_room#English",
+    "compiled": true
+  },
+  "dishwasher": {
+    "ru": "посудомоечная машина",
+    "forms": [
+      {
+        "ipa": "ˈdɪʃˌwɒʃə",
+        "file": "dishwasher.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dishwasher#English"
+  },
+  "do gymnastics": {
+    "ru": "заниматься гимнастикой",
+    "forms": [
+      {
+        "ipa": "duː dʒɪmˈnæstɪks",
+        "file": "do-gymnastics.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/do_gymnastics#English",
+    "compiled": true
+  },
+  "dolphin": {
+    "ru": "дельфин",
+    "forms": [
+      {
+        "ipa": "ˈdɒlf.ɪn",
+        "file": "dolphin.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dolphin#English"
+  },
+  "door": {
+    "ru": "дверь",
+    "forms": [
+      {
+        "ipa": "dɔː",
+        "file": "door.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/ce/En-uk-door.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-door.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/door#English"
+  },
+  "down": {
+    "ru": "вниз",
+    "forms": [
+      {
+        "ipa": "daʊn",
+        "file": "down.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/down#English"
+  },
+  "dress": {
+    "ru": "платье",
+    "forms": [
+      {
+        "ipa": "dɹes",
+        "file": "dress.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5a/En-uk-dress.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-dress.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dress#English"
+  },
+  "drum": {
+    "ru": "барабан",
+    "forms": [
+      {
+        "ipa": "dɹʌm",
+        "file": "drum.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/drum#English"
+  },
+  "dust": {
+    "ru": "пыль; вытирать пыль",
+    "forms": [
+      {
+        "ipa": "dʌst",
+        "file": "dust.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dust#English"
+  },
+  "ear": {
+    "ru": "ухо",
+    "forms": [
+      {
+        "ipa": "ɪə",
+        "file": "ear.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/95/En-uk-ear.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-ear.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/ear#English"
+  },
+  "earache": {
+    "ru": "боль в ухе",
+    "forms": [
+      {
+        "ipa": "ˈɪəɹeɪk",
+        "file": "earache.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/earache#English"
+  },
+  "earphones": {
+    "ru": "наушники",
+    "forms": [
+      {
+        "ipa": "ˈɪəfəʊnz",
+        "file": "earphones.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/45/LL-Q1860_%28eng%29-Vealhurl-earphones.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-earphones.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/earphones#English",
+    "compiled": true
+  },
+  "earrings": {
+    "ru": "серьги",
+    "forms": [
+      {
+        "ipa": "ˈɪəɹɪŋz",
+        "file": "earrings.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/earrings#English",
+    "compiled": true
+  },
+  "eel": {
+    "ru": "угорь",
+    "forms": [
+      {
+        "ipa": "iːl",
+        "file": "eel.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/eel#English"
+  },
+  "empty": {
+    "ru": "пустой; опорожнять",
+    "forms": [
+      {
+        "ipa": "ˈɛmp.ti",
+        "file": "empty.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/4a/En-uk-empty.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-empty.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/empty#English"
+  },
+  "engineer": {
+    "ru": "инженер",
+    "forms": [
+      {
+        "ipa": "ˌɛndʒɪˈnɪə",
+        "file": "engineer.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/88/En-uk-engineer.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-engineer.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/engineer#English"
+  },
+  "eye": {
+    "ru": "глаз",
+    "forms": [
+      {
+        "ipa": "ˈaɪ",
+        "file": "eye.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/eye#English"
+  },
+  "fair hair": {
+    "ru": "светлые волосы",
+    "forms": [
+      {
+        "ipa": "ˌfeə ˈheə",
+        "file": "fair-hair.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/fair_hair#English",
+    "compiled": true
+  },
+  "family": {
+    "ru": "семья",
+    "forms": [
+      {
+        "ipa": "ˈfæmɪli",
+        "file": "family.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0f/En-uk-family.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-family.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/family#English"
+  },
+  "feathers": {
+    "ru": "перья",
+    "forms": [
+      {
+        "ipa": "ˈfɛðəz",
+        "file": "feathers.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/feathers#English",
+    "compiled": true
+  },
+  "field": {
+    "ru": "поле",
+    "forms": [
+      {
+        "ipa": "ˈfiːld",
+        "file": "field.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/field#English"
+  },
+  "fill": {
+    "ru": "наполнять",
+    "forms": [
+      {
+        "ipa": "fɪl",
+        "file": "fill.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/fill#English"
+  },
+  "fins": {
+    "ru": "плавники",
+    "forms": [
+      {
+        "ipa": "fɪnz",
+        "file": "fins.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/fins#English"
+  },
+  "fire": {
+    "ru": "огонь; пожар",
+    "forms": [
+      {
+        "ipa": "ˈfaɪ.ə",
+        "file": "fire.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/b/b9/LL-Q1860_%28eng%29-Vealhurl-fire.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-fire.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/fire#English"
+  },
+  "flat": {
+    "ru": "квартира",
+    "forms": [
+      {
+        "ipa": "ˈflæt",
+        "file": "flat.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/07/En-uk-flat.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-flat.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/flat#English"
+  },
+  "flip-flops": {
+    "ru": "сланцы; вьетнамки",
+    "forms": [
+      {
+        "ipa": "ˈflɪpflɒps",
+        "file": "flip-flops.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/flip-flops#English",
+    "compiled": true
+  },
+  "flu": {
+    "ru": "грипп",
+    "forms": [
+      {
+        "ipa": "fluː",
+        "file": "flu.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/flu#English"
+  },
+  "flute": {
+    "ru": "флейта",
+    "forms": [
+      {
+        "ipa": "fluːt",
+        "file": "flute.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/flute#English"
+  },
+  "foot": {
+    "ru": "ступня",
+    "forms": [
+      {
+        "ipa": "fʊt",
+        "file": "foot.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e2/En-uk-foot.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-foot.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/foot#English"
+  },
+  "forest": {
+    "ru": "лес",
+    "forms": [
+      {
+        "ipa": "ˈfɒɹɪst",
+        "file": "forest.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/ac/En-uk-forest.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-forest.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/forest#English"
+  },
+  "friend": {
+    "ru": "друг; подруга",
+    "forms": [
+      {
+        "ipa": "fɹɛnd",
+        "file": "friend.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c9/En-uk-friend.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-friend.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/friend#English"
+  },
+  "funny": {
+    "ru": "смешной",
+    "forms": [
+      {
+        "ipa": "ˈfʌni",
+        "file": "funny.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/98/LL-Q1860_%28eng%29-Back_ache-funny.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-funny.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/funny#English"
+  },
+  "fur": {
+    "ru": "мех; шерсть",
+    "forms": [
+      {
+        "ipa": "fɜː",
+        "file": "fur.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/fur#English"
+  },
+  "games console": {
+    "ru": "игровая приставка",
+    "forms": [
+      {
+        "ipa": "ˈɡeɪmz ˌkɒnsəʊl",
+        "file": "games-console.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/games_console#English",
+    "compiled": true
+  },
+  "garden": {
+    "ru": "сад",
+    "forms": [
+      {
+        "ipa": "ˈɡɑː.dən",
+        "file": "garden.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2f/En-uk-garden.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-garden.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/garden#English"
+  },
+  "gears": {
+    "ru": "передачи (велосипеда)",
+    "forms": [
+      {
+        "ipa": "ɡɪəz",
+        "file": "gears.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/gears#English"
+  },
+  "girl": {
+    "ru": "девочка",
+    "forms": [
+      {
+        "ipa": "ˈɡɜːl",
+        "file": "girl.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/15/LL-Q1860_%28eng%29-Vealhurl-girl.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-girl.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/girl#English"
+  },
+  "glasses": {
+    "ru": "очки",
+    "forms": [
+      {
+        "ipa": "ˈɡlɑːsɪz",
+        "file": "glasses.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/01/En-uk-glasses.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-glasses.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/glasses#English"
+  },
+  "glove": {
+    "ru": "перчатка",
+    "forms": [
+      {
+        "ipa": "ɡlʌv",
+        "file": "glove.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/glove#English"
+  },
+  "glue": {
+    "ru": "клей",
+    "forms": [
+      {
+        "ipa": "ɡluː",
+        "file": "glue.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/glue#English"
+  },
+  "go to school": {
+    "ru": "ходить в школу",
+    "forms": [
+      {
+        "ipa": "ɡəʊ tə ˈskuːl",
+        "file": "go-to-school.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/go_to_school#English",
+    "compiled": true
+  },
+  "goggles": {
+    "ru": "защитные очки; очки для плавания",
+    "forms": [
+      {
+        "ipa": "ˈɡɒɡəlz",
+        "file": "goggles.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/goggles#English",
+    "compiled": true
+  },
+  "granddaughter": {
+    "ru": "внучка",
+    "forms": [
+      {
+        "ipa": "ˈɡɹænˌdɔːtə",
+        "file": "granddaughter.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/granddaughter#English",
+    "compiled": true
+  },
+  "grandma": {
+    "ru": "бабушка",
+    "forms": [
+      {
+        "ipa": "ˈɡɹænmɑː",
+        "file": "grandma.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/10/LL-Q1860_%28eng%29-Vealhurl-grandma.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-grandma.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/grandma#English"
+  },
+  "grandpa": {
+    "ru": "дедушка",
+    "forms": [
+      {
+        "ipa": "ˈɡɹæm.pɑː",
+        "file": "grandpa.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/grandpa#English"
+  },
+  "grandson": {
+    "ru": "внук",
+    "forms": [
+      {
+        "ipa": "ˈɡɹændsʌn",
+        "file": "grandson.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/grandson#English"
+  },
+  "grapes": {
+    "ru": "виноград",
+    "forms": [
+      {
+        "ipa": "ɡɹeɪps",
+        "file": "grapes.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/18/LL-Q1860_%28eng%29-Vealhurl-grapes.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-grapes.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/grapes#English"
+  },
+  "grass": {
+    "ru": "трава",
+    "forms": [
+      {
+        "ipa": "ɡɹɑːs",
+        "file": "grass.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/4b/En-uk-grass.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-grass.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/grass#English"
+  },
+  "ground": {
+    "ru": "земля; поверхность земли",
+    "forms": [
+      {
+        "ipa": "ɡɹaʊnd",
+        "file": "ground.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/ground#English"
+  },
+  "guitar": {
+    "ru": "гитара",
+    "forms": [
+      {
+        "ipa": "ɡɪˈtɑː",
+        "file": "guitar.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/b/b1/En-uk-guitar.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-guitar.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/guitar#English"
+  },
+  "had": {
+    "ru": "имел; у него было (прош. от have)",
+    "forms": [
+      {
+        "ipa": "hæd",
+        "file": "had.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/had#English"
+  },
+  "hall": {
+    "ru": "холл; прихожая",
+    "forms": [
+      {
+        "ipa": "hɔːl",
+        "file": "hall.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hall#English"
+  },
+  "happy": {
+    "ru": "счастливый; радостный",
+    "forms": [
+      {
+        "ipa": "ˈhæpi",
+        "file": "happy.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/fb/En-uk-happy.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-happy.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/happy#English"
+  },
+  "have a music lesson": {
+    "ru": "быть на уроке музыки",
+    "forms": [
+      {
+        "ipa": "hæv ə ˈmjuːzɪk ˌlɛsən",
+        "file": "have-a-music-lesson.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/have_a_music_lesson#English",
+    "compiled": true
+  },
+  "have a picnic": {
+    "ru": "устроить пикник",
+    "forms": [
+      {
+        "ipa": "hæv ə ˈpɪknɪk",
+        "file": "have-a-picnic.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/have_a_picnic#English",
+    "compiled": true
+  },
+  "headache": {
+    "ru": "головная боль",
+    "forms": [
+      {
+        "ipa": "ˈhɛdeɪk",
+        "file": "headache.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/headache#English"
+  },
+  "helicopter": {
+    "ru": "вертолёт",
+    "forms": [
+      {
+        "ipa": "ˈhɛl.iˌkɒp.təʳ",
+        "file": "helicopter.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/helicopter#English"
+  },
+  "helmet": {
+    "ru": "шлем",
+    "forms": [
+      {
+        "ipa": "ˈhɛlmɪt",
+        "file": "helmet.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/61/LL-Q1860_%28eng%29-Vealhurl-helmet.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-helmet.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/helmet#English"
+  },
+  "hill": {
+    "ru": "холм",
+    "forms": [
+      {
+        "ipa": "hɪl",
+        "file": "hill.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hill#English"
+  },
+  "history": {
+    "ru": "история",
+    "forms": [
+      {
+        "ipa": "ˈhɪs.tə.ɹi",
+        "file": "history.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a0/En-uk-history.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-history.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/history#English"
+  },
+  "homework": {
+    "ru": "домашнее задание",
+    "forms": [
+      {
+        "ipa": "ˈhəʊmˌwɜːk",
+        "file": "homework.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/68/LL-Q1860_%28eng%29-Vealhurl-homework.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-homework.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/homework#English"
+  },
+  "hospital": {
+    "ru": "больница",
+    "forms": [
+      {
+        "ipa": "ˈhɒs.pɪ.təl",
+        "file": "hospital.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/41/En-uk-hospital.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-hospital.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hospital#English"
+  },
+  "hot": {
+    "ru": "горячий; жарко",
+    "forms": [
+      {
+        "ipa": "hɒt",
+        "file": "hot.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d5/En-uk-hot.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-hot.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hot#English"
+  },
+  "house": {
+    "ru": "дом",
+    "forms": [
+      {
+        "ipa": "haʊs",
+        "file": "house.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d1/En-uk-house.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-house.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/house#English"
+  },
+  "hungry": {
+    "ru": "голодный",
+    "forms": [
+      {
+        "ipa": "ˈhʌŋ.ɡɹi",
+        "file": "hungry.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hungry#English"
+  },
+  "husband": {
+    "ru": "муж",
+    "forms": [
+      {
+        "ipa": "ˈhʌzbənd",
+        "file": "husband.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d6/En-uk-husband.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-husband.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/husband#English"
+  },
+  "into": {
+    "ru": "внутрь; в",
+    "forms": [
+      {
+        "ipa": "ˈɪn.tuː",
+        "file": "into.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/into#English"
+  },
+  "island": {
+    "ru": "остров",
+    "forms": [
+      {
+        "ipa": "ˈaɪlənd",
+        "file": "island.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/45/En-uk-island.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-island.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/island#English"
+  },
+  "jacket": {
+    "ru": "куртка; пиджак",
+    "forms": [
+      {
+        "ipa": "ˈdʒæk.ɪt",
+        "file": "jacket.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/jacket#English"
+  },
+  "jellyfish": {
+    "ru": "медуза",
+    "forms": [
+      {
+        "ipa": "ˈdʒɛliˌfɪʃ",
+        "file": "jellyfish.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/jellyfish#English"
+  },
+  "jewellery": {
+    "ru": "украшения",
+    "forms": [
+      {
+        "ipa": "ˈdʒuːəlɹi",
+        "file": "jewellery.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/dd/LL-Q1860_%28eng%29-Vealhurl-jewellery.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-jewellery.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/jewellery#English"
+  },
+  "jump": {
+    "ru": "прыгать",
+    "forms": [
+      {
+        "ipa": "dʒʌmp",
+        "file": "jump.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/jump#English"
+  },
+  "kangaroo": {
+    "ru": "кенгуру",
+    "forms": [
+      {
+        "ipa": "ˌkæŋ.ɡəˈɹuː",
+        "file": "kangaroo.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/kangaroo#English"
+  },
+  "keyboard": {
+    "ru": "клавиатура",
+    "forms": [
+      {
+        "ipa": "ˈkiːbɔːd",
+        "file": "keyboard.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/keyboard#English"
+  },
+  "kick": {
+    "ru": "пинать; ударять ногой",
+    "forms": [
+      {
+        "ipa": "kɪk",
+        "file": "kick.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a2/LL-Q1860_%28eng%29-Vealhurl-kick.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-kick.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/kick#English"
+  },
+  "kitchen": {
+    "ru": "кухня",
+    "forms": [
+      {
+        "ipa": "ˈkɪtʃɪn",
+        "file": "kitchen.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f0/En-uk-kitchen.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-kitchen.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/kitchen#English"
+  },
+  "kite": {
+    "ru": "воздушный змей",
+    "forms": [
+      {
+        "ipa": "kaɪt",
+        "file": "kite.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/kite#English"
+  },
+  "knife": {
+    "ru": "нож",
+    "forms": [
+      {
+        "ipa": "ˈnaɪf",
+        "file": "knife.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/knife#English"
+  },
+  "lake": {
+    "ru": "озеро",
+    "forms": [
+      {
+        "ipa": "leɪk",
+        "file": "lake.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/0c/En-uk-lake.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-lake.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lake#English"
+  },
+  "lamp": {
+    "ru": "лампа",
+    "forms": [
+      {
+        "ipa": "ˈlæmp",
+        "file": "lamp.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/71/En-uk-lamp.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-lamp.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lamp#English"
+  },
+  "laptop": {
+    "ru": "ноутбук",
+    "forms": [
+      {
+        "ipa": "ˈlæp.tɒp",
+        "file": "laptop.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/laptop#English"
+  },
+  "lawyer": {
+    "ru": "юрист; адвокат",
+    "forms": [
+      {
+        "ipa": "ˈlɔːjəʳ",
+        "file": "lawyer.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lawyer#English"
+  },
+  "leaf": {
+    "ru": "лист (растения)",
+    "forms": [
+      {
+        "ipa": "liːf",
+        "file": "leaf.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f3/LL-Q1860_%28eng%29-Back_ache-leaf.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-leaf.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/leaf#English"
+  },
+  "leaves": {
+    "ru": "листья",
+    "forms": [
+      {
+        "ipa": "liːvz",
+        "file": "leaves.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/98/LL-Q1860_%28eng%29-Back_ache-leaves.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-leaves.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/leaves#English"
+  },
+  "left": {
+    "ru": "левый; налево",
+    "forms": [
+      {
+        "ipa": "ˈlɛft",
+        "file": "left.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/88/En-uk-left.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-left.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/left#English"
+  },
+  "leg": {
+    "ru": "нога",
+    "forms": [
+      {
+        "ipa": "lɛɡ",
+        "file": "leg.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2f/En-uk-leg.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-leg.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/leg#English"
+  },
+  "lemon": {
+    "ru": "лимон",
+    "forms": [
+      {
+        "ipa": "ˈlɛmən",
+        "file": "lemon.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d7/En-uk-lemon.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-lemon.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lemon#English"
+  },
+  "library": {
+    "ru": "библиотека",
+    "forms": [
+      {
+        "ipa": "ˈlaɪ.bɹə.ɹi",
+        "file": "library.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/library#English"
+  },
+  "light": {
+    "ru": "свет; лампа",
+    "forms": [
+      {
+        "ipa": "laɪt",
+        "file": "light.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/ac/En-uk-light.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-light.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/light#English"
+  },
+  "living room": {
+    "ru": "гостиная",
+    "forms": [
+      {
+        "ipa": "ˈlɪvɪŋ ɹuːm",
+        "file": "living-room.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/living_room#English"
+  },
+  "lock": {
+    "ru": "замок; запирать",
+    "forms": [
+      {
+        "ipa": "lɒk",
+        "file": "lock.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lock#English"
+  },
+  "long": {
+    "ru": "длинный",
+    "forms": [
+      {
+        "ipa": "lɒŋ",
+        "file": "long.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/72/En-uk-long.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-long.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/long#English"
+  },
+  "lorry": {
+    "ru": "грузовик",
+    "forms": [
+      {
+        "ipa": "ˈlɒɹi",
+        "file": "lorry.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/lorry#English"
+  },
+  "made": {
+    "ru": "сделал; изготовил (прош. от make)",
+    "forms": [
+      {
+        "ipa": "meɪd",
+        "file": "made.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/made#English"
+  },
+  "make a snowman": {
+    "ru": "лепить снеговика",
+    "forms": [
+      {
+        "ipa": "meɪk ə ˈsnəʊmæn",
+        "file": "make-a-snowman.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/make_a_snowman#English",
+    "compiled": true
+  },
+  "make the bed": {
+    "ru": "заправлять кровать",
+    "forms": [
+      {
+        "ipa": "meɪk ðə ˈbɛd",
+        "file": "make-the-bed.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a7/LL-Q1860_%28eng%29-Vealhurl-make_the_bed.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-make_the_bed.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/make_the_bed#English",
+    "compiled": true
+  },
+  "mango": {
+    "ru": "манго",
+    "forms": [
+      {
+        "ipa": "ˈmæŋɡəʊ",
+        "file": "mango.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/mango#English"
+  },
+  "maths": {
+    "ru": "математика",
+    "forms": [
+      {
+        "ipa": "mæθs",
+        "file": "maths.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/ac/En-uk-maths.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-maths.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/maths#English"
+  },
+  "microphone": {
+    "ru": "микрофон",
+    "forms": [
+      {
+        "ipa": "ˈmaɪ.kɹəˌfəʊn",
+        "file": "microphone.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c2/LL-Q1860_%28eng%29-Vealhurl-microphone.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-microphone.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/microphone#English"
+  },
+  "motorbike": {
+    "ru": "мотоцикл",
+    "forms": [
+      {
+        "ipa": "ˈməʊtəˌbaɪk",
+        "file": "motorbike.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/motorbike#English"
+  },
+  "mountain": {
+    "ru": "гора",
+    "forms": [
+      {
+        "ipa": "ˈmaʊntɪn",
+        "file": "mountain.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e2/En-uk-mountain.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-mountain.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/mountain#English"
+  },
+  "mouse": {
+    "ru": "мышь; компьютерная мышь",
+    "forms": [
+      {
+        "ipa": "maʊs",
+        "file": "mouse.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/mouse#English"
+  },
+  "moustache": {
+    "ru": "усы",
+    "forms": [
+      {
+        "ipa": "məˈstɑːʃ",
+        "file": "moustache.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/moustache#English"
+  },
+  "mum": {
+    "ru": "мама",
+    "forms": [
+      {
+        "ipa": "mʌm",
+        "file": "mum.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/mum#English"
+  },
+  "museum": {
+    "ru": "музей",
+    "forms": [
+      {
+        "ipa": "mjuːˈziːəm",
+        "file": "museum.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/museum#English"
+  },
+  "music": {
+    "ru": "музыка",
+    "forms": [
+      {
+        "ipa": "ˈmjuːzɪk",
+        "file": "music.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5a/En-uk-music.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-music.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/music#English"
+  },
+  "musical instrument": {
+    "ru": "музыкальный инструмент",
+    "forms": [
+      {
+        "ipa": "ˌmjuːzɪkəl ˈɪnstɹəmənt",
+        "file": "musical-instrument.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/musical_instrument#English",
+    "compiled": true
+  },
+  "necklace": {
+    "ru": "ожерелье",
+    "forms": [
+      {
+        "ipa": "ˈnɛklɪs",
+        "file": "necklace.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/27/LL-Q1860_%28eng%29-Vealhurl-necklace.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-necklace.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/necklace#English"
+  },
+  "nest": {
+    "ru": "гнездо",
+    "forms": [
+      {
+        "ipa": "nɛst",
+        "file": "nest.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/nest#English"
+  },
+  "nurse": {
+    "ru": "медсестра; медбрат",
+    "forms": [
+      {
+        "ipa": "nɜːs",
+        "file": "nurse.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/94/LL-Q1860_%28eng%29-Vealhurl-nurse.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-nurse.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/nurse#English"
+  },
+  "octopus": {
+    "ru": "осьминог",
+    "forms": [
+      {
+        "ipa": "ˈɒktəpəs",
+        "file": "octopus.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/octopus#English"
+  },
+  "off": {
+    "ru": "с; прочь (движение с поверхности)",
+    "forms": [
+      {
+        "ipa": "ɒf",
+        "file": "off.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/off#English"
+  },
+  "onion": {
+    "ru": "лук (овощ)",
+    "forms": [
+      {
+        "ipa": "ˈʌnjən",
+        "file": "onion.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/4e/En-uk-onion.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-onion.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/onion#English"
+  },
+  "onto": {
+    "ru": "на (движение на поверхность)",
+    "forms": [
+      {
+        "ipa": "ˈɒn.tuː",
+        "file": "onto.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1e/LL-Q1860_%28eng%29-Vealhurl-onto.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-onto.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/onto#English"
+  },
+  "out of": {
+    "ru": "из; наружу из",
+    "forms": [
+      {
+        "ipa": "ˈaʊt əv",
+        "file": "out-of.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/out_of#English"
+  },
+  "over": {
+    "ru": "над; через",
+    "forms": [
+      {
+        "ipa": "ˈəʊ.və",
+        "file": "over.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/over#English"
+  },
+  "panda": {
+    "ru": "панда",
+    "forms": [
+      {
+        "ipa": "ˈpændə",
+        "file": "panda.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/12/LL-Q1860_%28eng%29-Vealhurl-panda.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-panda.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/panda#English"
+  },
+  "park": {
+    "ru": "парк",
+    "forms": [
+      {
+        "ipa": "pɑːk",
+        "file": "park.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/park#English"
+  },
+  "pasta": {
+    "ru": "макаронные изделия; паста",
+    "forms": [
+      {
+        "ipa": "ˈpæstə",
+        "file": "pasta.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/02/LL-Q1860_%28eng%29-Vealhurl-pasta.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-pasta.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pasta#English"
+  },
+  "pear": {
+    "ru": "груша",
+    "forms": [
+      {
+        "ipa": "pɛə",
+        "file": "pear.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d7/En-uk-pear.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-pear.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pear#English"
+  },
+  "peas": {
+    "ru": "горох",
+    "forms": [
+      {
+        "ipa": "piːz",
+        "file": "peas.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/3/32/LL-Q1860_%28eng%29-Vealhurl-peas.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-peas.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/peas#English"
+  },
+  "pen": {
+    "ru": "ручка (для письма)",
+    "forms": [
+      {
+        "ipa": "pɛn",
+        "file": "pen.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pen#English"
+  },
+  "pencil": {
+    "ru": "карандаш",
+    "forms": [
+      {
+        "ipa": "ˈpɛnsɪl",
+        "file": "pencil.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pencil#English"
+  },
+  "pencil case": {
+    "ru": "пенал",
+    "forms": [
+      {
+        "ipa": "ˈpɛnsəl ˌkeɪs",
+        "file": "pencil-case.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pencil_case#English"
+  },
+  "penguin": {
+    "ru": "пингвин",
+    "forms": [
+      {
+        "ipa": "ˈpɛŋ.ɡwɪn",
+        "file": "penguin.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/penguin#English"
+  },
+  "pepper": {
+    "ru": "перец",
+    "forms": [
+      {
+        "ipa": "ˈpɛp.ə",
+        "file": "pepper.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/fb/En-uk-pepper.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-pepper.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pepper#English"
+  },
+  "petal": {
+    "ru": "лепесток",
+    "forms": [
+      {
+        "ipa": "ˈpɛtəl",
+        "file": "petal.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/68/LL-Q1860_%28eng%29-Vealhurl-petal.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-petal.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/petal#English"
+  },
+  "phone": {
+    "ru": "телефон",
+    "forms": [
+      {
+        "ipa": "ˈfəʊn",
+        "file": "phone.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1f/En-uk-phone.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-phone.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/phone#English"
+  },
+  "photographer": {
+    "ru": "фотограф",
+    "forms": [
+      {
+        "ipa": "fəˈtɒɡ.ɹə.fə",
+        "file": "photographer.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/22/LL-Q1860_%28eng%29-Vealhurl-photographer.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-photographer.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/photographer#English"
+  },
+  "plane": {
+    "ru": "самолёт",
+    "forms": [
+      {
+        "ipa": "pleɪn",
+        "file": "plane.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/plane#English"
+  },
+  "plant flowers": {
+    "ru": "сажать цветы",
+    "forms": [
+      {
+        "ipa": "plɑːnt ˈflaʊəz",
+        "file": "plant-flowers.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/plant_flowers#English",
+    "compiled": true
+  },
+  "plate": {
+    "ru": "тарелка",
+    "forms": [
+      {
+        "ipa": "ˈpleɪt",
+        "file": "plate.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/plate#English"
+  },
+  "play basketball": {
+    "ru": "играть в баскетбол",
+    "forms": [
+      {
+        "ipa": "pleɪ ˈbɑːskɪtbɔːl",
+        "file": "play-basketball.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/play_basketball#English",
+    "compiled": true
+  },
+  "play chess": {
+    "ru": "играть в шахматы",
+    "forms": [
+      {
+        "ipa": "pleɪ ˈtʃɛs",
+        "file": "play-chess.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/play_chess#English",
+    "compiled": true
+  },
+  "play computer games": {
+    "ru": "играть в компьютерные игры",
+    "forms": [
+      {
+        "ipa": "pleɪ kəmˈpjuːtə ˌɡeɪmz",
+        "file": "play-computer-games.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/play_computer_games#English",
+    "compiled": true
+  },
+  "play outside": {
+    "ru": "играть на улице",
+    "forms": [
+      {
+        "ipa": "pleɪ ˌaʊtˈsaɪd",
+        "file": "play-outside.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/play_outside#English",
+    "compiled": true
+  },
+  "plumber": {
+    "ru": "сантехник",
+    "forms": [
+      {
+        "ipa": "ˈplʌm.ə",
+        "file": "plumber.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/40/LL-Q1860_%28eng%29-Vealhurl-plumber.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-plumber.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/plumber#English"
+  },
+  "police officer": {
+    "ru": "полицейский",
+    "forms": [
+      {
+        "ipa": "pəˈliːs ˌɒfɪsə",
+        "file": "police-officer.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/6d/LL-Q1860_%28eng%29-Vealhurl-police_officer.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-police_officer.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/police_officer#English",
+    "compiled": true
+  },
+  "potato": {
+    "ru": "картофель",
+    "forms": [
+      {
+        "ipa": "pəˈteɪ.təʊ",
+        "file": "potato.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/ff/En-uk-potato.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-potato.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/potato#English"
+  },
+  "printer": {
+    "ru": "принтер",
+    "forms": [
+      {
+        "ipa": "ˈpɹɪntəʳ",
+        "file": "printer.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/printer#English"
+  },
+  "pump": {
+    "ru": "насос",
+    "forms": [
+      {
+        "ipa": "pʌmp",
+        "file": "pump.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pump#English"
+  },
+  "radio": {
+    "ru": "радио",
+    "forms": [
+      {
+        "ipa": "ˈɹeɪ.diˌəʊ",
+        "file": "radio.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/radio#English"
+  },
+  "rain": {
+    "ru": "дождь",
+    "forms": [
+      {
+        "ipa": "ɹeɪn",
+        "file": "rain.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/99/En-uk-rain.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-rain.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/rain#English"
+  },
+  "read": {
+    "ru": "читать; прочитал (прош. от read)",
+    "forms": [
+      {
+        "ipa": "ɹiːd",
+        "file": "read.mp3",
+        "sense": "base"
+      },
+      {
+        "ipa": "ɹɛd",
+        "file": "read-2.mp3",
+        "sense": "past"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/read#English"
+  },
+  "read a comic": {
+    "ru": "читать комикс",
+    "forms": [
+      {
+        "ipa": "ɹiːd ə ˈkɒmɪk",
+        "file": "read-a-comic.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/read_a_comic#English",
+    "compiled": true
+  },
+  "restaurant": {
+    "ru": "ресторан",
+    "forms": [
+      {
+        "ipa": "ˈɹɛstɹɒnt",
+        "file": "restaurant.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/restaurant#English"
+  },
+  "ride a bike": {
+    "ru": "ездить на велосипеде",
+    "forms": [
+      {
+        "ipa": "ɹaɪd ə ˈbaɪk",
+        "file": "ride-a-bike.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/ride_a_bike#English",
+    "compiled": true
+  },
+  "right": {
+    "ru": "правый; направо",
+    "forms": [
+      {
+        "ipa": "ɹaɪt",
+        "file": "right.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/45/En-uk-right.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-right.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/right#English"
+  },
+  "river": {
+    "ru": "река",
+    "forms": [
+      {
+        "ipa": "ˈɹɪvə",
+        "file": "river.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a5/En-uk-river.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-river.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/river#English"
+  },
+  "roots": {
+    "ru": "корни",
+    "forms": [
+      {
+        "ipa": "ɹuːts",
+        "file": "roots.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/roots#English"
+  },
+  "round": {
+    "ru": "вокруг; огибая",
+    "forms": [
+      {
+        "ipa": "ˈɹaʊnd",
+        "file": "round.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/round#English"
+  },
+  "rubber": {
+    "ru": "ластик",
+    "forms": [
+      {
+        "ipa": "ˈɹʌbə",
+        "file": "rubber.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/rubber#English"
+  },
+  "ruler": {
+    "ru": "линейка",
+    "forms": [
+      {
+        "ipa": "ˈɹuːlə",
+        "file": "ruler.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/ruler#English"
+  },
+  "sad": {
+    "ru": "грустный",
+    "forms": [
+      {
+        "ipa": "ˈsæd",
+        "file": "sad.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/00/LL-Q1860_%28eng%29-Pvanp7-sad.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Pvanp7-sad.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sad#English"
+  },
+  "safety vest": {
+    "ru": "сигнальный жилет",
+    "forms": [
+      {
+        "ipa": "ˈseɪfti ˌvɛst",
+        "file": "safety-vest.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/safety_vest#English",
+    "compiled": true
+  },
+  "said": {
+    "ru": "сказал (прош. от say)",
+    "forms": [
+      {
+        "ipa": "sɛd",
+        "file": "said.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/said#English"
+  },
+  "salad": {
+    "ru": "салат",
+    "forms": [
+      {
+        "ipa": "ˈsæl.əd",
+        "file": "salad.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/salad#English"
+  },
+  "sandpit": {
+    "ru": "песочница",
+    "forms": [
+      {
+        "ipa": "ˈsænd.pɪt",
+        "file": "sandpit.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sandpit#English"
+  },
+  "sandwich": {
+    "ru": "бутерброд; сэндвич",
+    "forms": [
+      {
+        "ipa": "ˈsænd.wɪdʒ",
+        "file": "sandwich.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sandwich#English"
+  },
+  "save": {
+    "ru": "беречь; экономить (ресурсы)",
+    "forms": [
+      {
+        "ipa": "seɪv",
+        "file": "save.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/9c/LL-Q1860_%28eng%29-Vealhurl-save.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-save.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/save#English"
+  },
+  "saw": {
+    "ru": "увидел (прош. от see)",
+    "forms": [
+      {
+        "ipa": "sɔː",
+        "file": "saw.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/saw#English"
+  },
+  "scales": {
+    "ru": "чешуя",
+    "forms": [
+      {
+        "ipa": "skeɪlz",
+        "file": "scales.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/scales#English"
+  },
+  "science": {
+    "ru": "естествознание; наука",
+    "forms": [
+      {
+        "ipa": "ˈsaɪ.əns",
+        "file": "science.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/science#English"
+  },
+  "screen": {
+    "ru": "экран",
+    "forms": [
+      {
+        "ipa": "ˈskɹiːn",
+        "file": "screen.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/screen#English"
+  },
+  "sculpture": {
+    "ru": "скульптура",
+    "forms": [
+      {
+        "ipa": "ˈskʌlptʃə",
+        "file": "sculpture.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sculpture#English"
+  },
+  "sea": {
+    "ru": "море",
+    "forms": [
+      {
+        "ipa": "siː",
+        "file": "sea.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/56/En-uk-sea.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-sea.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sea#English"
+  },
+  "seahorse": {
+    "ru": "морской конёк",
+    "forms": [
+      {
+        "ipa": "ˈsiːhɔːs",
+        "file": "seahorse.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/seahorse#English",
+    "compiled": true
+  },
+  "seesaw": {
+    "ru": "качели-балансир",
+    "forms": [
+      {
+        "ipa": "ˈsiː.sɔː",
+        "file": "seesaw.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/seesaw#English"
+  },
+  "shark": {
+    "ru": "акула",
+    "forms": [
+      {
+        "ipa": "ʃɑːk",
+        "file": "shark.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shark#English"
+  },
+  "shirt": {
+    "ru": "рубашка",
+    "forms": [
+      {
+        "ipa": "ʃɜːt",
+        "file": "shirt.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/57/En-uk-shirt.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-shirt.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shirt#English"
+  },
+  "shoes": {
+    "ru": "туфли; обувь",
+    "forms": [
+      {
+        "ipa": "ʃuːz",
+        "file": "shoes.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/de/En-uk-shoes.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-shoes.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shoes#English"
+  },
+  "shooting star": {
+    "ru": "падающая звезда",
+    "forms": [
+      {
+        "ipa": "ˌʃuːtɪŋ ˈstɑː",
+        "file": "shooting-star.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shooting_star#English",
+    "compiled": true
+  },
+  "shop": {
+    "ru": "магазин",
+    "forms": [
+      {
+        "ipa": "ʃɒp",
+        "file": "shop.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shop#English"
+  },
+  "shopping centre": {
+    "ru": "торговый центр",
+    "forms": [
+      {
+        "ipa": "ˈʃɒpɪŋ ˌsɛntə",
+        "file": "shopping-centre.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shopping_centre#English",
+    "compiled": true
+  },
+  "short": {
+    "ru": "короткий; невысокий",
+    "forms": [
+      {
+        "ipa": "ʃɔːt",
+        "file": "short.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/short#English"
+  },
+  "shower": {
+    "ru": "душ",
+    "forms": [
+      {
+        "ipa": "ˈʃəʊ.əʳ",
+        "file": "shower.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/shower#English"
+  },
+  "sing": {
+    "ru": "петь",
+    "forms": [
+      {
+        "ipa": "sɪŋ",
+        "file": "sing.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d4/En-uk-sing.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-sing.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sing#English"
+  },
+  "sister": {
+    "ru": "сестра",
+    "forms": [
+      {
+        "ipa": "ˈsɪs.təʳ",
+        "file": "sister.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/ff/En-uk-sister.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-sister.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sister#English"
+  },
+  "skate park": {
+    "ru": "скейт-парк",
+    "forms": [
+      {
+        "ipa": "ˈskeɪt pɑːk",
+        "file": "skate-park.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/skate_park#English",
+    "compiled": true
+  },
+  "skirt": {
+    "ru": "юбка",
+    "forms": [
+      {
+        "ipa": "skɜːt",
+        "file": "skirt.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/a1/En-uk-skirt.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-skirt.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/skirt#English"
+  },
+  "slide": {
+    "ru": "горка; скользить",
+    "forms": [
+      {
+        "ipa": "ˈslaɪd",
+        "file": "slide.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/slide#English"
+  },
+  "small": {
+    "ru": "маленький",
+    "forms": [
+      {
+        "ipa": "smɔːl",
+        "file": "small.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e5/En-uk-small.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-small.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/small#English"
+  },
+  "snow": {
+    "ru": "снег",
+    "forms": [
+      {
+        "ipa": "snəʊ",
+        "file": "snow.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/96/En-uk-snow.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-snow.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/snow#English"
+  },
+  "social studies": {
+    "ru": "обществознание",
+    "forms": [
+      {
+        "ipa": "ˈsəʊʃəl ˌstʌdiz",
+        "file": "social-studies.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/social_studies#English",
+    "compiled": true
+  },
+  "socks": {
+    "ru": "носки",
+    "forms": [
+      {
+        "ipa": "sɒks",
+        "file": "socks.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1a/En-uk-socks.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-socks.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/socks#English"
+  },
+  "sofa": {
+    "ru": "диван",
+    "forms": [
+      {
+        "ipa": "ˈsəʊfə",
+        "file": "sofa.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sofa#English"
+  },
+  "soil": {
+    "ru": "почва",
+    "forms": [
+      {
+        "ipa": "sɔɪl",
+        "file": "soil.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/soil#English"
+  },
+  "son": {
+    "ru": "сын",
+    "forms": [
+      {
+        "ipa": "sʌn",
+        "file": "son.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1c/En-uk-son.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-son.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/son#English"
+  },
+  "sore throat": {
+    "ru": "боль в горле",
+    "forms": [
+      {
+        "ipa": "ˌsɔː ˈθɹəʊt",
+        "file": "sore-throat.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sore_throat#English",
+    "compiled": true
+  },
+  "soup": {
+    "ru": "суп",
+    "forms": [
+      {
+        "ipa": "suːp",
+        "file": "soup.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f3/En-uk-soup.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-soup.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/soup#English"
+  },
+  "speaker": {
+    "ru": "колонка; динамик",
+    "forms": [
+      {
+        "ipa": "ˈspiːkə",
+        "file": "speaker.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/speaker#English"
+  },
+  "spine": {
+    "ru": "позвоночник; шип (у животного)",
+    "forms": [
+      {
+        "ipa": "spaɪn",
+        "file": "spine.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/6a/LL-Q1860_%28eng%29-Vealhurl-spine.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-spine.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/spine#English"
+  },
+  "spring": {
+    "ru": "весна",
+    "forms": [
+      {
+        "ipa": "ˈspɹɪŋ",
+        "file": "spring.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/14/En-uk-spring.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-spring.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/spring#English"
+  },
+  "starfish": {
+    "ru": "морская звезда",
+    "forms": [
+      {
+        "ipa": "ˈstɑːfɪʃ",
+        "file": "starfish.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/starfish#English"
+  },
+  "stem": {
+    "ru": "стебель",
+    "forms": [
+      {
+        "ipa": "stɛm",
+        "file": "stem.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/stem#English"
+  },
+  "stomach ache": {
+    "ru": "боль в животе",
+    "forms": [
+      {
+        "ipa": "ˈstʌmək ˌeɪk",
+        "file": "stomach-ache.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/stomach_ache#English",
+    "compiled": true
+  },
+  "stood": {
+    "ru": "стоял (прош. от stand)",
+    "forms": [
+      {
+        "ipa": "stʊd",
+        "file": "stood.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2b/LL-Q1860_%28eng%29-Pvanp7-stood.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Pvanp7-stood.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/stood#English"
+  },
+  "straight hair": {
+    "ru": "прямые волосы",
+    "forms": [
+      {
+        "ipa": "ˌstɹeɪt ˈheə",
+        "file": "straight-hair.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/straight_hair#English",
+    "compiled": true
+  },
+  "stream": {
+    "ru": "ручей; поток",
+    "forms": [
+      {
+        "ipa": "ˈstɹiːm",
+        "file": "stream.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/stream#English"
+  },
+  "street": {
+    "ru": "улица",
+    "forms": [
+      {
+        "ipa": "stɹiːt",
+        "file": "street.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/2/2e/LL-Q1860_%28eng%29-Xavier_hillier-street.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Xavier_hillier-street.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/street#English"
+  },
+  "summer": {
+    "ru": "лето",
+    "forms": [
+      {
+        "ipa": "ˈsʌmə",
+        "file": "summer.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/summer#English"
+  },
+  "sun": {
+    "ru": "солнце",
+    "forms": [
+      {
+        "ipa": "sʊn",
+        "file": "sun.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/3/35/En-uk-sun.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-sun.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sun#English"
+  },
+  "supermarket": {
+    "ru": "супермаркет",
+    "forms": [
+      {
+        "ipa": "ˌsuːpəˈmɑːkɪt",
+        "file": "supermarket.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/a/ab/En-uk-supermarket.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-supermarket.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/supermarket#English"
+  },
+  "sweep the floor": {
+    "ru": "подметать пол",
+    "forms": [
+      {
+        "ipa": "swiːp ðə ˈflɔː",
+        "file": "sweep-the-floor.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/sweep_the_floor#English",
+    "compiled": true
+  },
+  "swim": {
+    "ru": "плавать",
+    "forms": [
+      {
+        "ipa": "swɪm",
+        "file": "swim.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/swim#English"
+  },
+  "swimming cap": {
+    "ru": "шапочка для плавания",
+    "forms": [
+      {
+        "ipa": "ˈswɪmɪŋ ˌkæp",
+        "file": "swimming-cap.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/swimming_cap#English",
+    "compiled": true
+  },
+  "swimming costume": {
+    "ru": "купальник",
+    "forms": [
+      {
+        "ipa": "ˈswɪmɪŋ ˌkɒstjuːm",
+        "file": "swimming-costume.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/swimming_costume#English",
+    "compiled": true
+  },
+  "swimming pool": {
+    "ru": "бассейн",
+    "forms": [
+      {
+        "ipa": "ˈswɪmɪŋ ˌpuːl",
+        "file": "swimming-pool.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/swimming_pool#English"
+  },
+  "swing": {
+    "ru": "качели; качаться",
+    "forms": [
+      {
+        "ipa": "ˈswɪŋ",
+        "file": "swing.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/swing#English"
+  },
+  "tail": {
+    "ru": "хвост",
+    "forms": [
+      {
+        "ipa": "ˈteɪl",
+        "file": "tail.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tail#English"
+  },
+  "tall": {
+    "ru": "высокий",
+    "forms": [
+      {
+        "ipa": "tɔːl",
+        "file": "tall.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1c/En-uk-tall.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-tall.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tall#English"
+  },
+  "tap": {
+    "ru": "водопроводный кран",
+    "forms": [
+      {
+        "ipa": "tæp",
+        "file": "tap.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tap#English"
+  },
+  "tea": {
+    "ru": "чай",
+    "forms": [
+      {
+        "ipa": "tiː",
+        "file": "tea.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/8/87/En-uk-tea.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-tea.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tea#English"
+  },
+  "teacher": {
+    "ru": "учитель; учительница",
+    "forms": [
+      {
+        "ipa": "ˈtiːtʃə",
+        "file": "teacher.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c4/En-uk-teacher.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-teacher.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/teacher#English"
+  },
+  "temperature": {
+    "ru": "температура",
+    "forms": [
+      {
+        "ipa": "ˈtɛmpɹətʃə",
+        "file": "temperature.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/temperature#English"
+  },
+  "theme park": {
+    "ru": "тематический парк развлечений",
+    "forms": [
+      {
+        "ipa": "ˈθiːm pɑːk",
+        "file": "theme-park.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/de/LL-Q1860_%28eng%29-Pvanp7-theme_park.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Pvanp7-theme_park.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/theme_park#English"
+  },
+  "thirsty": {
+    "ru": "испытывающий жажду; хочется пить",
+    "forms": [
+      {
+        "ipa": "ˈθɜːs.ti",
+        "file": "thirsty.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/thirsty#English"
+  },
+  "thought": {
+    "ru": "думал; подумал (прош. от think)",
+    "forms": [
+      {
+        "ipa": "θɔːt",
+        "file": "thought.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/thought#English"
+  },
+  "through": {
+    "ru": "сквозь; через",
+    "forms": [
+      {
+        "ipa": "θɹuː",
+        "file": "through.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/60/LL-Q1860_%28eng%29-Vealhurl-through.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-through.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/through#English"
+  },
+  "throw": {
+    "ru": "бросать",
+    "forms": [
+      {
+        "ipa": "θɹəʊ",
+        "file": "throw.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/throw#English"
+  },
+  "tidy up": {
+    "ru": "убираться; наводить порядок",
+    "forms": [
+      {
+        "ipa": "ˌtaɪdi ˈʌp",
+        "file": "tidy-up.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tidy_up#English",
+    "compiled": true
+  },
+  "tired": {
+    "ru": "уставший",
+    "forms": [
+      {
+        "ipa": "ˈtaɪəd",
+        "file": "tired.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/63/En-uk-tired.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-tired.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tired#English",
+    "compiled": true
+  },
+  "tomato": {
+    "ru": "помидор",
+    "forms": [
+      {
+        "ipa": "təˈmɑːtəʊ",
+        "file": "tomato.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/d/d7/En-uk-tomato.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-tomato.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tomato#English"
+  },
+  "tool": {
+    "ru": "инструмент",
+    "forms": [
+      {
+        "ipa": "tuːl",
+        "file": "tool.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/9/9f/LL-Q1860_%28eng%29-Vealhurl-tool.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-tool.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tool#English"
+  },
+  "toothache": {
+    "ru": "зубная боль",
+    "forms": [
+      {
+        "ipa": "ˈtuːθeɪk",
+        "file": "toothache.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/toothache#English"
+  },
+  "towel": {
+    "ru": "полотенце",
+    "forms": [
+      {
+        "ipa": "ˈtaʊəl",
+        "file": "towel.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/6a/En-uk-towel.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-towel.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/towel#English"
+  },
+  "town": {
+    "ru": "город; небольшой город",
+    "forms": [
+      {
+        "ipa": "ˈtaʊn",
+        "file": "town.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/61/En-uk-town.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-town.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/town#English"
+  },
+  "tracksuit": {
+    "ru": "спортивный костюм",
+    "forms": [
+      {
+        "ipa": "ˈtɹæksuːt",
+        "file": "tracksuit.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/tracksuit#English",
+    "compiled": true
+  },
+  "traffic light": {
+    "ru": "светофор",
+    "forms": [
+      {
+        "ipa": "ˈtɹæˌfɪk laɪt",
+        "file": "traffic-light.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/78/LL-Q1860_%28eng%29-Vealhurl-traffic_light.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-traffic_light.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/traffic_light#English"
+  },
+  "train": {
+    "ru": "поезд",
+    "forms": [
+      {
+        "ipa": "ˈtɹeɪn",
+        "file": "train.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/train#English"
+  },
+  "train station": {
+    "ru": "железнодорожная станция; вокзал",
+    "forms": [
+      {
+        "ipa": "ˈtɹeɪn ˌsteɪʃən",
+        "file": "train-station.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/42/LL-Q1860_%28eng%29-Vealhurl-train_station.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-train_station.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/train_station#English",
+    "compiled": true
+  },
+  "trainers": {
+    "ru": "кроссовки",
+    "forms": [
+      {
+        "ipa": "ˈtɹeɪnəz",
+        "file": "trainers.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/trainers#English"
+  },
+  "trousers": {
+    "ru": "брюки",
+    "forms": [
+      {
+        "ipa": "ˈtɹaʊzəz",
+        "file": "trousers.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/02/En-uk-trousers.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-trousers.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/trousers#English"
+  },
+  "trumpet": {
+    "ru": "труба (музыкальный инструмент)",
+    "forms": [
+      {
+        "ipa": "ˈtɹʌmpɪt",
+        "file": "trumpet.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/trumpet#English"
+  },
+  "turn off": {
+    "ru": "выключать",
+    "forms": [
+      {
+        "ipa": "tɜːn ˈɒf",
+        "file": "turn-off.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/turn_off#English",
+    "compiled": true
+  },
+  "turn on": {
+    "ru": "включать",
+    "forms": [
+      {
+        "ipa": "tɜːn ˈɒn",
+        "file": "turn-on.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/turn_on#English",
+    "compiled": true
+  },
+  "up": {
+    "ru": "вверх",
+    "forms": [
+      {
+        "ipa": "ʌp",
+        "file": "up.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/up#English"
+  },
+  "village": {
+    "ru": "деревня; село",
+    "forms": [
+      {
+        "ipa": "ˈvɪlɪdʒ",
+        "file": "village.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/3/3b/En-uk-village.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-village.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/village#English"
+  },
+  "violin": {
+    "ru": "скрипка",
+    "forms": [
+      {
+        "ipa": "ˌvaɪəˈlɪn",
+        "file": "violin.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/violin#English"
+  },
+  "volcano": {
+    "ru": "вулкан",
+    "forms": [
+      {
+        "ipa": "vɒlˈkeɪ.nəʊ",
+        "file": "volcano.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/volcano#English"
+  },
+  "wardrobe": {
+    "ru": "шкаф для одежды",
+    "forms": [
+      {
+        "ipa": "ˈwɔːdɹəʊb",
+        "file": "wardrobe.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1a/En-uk-wardrobe.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-wardrobe.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wardrobe#English"
+  },
+  "wash up": {
+    "ru": "мыть посуду",
+    "forms": [
+      {
+        "ipa": "wɒʃ ˈʌp",
+        "file": "wash-up.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wash_up#English",
+    "compiled": true
+  },
+  "washing machine": {
+    "ru": "стиральная машина",
+    "forms": [
+      {
+        "ipa": "ˈwɒʃɪŋ məˌʃiːn",
+        "file": "washing-machine.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/washing_machine#English",
+    "compiled": true
+  },
+  "waste": {
+    "ru": "тратить впустую; отходы",
+    "forms": [
+      {
+        "ipa": "ˈweɪst",
+        "file": "waste.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/waste#English"
+  },
+  "watch": {
+    "ru": "часы (наручные); смотреть",
+    "forms": [
+      {
+        "ipa": "ˈwɒtʃ",
+        "file": "watch.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/f/f5/En-gb-watch.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-gb-watch.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/watch#English"
+  },
+  "watch a film": {
+    "ru": "смотреть фильм",
+    "forms": [
+      {
+        "ipa": "wɒtʃ ə ˈfɪlm",
+        "file": "watch-a-film.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/watch_a_film#English",
+    "compiled": true
+  },
+  "waterfall": {
+    "ru": "водопад",
+    "forms": [
+      {
+        "ipa": "ˈwɔːtəfɔːl",
+        "file": "waterfall.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/waterfall#English"
+  },
+  "watering can": {
+    "ru": "лейка",
+    "forms": [
+      {
+        "ipa": "ˈwɔːtəɹɪŋ ˌkæn",
+        "file": "watering-can.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e5/LL-Q1860_%28eng%29-Vealhurl-watering_can.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-watering_can.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/watering_can#English",
+    "compiled": true
+  },
+  "watermelon": {
+    "ru": "арбуз",
+    "forms": [
+      {
+        "ipa": "ˈwɔːtəˌmɛlən",
+        "file": "watermelon.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/watermelon#English"
+  },
+  "went": {
+    "ru": "пошёл; поехал (прош. от go)",
+    "forms": [
+      {
+        "ipa": "wɛnt",
+        "file": "went.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/7/78/LL-Q1860_%28eng%29-Pvanp7-went.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Pvanp7-went.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/went#English"
+  },
+  "whale": {
+    "ru": "кит",
+    "forms": [
+      {
+        "ipa": "weɪl",
+        "file": "whale.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/whale#English"
+  },
+  "wheel": {
+    "ru": "колесо",
+    "forms": [
+      {
+        "ipa": "ˈwiːl",
+        "file": "wheel.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wheel#English"
+  },
+  "wife": {
+    "ru": "жена",
+    "forms": [
+      {
+        "ipa": "waɪf",
+        "file": "wife.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/5/5c/En-uk-wife.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-wife.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wife#English"
+  },
+  "wind": {
+    "ru": "ветер",
+    "forms": [
+      {
+        "ipa": "wɪnd",
+        "file": "wind.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wind#English"
+  },
+  "window": {
+    "ru": "окно",
+    "forms": [
+      {
+        "ipa": "ˈwɪndəʊ",
+        "file": "window.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/b/b7/En-uk-window.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-window.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/window#English"
+  },
+  "wings": {
+    "ru": "крылья",
+    "forms": [
+      {
+        "ipa": "wɪŋz",
+        "file": "wings.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wings#English"
+  },
+  "winter": {
+    "ru": "зима",
+    "forms": [
+      {
+        "ipa": "ˈwɪntə",
+        "file": "winter.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/winter#English"
+  },
+  "wolf": {
+    "ru": "волк",
+    "forms": [
+      {
+        "ipa": "wʊlf",
+        "file": "wolf.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wolf#English"
+  },
+  "wore": {
+    "ru": "носил (прош. от wear)",
+    "forms": [
+      {
+        "ipa": "wɔː",
+        "file": "wore.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/e/e9/LL-Q1860_%28eng%29-Pvanp7-wore.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Pvanp7-wore.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/wore#English"
+  },
+  "world": {
+    "ru": "мир",
+    "forms": [
+      {
+        "ipa": "wɜːld",
+        "file": "world.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/world#English"
+  },
+  "zoo": {
+    "ru": "зоопарк",
+    "forms": [
+      {
+        "ipa": "zuː",
+        "file": "zoo.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/zoo#English"
+  },
+  "apple": {
+    "ru": "яблоко",
+    "forms": [
+      {
+        "ipa": "ˈæpəl",
+        "file": "apple.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c8/En-uk-apple.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-apple.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/apple#English"
+  },
+  "bath": {
+    "ru": "ванна; купание",
+    "forms": [
+      {
+        "ipa": "bɑːθ",
+        "file": "bath.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/bath#English"
+  },
+  "better": {
+    "ru": "лучше",
+    "forms": [
+      {
+        "ipa": "ˈbɛt.ə",
+        "file": "better.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/better#English"
+  },
+  "colour": {
+    "ru": "цвет",
+    "forms": [
+      {
+        "ipa": "ˈkʌlə",
+        "file": "colour.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/c/c1/LL-Q1860_%28eng%29-Vealhurl-colour.wav",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-colour.wav"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/colour#English"
+  },
+  "comfortable": {
+    "ru": "удобный",
+    "forms": [
+      {
+        "ipa": "ˈkʌmpf.tə.bəl",
+        "file": "comfortable.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/comfortable#English"
+  },
+  "dance": {
+    "ru": "танцевать; танец",
+    "forms": [
+      {
+        "ipa": "dɑːns",
+        "file": "dance.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/6/66/En-uk-dance.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-dance.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/dance#English"
+  },
+  "favourite": {
+    "ru": "любимый",
+    "forms": [
+      {
+        "ipa": "ˈfeɪv.ɹɪt",
+        "file": "favourite.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/favourite#English"
+  },
+  "football": {
+    "ru": "футбол",
+    "forms": [
+      {
+        "ipa": "ˈfʊt.bɔːl",
+        "file": "football.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/football#English"
+  },
+  "hello": {
+    "ru": "привет",
+    "forms": [
+      {
+        "ipa": "həˈləʊ",
+        "file": "hello.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/4/48/En-uk-hello.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-hello.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/hello#English"
+  },
+  "pronunciation": {
+    "ru": "произношение",
+    "forms": [
+      {
+        "ipa": "pɹəˌnʌn.siˈeɪ.ʃən",
+        "file": "pronunciation.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/pronunciation#English"
+  },
+  "route": {
+    "ru": "маршрут",
+    "forms": [
+      {
+        "ipa": "ɹuːt",
+        "file": "route.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/route#English"
+  },
+  "schedule": {
+    "ru": "расписание",
+    "forms": [
+      {
+        "ipa": "ˈʃɛdʒuːl",
+        "file": "schedule.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/schedule#English"
+  },
+  "timetable": {
+    "ru": "расписание",
+    "forms": [
+      {
+        "ipa": "ˈtaɪmˌteɪbəl",
+        "file": "timetable.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/timetable#English"
+  },
+  "water": {
+    "ru": "вода",
+    "forms": [
+      {
+        "ipa": "ˈwɔː.tə",
+        "file": "water.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/1/1a/En-uk-water.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-water.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/water#English"
+  },
+  "either": {
+    "ru": "любой из двух",
+    "forms": [
+      {
+        "ipa": "ˈaɪ.ðə",
+        "file": "either.mp3",
+        "audio": "https://upload.wikimedia.org/wikipedia/commons/0/03/En-uk-either.ogg",
+        "audioSource": "https://commons.wikimedia.org/wiki/File:En-uk-either.ogg"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/either#English"
+  },
+  "often": {
+    "ru": "часто",
+    "forms": [
+      {
+        "ipa": "ˈɒfən",
+        "file": "often.mp3"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/often#English"
+  },
+  "record": {
+    "ru": "записывать (глагол); запись (существительное)",
+    "forms": [
+      {
+        "ipa": "ɹɪˈkɔːd",
+        "file": "record.mp3",
+        "sense": "verb"
+      },
+      {
+        "ipa": "ˈɹɛkɔːd",
+        "file": "record-2.mp3",
+        "sense": "noun"
+      }
+    ],
+    "url": "https://en.wiktionary.org/wiki/record#English"
+  }
+}

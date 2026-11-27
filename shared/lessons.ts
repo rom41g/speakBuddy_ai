@@ -205,35 +205,14 @@ const corrections: [RegExp, string][] = [
   [/\bcan i have (apple|banana)\b/i, 'Can I have an $1, please?'],
 ]
 
-export function scriptReply(
-  mode: ChatMode,
-  topic: Topic,
-  role: Role,
-  input: string,
-  turn: number,
-  target: number,
-  academy?: AcademyUnit,
-): Message {
+export function grammarHint(input: string) {
   const correction = corrections.find(([pattern]) => pattern.test(input))
-  const script = lesson(mode, topic, role, academy)
-  let content =
-    turn >= target
-      ? 'Great work today! Thanks for talking with me.'
-      : script.next[(turn - 1) % script.next.length]
-  if (
-    mode === 'chat' &&
-    !academy &&
-    topic === 'animals' &&
-    turn === 1 &&
-    /\bdog\b/i.test(input)
-  )
-    content = 'Dogs are fun! What colour is your dog?'
-  let fixed =
+  const fixed =
     correction &&
     input.match(correction[0])?.[0].replace(correction[0], correction[1])
-  if (fixed === 'Can I have an banana, please?')
-    fixed = 'Can I have a banana, please?'
-  return { role: 'assistant', content, correction: fixed }
+  return fixed === 'Can I have an banana, please?'
+    ? 'Can I have a banana, please?'
+    : fixed
 }
 
 export function containsContact(text: string) {

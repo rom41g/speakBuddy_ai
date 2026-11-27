@@ -1,59 +1,35 @@
+import lexicon from './academy/lexicon.json'
+
 export type BritishForm = {
   ipa: string
   sense?: 'base' | 'past' | 'verb' | 'noun'
+  file?: string
+  audio?: string
+  audioSource?: string
 }
 export type BritishPronunciation = {
   word: string
   forms: BritishForm[]
   url: string
+  ru?: string
+  source?: 'wiktionary' | 'composed'
 }
 
-const cambridge = 'https://dictionary.cambridge.org'
-
-// Short UK headword transcriptions checked against the linked Cambridge pages.
-// A superscript r marks linking r in Cambridge's notation.
-const words: Record<string, string> = {
-  apple: 'ˈæp.əl',
-  banana: 'bəˈnɑː.nə',
-  bath: 'bɑːθ',
-  better: 'ˈbet.əʳ',
-  book: 'bʊk',
-  car: 'kɑːʳ',
-  colour: 'ˈkʌl.əʳ',
-  comfortable: 'ˈkʌm.fə.tə.bəl',
-  crocodile: 'ˈkrɒk.ə.daɪl',
-  dance: 'dɑːns',
-  favourite: 'ˈfeɪ.vər.ɪt',
-  football: 'ˈfʊt.bɔːl',
-  hello: 'heˈləʊ',
-  kangaroo: 'ˌkæŋ.ɡərˈuː',
-  octopus: 'ˈɒk.tə.pəs',
-  panda: 'ˈpæn.də',
-  pencil: 'ˈpen.səl',
-  pronunciation: 'prəˌnʌn.siˈeɪ.ʃən',
-  route: 'ruːt',
-  schedule: 'ˈʃedʒ.uːl',
-  teacher: 'ˈtiː.tʃəʳ',
-  thought: 'θɔːt',
-  through: 'θruː',
-  timetable: 'ˈtaɪmˌteɪ.bəl',
-  tomato: 'təˈmɑː.təʊ',
-  water: 'ˈwɔː.təʳ',
-  world: 'wɜːld',
-}
-
-const variants: Record<string, BritishForm[]> = {
-  either: [{ ipa: 'ˈaɪ.ðəʳ' }, { ipa: 'ˈiː.ðəʳ' }],
-  often: [{ ipa: 'ˈɒf.ən' }, { ipa: 'ˈɒf.tən' }],
-  read: [
-    { ipa: 'riːd', sense: 'base' },
-    { ipa: 'red', sense: 'past' },
-  ],
-  record: [
-    { ipa: 'rɪˈkɔːd', sense: 'verb' },
-    { ipa: 'ˈrek.ɔːd', sense: 'noun' },
-  ],
-}
+const entries = new Map<string, BritishPronunciation>(
+  Object.entries(lexicon).map(([word, entry]) => [
+    word.toLowerCase(),
+    {
+      word,
+      forms: entry.forms as BritishForm[],
+      url:
+        'compiled' in entry
+          ? 'https://kaikki.org/dictionary/English/'
+          : entry.url,
+      ru: entry.ru,
+      source: 'compiled' in entry ? 'composed' : 'wiktionary',
+    },
+  ]),
+)
 
 export function normalizedHeadword(input: string) {
   const word = input
@@ -62,7 +38,9 @@ export function normalizedHeadword(input: string) {
     .replace(/’/g, "'")
     .replace(/\s+/g, ' ')
   return word.length <= 64 &&
-    /^[a-z]+(?:['-][a-z]+)*(?: [a-z]+(?:['-][a-z]+)*){0,4}$/.test(word)
+    /^[a-zà-öø-ÿ]+(?:['-][a-zà-öø-ÿ]+)*(?: [a-zà-öø-ÿ]+(?:['-][a-zà-öø-ÿ]+)*){0,4}$/.test(
+      word,
+    )
     ? word
     : undefined
 }
@@ -72,32 +50,45 @@ export function pronunciationQuestion(text: string) {
     .trim()
     .replace(/[!?.,]+$/, '')
     .trim()
-  const first = query.match(/^how (?:is|are) (.+?) pronounced$/i)?.[1]
+  const meaning = query.match(/^what does (.+?) mean$/i)?.[1]
+  const direct =
+    query.match(/^how (?:is|are) (.+?) pronounced$/i)?.[1] ?? meaning
   const english =
-    /^(?:how (?:do (?:you|i) pronounce|to pronounce)|(?:please )?(?:(?:can|could|would) you )?pronounce|(?:show (?:me )?|what(?:['’]s| is) )?(?:the )?(?:british |uk )?(?:ipa(?: transcription)?|pronunciation) (?:of|for))\s+/i
+    /^(?:how (?:do (?:you|i) pronounce|to pronounce)|(?:please )?(?:(?:can|could|would) you )?pronounce|(?:show (?:me )?|what(?:['’]s| is) )?(?:the )?(?:british |uk )?(?:ipa(?: transcription)?|pronunciation) (?:of|for)|translate)\s+/i
   const russian =
-    /^(?:как (?:правильно )?(?:произносится|произнести)|произнеси|(?:британская )?транскрипция|ipa)(?: по-британски)?\s+/i
+    /^(?:как (?:правильно )?(?:произносится|произнести|переводится|перевести)|произнеси|переведи|что значит|(?:британская )?транскрипция|ipa)(?: по-британски)?\s+/i
   const prefix = query.match(english) ?? query.match(russian)
-  let target = first ?? (prefix && query.slice(prefix[0].length))
+  const target = direct ?? (prefix && query.slice(prefix[0].length))
   if (!target) return
-  target = target
-    .replace(/^(?:(?:the )?word|слово|слова)\s+/i, '')
-    .replace(
-      /\s+(?:please|in (?:british english|the uk)|по-британски|на британском английском)$/i,
-      '',
-    )
-    .replace(/^["“«‘']+|["”»’']+$/g, '')
-  return normalizedHeadword(target)
+  const word = normalizedHeadword(
+    target
+      .replace(/^(?:(?:the )?word|слово|слова)\s+/i, '')
+      .replace(
+        /\s+(?:please|in (?:russian|british english|the uk)|по-британски|на (?:русский|британском английском))$/i,
+        '',
+      )
+      .replace(/^["“«‘']+|["”»’']+$/g, ''),
+  )
+  if (
+    (meaning ||
+      /^(?:translate|переведи|что значит|как (?:правильно )?переводится|как (?:правильно )?перевести)\s/iu.test(
+        query,
+      )) &&
+    word &&
+    !britishPronunciation(word).forms.length
+  )
+    return undefined
+  return word
 }
 
 export function britishPronunciation(word: string): BritishPronunciation {
-  const forms = Object.hasOwn(variants, word)
-    ? variants[word]
-    : Object.hasOwn(words, word)
-      ? [{ ipa: words[word] }]
-      : []
-  const url = forms.length
-    ? `${cambridge}/pronunciation/english/${encodeURIComponent(word)}`
-    : `${cambridge}/search/english/direct/?q=${encodeURIComponent(word)}`
-  return { word, forms, url }
+  const key = word.toLowerCase()
+  const entry = entries.get(key === 'cafe' ? 'café' : key)
+  return (
+    entry ?? {
+      word,
+      forms: [],
+      url: `https://dictionary.cambridge.org/search/english/direct/?q=${encodeURIComponent(word)}`,
+    }
+  )
 }
