@@ -25,7 +25,7 @@ export async function cambridgePronunciation(
   url.search = new URLSearchParams({ q: word, format: 'html' }).toString()
   const response = await fetch(url, {
     headers: { Accept: 'application/json', accessKey: key },
-    redirect: 'error',
+    redirect: 'manual',
     signal: AbortSignal.timeout(6500),
   })
   if (!response.ok) return fallback
