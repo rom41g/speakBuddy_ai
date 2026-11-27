@@ -43,7 +43,7 @@ import {
   stopSpeaking,
   unlockBritishAudio,
 } from './speech'
-import type { BritishVoice, PlaybackStatus } from './speech'
+import type { BritishVoice, PlaybackStatus, SpeechOptions } from './speech'
 import { formatSpokenText } from './spokenText'
 
 const animals = [
@@ -200,6 +200,9 @@ export default function Practice({
   const target = level === 'A1' ? 4 : 3
 
   useEffect(() => {
+    if (autoSpeak) prepareBritishSpeech(britishVoice)
+  }, [autoSpeak, britishVoice])
+  useEffect(() => {
     mounted.current = true
     const controller = new AbortController()
     localModel.current = controller
@@ -225,7 +228,7 @@ export default function Practice({
       transcript.current.scrollTop = transcript.current.scrollHeight
   }, [messages, pending, replyPreview])
 
-  function listen(content: string, continuation?: Promise<string>) {
+  function listen(content: string, options?: SpeechOptions) {
     speak(
       content,
       level === 'Pre-A1' ? 0.88 : 0.96,
@@ -233,7 +236,7 @@ export default function Practice({
         if (mounted.current) setPlayback(status)
       },
       britishVoice,
-      continuation,
+      options,
     )
   }
 
@@ -428,12 +431,12 @@ export default function Practice({
           (content) => {
             if (signal.aborted) return
             if (!spoken) setReplyPreview(content)
-            else if (content && !resolveAudio) {
+            if (content && (spoken || autoSpeak) && !resolveAudio) {
               spokenPrefix = content
               const continuation = new Promise<string>((resolve) => {
                 resolveAudio = resolve
               })
-              listen(content, continuation)
+              listen(content, { continuation, quickStart: true })
             }
           },
         ).catch(() => undefined))
@@ -475,7 +478,7 @@ export default function Practice({
           : reply.content
         const audio = [rest, reply.correction].filter(Boolean).join(' ')
         if (resolveAudio) resolveAudio(audio)
-        else listen(audio)
+        else listen(audio, { quickStart: true })
       }
     }
     if (done) {

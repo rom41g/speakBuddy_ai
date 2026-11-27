@@ -37,6 +37,11 @@ export type PlaybackStatus =
   | 'blocked'
   | 'unavailable'
 
+export type SpeechOptions = {
+  continuation?: Promise<string>
+  quickStart?: boolean
+}
+
 let playing: AbortController | undefined
 let currentUtterance: SpeechSynthesisUtterance | undefined
 const emojiInSpeech =
@@ -120,17 +125,23 @@ export function speak(
   rate = 0.88,
   update?: (status: PlaybackStatus) => void,
   voice: BritishVoice = 'emma',
-  continuation?: Promise<string>,
+  { continuation, quickStart }: SpeechOptions = {},
 ) {
   stopSpeaking()
   unlockBritishAudio()
   const controller = new AbortController()
   playing = controller
   const { signal } = controller
+  const deviceAvailable = () =>
+    typeof SpeechSynthesisUtterance !== 'undefined' &&
+    Boolean(selectBritishVoice(window.speechSynthesis?.getVoices() ?? []))
+  const useDeviceWhileLoading =
+    quickStart && !britishNeuralReady() && deviceAvailable()
   const players =
-    voice === 'emma'
+    voice === 'emma' && !useDeviceWhileLoading
       ? [playBritishNeural, playBrowserVoice]
       : [playBrowserVoice, playBritishNeural]
+  let startedAudio = false
   update?.('starting')
   void play()
 
@@ -153,10 +164,24 @@ export function speak(
       .trim()
     if (!/[\p{L}\p{N}]/u.test(spoken)) return 'ended'
 
+    const canStartQuickly =
+      quickStart &&
+      !startedAudio &&
+      players[0] === playBritishNeural &&
+      deviceAvailable()
+    const attempts = canStartQuickly ? [...players, playBritishNeural] : players
+    let delayedEmma = false
     let blocked = false
-    for (const player of players) {
+    for (const [index, player] of attempts.entries()) {
       if (signal.aborted) break
+      if (index === 2 && !delayedEmma) break
+      // Let Emma finish any utterance that has already started playing.
+      const deadline =
+        canStartQuickly && index === 0 ? new AbortController() : undefined
+      const timer = deadline && window.setTimeout(() => deadline.abort(), 800)
       const started = () => {
+        window.clearTimeout(timer)
+        startedAudio = true
         if (!signal.aborted)
           update?.(
             voice === 'emma' && player === playBrowserVoice
@@ -164,9 +189,18 @@ export function speak(
               : 'playing',
           )
       }
-      const status = await player(spoken, rate, signal, started).catch(
-        () => 'unavailable' as const,
+      const status = await player(
+        spoken,
+        rate,
+        deadline ? AbortSignal.any([signal, deadline.signal]) : signal,
+        started,
       )
+        .catch(() => 'unavailable' as const)
+        .finally(() => window.clearTimeout(timer))
+      if (deadline?.signal.aborted && !signal.aborted) {
+        delayedEmma = true
+        continue
+      }
       if (status === 'ended') {
         if (player !== players[0]) players.reverse()
         return status
@@ -253,6 +287,7 @@ export async function makeWav(blob: Blob) {
   }
 }
 import {
+  britishNeuralReady,
   playBritishNeural,
   prepareBritishNeural,
   unlockBritishAudio,

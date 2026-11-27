@@ -467,8 +467,8 @@ export default function App() {
                 {britishVoice === 'emma' && (
                   <p className="status">
                     {t(
-                      'При первом использовании Emma браузер скачает голос (около 92 МБ). При сбое Бадди использует системный британский голос.',
-                      'Emma downloads about 92 MB on first use. Buddy can use the device’s British voice if Emma is unavailable.',
+                      'Emma загружается при первом использовании (около 92 МБ). Пока голос готовится, Бадди может ответить системным британским голосом.',
+                      'Emma downloads about 92 MB on first use. Buddy can reply with the device’s British voice while Emma is getting ready.',
                     )}
                   </p>
                 )}
