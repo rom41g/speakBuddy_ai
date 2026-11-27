@@ -34,6 +34,8 @@ export type PlaybackStatus =
 
 let playing: AbortController | undefined
 let currentUtterance: SpeechSynthesisUtterance | undefined
+const emojiInSpeech =
+  /[0-9#*]\uFE0F?\u20E3|[\p{Extended_Pictographic}\p{Emoji_Presentation}][\u200D\uFE0E\uFE0F\p{Emoji_Modifier}\u{E0020}-\u{E007F}]*/gu
 
 export function stopSpeaking() {
   stopDictionaryAudio()
@@ -132,7 +134,16 @@ export function speak(
     finish(status)
   }
 
-  async function playPart(part: string): Promise<'ended' | 'blocked' | 'unavailable'> {
+  async function playPart(
+    part: string,
+  ): Promise<'ended' | 'blocked' | 'unavailable'> {
+    const spoken = part
+      .replace(emojiInSpeech, ' ')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/[ \t]+([,.!?;:])/g, '$1')
+      .trim()
+    if (!/[\p{L}\p{N}]/u.test(spoken)) return 'ended'
+
     const started = () => {
       if (!signal.aborted) update?.('playing')
     }
@@ -143,7 +154,7 @@ export function speak(
     let blocked = false
     for (const player of players) {
       if (signal.aborted) break
-      const status = await player(part, rate, signal, started).catch(
+      const status = await player(spoken, rate, signal, started).catch(
         () => 'unavailable' as const,
       )
       if (status === 'ended') return status
