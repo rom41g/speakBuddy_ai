@@ -115,7 +115,7 @@ const defaults: Settings = {
   scores: false,
   academy: '1-1',
   autoSpeak: true,
-  britishVoice: 'auto',
+  britishVoice: 'emma',
 }
 function readLocal<T>(key: string, fallback: T): T {
   try {
@@ -160,6 +160,7 @@ export default function App() {
   const t: Translate = (ru, en) => (settings.lang === 'en' ? en : ru)
   const score = progress.finished + progress.analyses
   const academy = getAcademyUnit(settings.academy)
+  const britishVoice = settings.britishVoice === 'system' ? 'system' : 'emma'
 
   useEffect(() => {
     document.documentElement.lang = settings.lang
@@ -442,7 +443,7 @@ export default function App() {
                 <div className="select-wrap">
                   <select
                     id="british-voice"
-                    value={settings.britishVoice}
+                    value={britishVoice}
                     onChange={(event) => {
                       stopSpeaking()
                       setSettings({
@@ -451,23 +452,23 @@ export default function App() {
                       })
                     }}
                   >
-                    <option value="auto">
-                      {t('Автоматически (en-GB)', 'Automatic (en-GB)')}
-                    </option>
                     <option value="emma">
                       {t(
-                        'Emma · нейроголос Kokoro',
-                        'Emma · Kokoro neural voice',
+                        'Emma · голос на всех устройствах',
+                        'Emma · shared voice across devices',
                       )}
+                    </option>
+                    <option value="system">
+                      {t('Системный голос (en-GB)', 'Device voice (en-GB)')}
                     </option>
                   </select>
                   <ChevronDown size={17} />
                 </div>
-                {settings.britishVoice === 'emma' && (
+                {britishVoice === 'emma' && (
                   <p className="status">
                     {t(
-                      'При первом запуске загружается модель голоса (около 92 МБ).',
-                      'The first use downloads the voice model (about 92 MB).',
+                      'При первом использовании Emma браузер скачает голос (около 92 МБ). При сбое Бадди использует системный британский голос.',
+                      'Emma downloads about 92 MB on first use. Buddy can use the device’s British voice if Emma is unavailable.',
                     )}
                   </p>
                 )}
@@ -684,7 +685,7 @@ export default function App() {
               <Pronunciation
                 key={`${academy?.id ?? 'free'}-${attempt}`}
                 academy={academy}
-                britishVoice={settings.britishVoice}
+                britishVoice={britishVoice}
                 t={t}
                 showScores={settings.scores}
                 provider={
@@ -706,7 +707,7 @@ export default function App() {
                 level={settings.level}
                 hints={settings.hints}
                 autoSpeak={settings.autoSpeak}
-                britishVoice={settings.britishVoice}
+                britishVoice={britishVoice}
                 dictionaryAccess={
                   cloud && capabilities.dictionary ? access : ''
                 }

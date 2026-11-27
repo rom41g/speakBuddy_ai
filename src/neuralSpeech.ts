@@ -5,8 +5,8 @@ let nextId = 0
 
 export function unlockBritishAudio() {
   try {
-    context ??= new AudioContext()
-    if (context.state === 'suspended' && !resumed)
+    if (!context || context.state === 'closed') context = new AudioContext()
+    if (context.state !== 'running' && !resumed)
       resumed = context
         .resume()
         .catch(() => {})
@@ -88,7 +88,7 @@ export async function playBritishNeural(
   started: () => void,
 ) {
   if (!context) return 'unavailable'
-  if (context.state === 'suspended' && resumed) {
+  if (context.state !== 'running' && resumed) {
     let timeout: number | undefined
     await Promise.race([
       resumed,

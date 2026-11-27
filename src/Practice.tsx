@@ -293,10 +293,15 @@ export default function Practice({
       failed = true
       if (event.error !== 'aborted')
         setError(
-          t(
-            'Распознавание не сработало. Попробуй ещё раз или напечатай ответ.',
-            'Speech recognition failed. Try again or type your answer.',
-          ),
+          event.error === 'not-allowed'
+            ? t(
+                'Микрофон заблокирован. Проверь разрешение для SpeakBuddy в настройках сайта браузера.',
+                'Microphone access is blocked. Check the browser’s site settings for SpeakBuddy.',
+              )
+            : t(
+                'Распознавание не сработало. Попробуй ещё раз или напечатай ответ.',
+                'Speech recognition failed. Try again or type your answer.',
+              ),
         )
     }
     recognition.onend = () => {
@@ -343,8 +348,12 @@ export default function Practice({
       return
     }
     const text = spoken ? formatSpokenText(raw).slice(0, 300) : raw
+    const headword = pronunciationQuestion(text)
     stopSpeaking()
-    if (autoSpeak || spoken) unlockBritishAudio()
+    if (autoSpeak || spoken) {
+      unlockBritishAudio()
+      if (!headword) prepareBritishSpeech(britishVoice)
+    }
     setPlayback(undefined)
     setError('')
     if (!spoken) setDraft('')
@@ -354,7 +363,6 @@ export default function Practice({
     let reply: Message
     let spokenPrefix = ''
     let resolveAudio: ((rest: string) => void) | undefined
-    const headword = pronunciationQuestion(text)
     const step = turn + 1
 
     if (headword) {

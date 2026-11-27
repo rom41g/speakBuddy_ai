@@ -30,7 +30,12 @@ export const SpeechRecognition =
     .webkitSpeechRecognition
 
 export type PlaybackStatus =
-  'starting' | 'playing' | 'ended' | 'blocked' | 'unavailable'
+  | 'starting'
+  | 'playing'
+  | 'playing-system'
+  | 'ended'
+  | 'blocked'
+  | 'unavailable'
 
 let playing: AbortController | undefined
 let currentUtterance: SpeechSynthesisUtterance | undefined
@@ -114,7 +119,7 @@ export function speak(
   text: string,
   rate = 0.88,
   update?: (status: PlaybackStatus) => void,
-  voice: BritishVoice = 'auto',
+  voice: BritishVoice = 'emma',
   continuation?: Promise<string>,
 ) {
   stopSpeaking()
@@ -122,6 +127,10 @@ export function speak(
   const controller = new AbortController()
   playing = controller
   const { signal } = controller
+  const players =
+    voice === 'emma'
+      ? [playBritishNeural, playBrowserVoice]
+      : [playBrowserVoice, playBritishNeural]
   update?.('starting')
   void play()
 
@@ -144,20 +153,24 @@ export function speak(
       .trim()
     if (!/[\p{L}\p{N}]/u.test(spoken)) return 'ended'
 
-    const started = () => {
-      if (!signal.aborted) update?.('playing')
-    }
-    const players =
-      voice === 'emma'
-        ? [playBritishNeural, playBrowserVoice]
-        : [playBrowserVoice, playBritishNeural]
     let blocked = false
     for (const player of players) {
       if (signal.aborted) break
+      const started = () => {
+        if (!signal.aborted)
+          update?.(
+            voice === 'emma' && player === playBrowserVoice
+              ? 'playing-system'
+              : 'playing',
+          )
+      }
       const status = await player(spoken, rate, signal, started).catch(
         () => 'unavailable' as const,
       )
-      if (status === 'ended') return status
+      if (status === 'ended') {
+        if (player !== players[0]) players.reverse()
+        return status
+      }
       blocked ||= status === 'blocked'
     }
     return blocked ? 'blocked' : 'unavailable'
@@ -177,6 +190,11 @@ export function playbackMessage(
   if (status === 'starting')
     return t('Готовлю британскую озвучку…', 'Preparing British audio…')
   if (status === 'playing') return t('Бадди говорит…', 'Buddy is speaking…')
+  if (status === 'playing-system')
+    return t(
+      'Бадди говорит системным британским голосом…',
+      'Buddy is speaking with the device’s British voice…',
+    )
   if (status === 'blocked')
     return t(
       'Нажми на динамик рядом с ответом, чтобы запустить звук.',
@@ -243,4 +261,4 @@ import { stopDictionaryAudio } from './dictionaryAudio'
 
 export { unlockBritishAudio }
 export const britishLocale = 'en-GB'
-export type BritishVoice = 'auto' | 'emma'
+export type BritishVoice = 'emma' | 'system'
