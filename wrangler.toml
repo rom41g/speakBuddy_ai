@@ -1,0 +1,12 @@
+name = "speakbuddy-ai"
+main = "worker/index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://rom41g.github.io,http://127.0.0.1:5173,http://localhost:5173"
+
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "14401"
+simple = { limit = 12, period = 60 }
