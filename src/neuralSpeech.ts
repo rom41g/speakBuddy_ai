@@ -18,11 +18,23 @@ export function unlockBritishAudio() {
   }
 }
 
-function synthesize(text: string, rate: number, signal: AbortSignal) {
+function ensureWorker() {
   worker ??= new Worker(new URL('./britishVoice.worker.ts', import.meta.url), {
     type: 'module',
   })
-  const engine = worker
+  return worker
+}
+
+export function prepareBritishNeural() {
+  try {
+    ensureWorker().postMessage({ warmup: true })
+  } catch {
+    /* Playback can still try an installed voice. */
+  }
+}
+
+function synthesize(text: string, rate: number, signal: AbortSignal) {
+  const engine = ensureWorker()
   const id = ++nextId
   return new Promise<{
     samples: Float32Array<ArrayBuffer>

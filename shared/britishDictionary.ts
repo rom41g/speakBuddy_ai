@@ -48,13 +48,14 @@ export function normalizedHeadword(input: string) {
 export function pronunciationQuestion(text: string) {
   const query = text
     .trim()
+    .replace(/^(?:hi|hello|hey)(?:,? buddy)?[!.]\s+/i, '')
     .replace(/[!?.,]+$/, '')
     .trim()
   const meaning = query.match(/^what does (.+?) mean$/i)?.[1]
   const direct =
     query.match(/^how (?:is|are) (.+?) pronounced$/i)?.[1] ?? meaning
   const english =
-    /^(?:how (?:do (?:you|i) pronounce|to pronounce)|(?:please )?(?:(?:can|could|would) you )?pronounce|(?:show (?:me )?|what(?:['’]s| is) )?(?:the )?(?:british |uk )?(?:ipa(?: transcription)?|pronunciation) (?:of|for)|translate)\s+/i
+    /^(?:how (?:do (?:you|i) pronounce|to pronounce)|(?:please )?(?:(?:can|could|would) you )?(?:tell me how to )?pronounce|(?:show (?:me )?|what(?:['’]s| is) )?(?:the )?(?:british |uk )?(?:ipa(?: transcription)?|pronunciation) (?:of|for)|translate)\s+/i
   const russian =
     /^(?:как (?:правильно )?(?:произносится|произнести|переводится|перевести)|произнеси|переведи|что значит|(?:британская )?транскрипция|ipa)(?: по-британски)?\s+/i
   const prefix = query.match(english) ?? query.match(russian)
@@ -64,7 +65,7 @@ export function pronunciationQuestion(text: string) {
     target
       .replace(/^(?:(?:the )?word|слово|слова)\s+/i, '')
       .replace(
-        /\s+(?:please|in (?:russian|british english|the uk)|по-британски|на (?:русский|британском английском))$/i,
+        /,?\s+(?:please|in (?:russian|british english|the uk)|по-британски|на (?:русский|британском английском))$/i,
         '',
       )
       .replace(/^["“«‘']+|["”»’']+$/g, ''),

@@ -37,12 +37,14 @@ import type { Progress, Translate } from './App'
 import {
   britishLocale,
   playbackMessage,
+  prepareBritishSpeech,
   speak,
   SpeechRecognition,
   stopSpeaking,
   unlockBritishAudio,
 } from './speech'
 import type { BritishVoice, PlaybackStatus } from './speech'
+import { formatSpokenText } from './spokenText'
 
 const animals = [
   {
@@ -181,8 +183,6 @@ export default function Practice({
   const [turn, setTurn] = useState(0)
   const [draft, setDraft] = useState('')
   const [listening, setListening] = useState(false)
-  const [speechConsent, setSpeechConsent] = useState(false)
-  const [showSpeechInfo, setShowSpeechInfo] = useState(false)
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
   const [finished, setFinished] = useState(false)
@@ -193,6 +193,7 @@ export default function Practice({
   const recognizer = useRef<InstanceType<
     NonNullable<typeof SpeechRecognition>
   > | null>(null)
+  const micControls = useRef<{ stop(): void; clear(): void } | null>(null)
   const mounted = useRef(false)
   const transcript = useRef<HTMLDivElement>(null)
   const localModel = useRef<AbortController | null>(null)
@@ -208,7 +209,13 @@ export default function Practice({
       stopSpeaking()
       const active = recognizer.current
       if (active) {
-        active.onend = active.onerror = active.onresult = null
+        micControls.current?.clear()
+        active.onend =
+          active.onerror =
+          active.onresult =
+          active.onspeechend =
+          active.onspeechstart =
+            null
         active.abort()
       }
     }
@@ -218,7 +225,7 @@ export default function Practice({
       transcript.current.scrollTop = transcript.current.scrollHeight
   }, [messages, pending, replyPreview])
 
-  function listen(content: string) {
+  function listen(content: string, continuation?: Promise<string>) {
     speak(
       content,
       level === 'Pre-A1' ? 0.88 : 0.96,
@@ -226,6 +233,7 @@ export default function Practice({
         if (mounted.current) setPlayback(status)
       },
       britishVoice,
+      continuation,
     )
   }
 
@@ -233,20 +241,56 @@ export default function Practice({
     if (!SpeechRecognition || recognizer.current || pending || finished) return
     stopSpeaking()
     unlockBritishAudio()
+    prepareBritishSpeech(britishVoice)
     setError('')
     const recognition = new SpeechRecognition()
     recognition.lang = britishLocale
-    recognition.continuous = false
-    recognition.interimResults = false
+    recognition.continuous = true
+    recognition.interimResults = true
     recognition.maxAlternatives = 1
-    let spoken = ''
+    let finalText = ''
+    let heardText = ''
     let failed = false
+    let stopping = false
+    let pauseTimer: number | undefined
+    const sessionTimer = window.setTimeout(stop, 45000)
+    function clearPause() {
+      window.clearTimeout(pauseTimer)
+    }
+    function clear() {
+      clearPause()
+      window.clearTimeout(sessionTimer)
+    }
+    function stop() {
+      if (stopping || recognizer.current !== recognition) return
+      stopping = true
+      clear()
+      recognition.stop()
+    }
+    function waitForPause(delay = 1600) {
+      if (stopping) return
+      clearPause()
+      pauseTimer = window.setTimeout(stop, delay)
+    }
+    recognition.onspeechstart = clearPause
+    recognition.onspeechend = () => waitForPause()
     recognition.onresult = (event) => {
-      spoken = event.results[0]?.[0]?.transcript.trim().slice(0, 300) ?? ''
+      const results = Array.from(event.results)
+      heardText = results
+        .map((result) => result[0]?.transcript.trim() ?? '')
+        .join(' ')
+        .trim()
+      finalText = results
+        .filter((result) => result.isFinal !== false)
+        .map((result) => result[0]?.transcript.trim() ?? '')
+        .join(' ')
+        .trim()
+      waitForPause(results.at(-1)?.isFinal === false ? 2500 : 1600)
     }
     recognition.onerror = (event) => {
+      clear()
+      if (event.error === 'no-speech' && finalText) return
       failed = true
-      spoken = ''
       if (event.error !== 'aborted')
         setError(
           t(
@@ -257,9 +301,12 @@ export default function Practice({
     }
     recognition.onend = () => {
       if (recognizer.current !== recognition || !mounted.current) return
+      clear()
+      micControls.current = null
       recognizer.current = null
       setListening(false)
-      if (spoken) void submit(spoken, true)
+      const spoken = finalText || heardText
+      if (spoken && !failed) void submit(spoken, true)
       else if (!failed)
         setError(
           t(
@@ -270,9 +317,12 @@ export default function Practice({
     }
     try {
       recognizer.current = recognition
+      micControls.current = { stop, clear }
       recognition.start()
       setListening(true)
     } catch {
+      clear()
+      micControls.current = null
       recognizer.current = null
       setError(
         t('Не удалось запустить микрофон.', 'Could not start the microphone.'),
@@ -281,9 +331,9 @@ export default function Practice({
   }
 
   async function submit(input: string, spoken = false) {
-    const text = input.trim()
-    if (!text || pending || finished || recognizer.current) return
-    if (containsContact(text)) {
+    const raw = input.trim()
+    if (!raw || pending || finished || recognizer.current) return
+    if (containsContact(raw)) {
       setError(
         t(
           'Попробуй ответить без номера телефона, адреса почты или ссылки.',
@@ -292,6 +342,7 @@ export default function Practice({
       )
       return
     }
+    const text = spoken ? formatSpokenText(raw).slice(0, 300) : raw
     stopSpeaking()
     if (autoSpeak || spoken) unlockBritishAudio()
     setPlayback(undefined)
@@ -301,6 +352,8 @@ export default function Practice({
     setMessages(history)
     let done = false
     let reply: Message
+    let spokenPrefix = ''
+    let resolveAudio: ((rest: string) => void) | undefined
     const headword = pronunciationQuestion(text)
     const step = turn + 1
 
@@ -364,17 +417,26 @@ export default function Practice({
           (status) => {
             if (!signal.aborted) setModelStatus(status)
           },
-          spoken
-            ? undefined
-            : (content) => {
-                if (!signal.aborted) setReplyPreview(content)
-              },
+          (content) => {
+            if (signal.aborted) return
+            if (!spoken) setReplyPreview(content)
+            else if (content && !resolveAudio) {
+              spokenPrefix = content
+              const continuation = new Promise<string>((resolve) => {
+                resolveAudio = resolve
+              })
+              listen(content, continuation)
+            }
+          },
         ).catch(() => undefined))
-      if (signal.aborted) return
+      if (signal.aborted) {
+        resolveAudio?.('')
+        return
+      }
       setPending(false)
       setModelStatus(undefined)
       setReplyPreview('')
-      if (!generated) {
+      if (!generated && !spokenPrefix) {
         setMessages(messages)
         setDraft(text)
         setError(
@@ -385,7 +447,7 @@ export default function Practice({
         )
         return
       }
-      reply = generated
+      reply = generated ?? { role: 'assistant', content: spokenPrefix }
     }
     if (!mounted.current) return
     report({ turns: 1, voice: spoken ? 1 : 0 })
@@ -398,7 +460,14 @@ export default function Practice({
           if (mounted.current && status === 'blocked') setPlayback('blocked')
         })
       } else if (!reply.pronunciation) {
-        listen([reply.content, reply.correction].filter(Boolean).join(' '))
+        const rest = spokenPrefix
+          ? reply.content.startsWith(spokenPrefix)
+            ? reply.content.slice(spokenPrefix.length).trim()
+            : ''
+          : reply.content
+        const audio = [rest, reply.correction].filter(Boolean).join(' ')
+        if (resolveAudio) resolveAudio(audio)
+        else listen(audio)
       }
     }
     if (done) {
@@ -543,7 +612,7 @@ export default function Practice({
           )}
           {pending && !replyPreview && (
             <p className="status">
-              {modelStatus?.phase === 'loading'
+              {modelStatus?.phase === 'downloading'
                 ? t(
                     'Загружаю модель ИИ в браузер (около 397 МБ)',
                     'Downloading the AI model (about 397 MB)',
@@ -551,7 +620,9 @@ export default function Practice({
                   (modelStatus.percent === undefined
                     ? '…'
                     : ` · ${modelStatus.percent}%`)
-                : t('Бадди готовит ответ…', 'Buddy is thinking…')}
+                : modelStatus?.phase === 'starting'
+                  ? t('Запускаю ИИ…', 'Starting the AI…')
+                  : t('Бадди готовит ответ…', 'Buddy is thinking…')}
             </p>
           )}
         </div>
@@ -605,26 +676,6 @@ export default function Practice({
                 )}
               </>
             )}
-            {showSpeechInfo && (
-              <div className="notice">
-                <p>
-                  {t(
-                    'Когда ты закончишь говорить, реплика отправится автоматически. Браузер может передать звук своему сервису распознавания. Используй вымышленные данные.',
-                    'Your reply is sent as soon as you finish speaking. Your browser may send audio to its speech recognition service. Use fictional details.',
-                  )}
-                </p>
-                <button
-                  className="secondary"
-                  onClick={() => {
-                    setSpeechConsent(true)
-                    setShowSpeechInfo(false)
-                    startMic()
-                  }}
-                >
-                  {t('Включить микрофон', 'Enable microphone')}
-                </button>
-              </div>
-            )}
             <form
               className="input-row"
               onSubmit={(event) => {
@@ -641,11 +692,13 @@ export default function Practice({
                     : t('Ответить голосом', 'Reply by voice')
                 }
                 disabled={!SpeechRecognition || pending}
-                onClick={() => {
-                  if (listening) recognizer.current?.stop()
-                  else if (speechConsent) startMic()
-                  else setShowSpeechInfo(!showSpeechInfo)
-                }}
+                title={t(
+                  'Браузер может распознавать речь через свой сервис',
+                  'Your browser may use its speech recognition service',
+                )}
+                onClick={
+                  listening ? () => micControls.current?.stop() : startMic
+                }
               >
                 {listening ? <Square size={19} /> : <Mic size={21} />}
               </button>

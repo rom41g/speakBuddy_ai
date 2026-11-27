@@ -7,10 +7,16 @@ const modelUrl =
   'https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf'
 
 export type ModelStatus =
-  { phase: 'loading'; percent?: number } | { phase: 'thinking' }
+  | { phase: 'downloading'; percent?: number }
+  | { phase: 'starting' | 'thinking' }
 let engine: Promise<Wllama> | undefined
-let progress: ModelStatus = { phase: 'loading' }
+let progress: ModelStatus = { phase: 'starting' }
 const listeners = new Set<(status: ModelStatus) => void>()
+
+function setProgress(status: ModelStatus) {
+  progress = status
+  listeners.forEach((update) => update(status))
+}
 
 export function prepareLocalChat() {
   if (!engine) {
@@ -19,24 +25,38 @@ export function prepareLocalChat() {
       { allowOffline: true, suppressNativeLog: true },
     )
     model.setCompat('default')
-    progress = { phase: 'loading' }
-    engine = model
-      .loadModelFromUrl(modelUrl, {
-        n_ctx: 1536,
-        n_batch: 256,
-        n_parallel: 1,
-        warmup: true,
+    setProgress({ phase: 'starting' })
+    async function modelFiles() {
+      const cached = (await model.modelManager.getModels()).find(
+        (entry) => entry.url === modelUrl,
+      )
+      if (cached) return cached.open()
+      setProgress({ phase: 'downloading' })
+      const downloaded = await model.modelManager.downloadModel(modelUrl, {
         signal: AbortSignal.timeout(600000),
-        progressCallback: ({ loaded, total }) => {
-          progress = {
-            phase: 'loading',
+        progressCallback: ({ loaded, total }) =>
+          setProgress({
+            phase: 'downloading',
             percent:
               total > 0
                 ? Math.min(100, Math.floor((loaded / total) * 100))
                 : undefined,
-          }
-          listeners.forEach((update) => update(progress))
-        },
+          }),
+      })
+      return downloaded.open()
+    }
+    const files = navigator.locks
+      ? navigator.locks.request('speakbuddy-chat-model', modelFiles)
+      : modelFiles()
+    engine = files
+      .then((blobs) => {
+        setProgress({ phase: 'starting' })
+        return model.loadModel(blobs, {
+          n_ctx: 1536,
+          n_batch: 256,
+          n_parallel: 1,
+          warmup: true,
+        })
       })
       .then(() => {
         progress = { phase: 'thinking' }

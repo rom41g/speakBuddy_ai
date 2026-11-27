@@ -5,9 +5,13 @@ type Recognition = {
   maxAlternatives: number
   onresult:
     | ((event: {
-        results: ArrayLike<ArrayLike<{ transcript: string }>>
+        results: ArrayLike<
+          ArrayLike<{ transcript: string }> & { isFinal?: boolean }
+        >
       }) => void)
     | null
+  onspeechstart: (() => void) | null
+  onspeechend: (() => void) | null
   onerror: ((event: { error: string }) => void) | null
   onend: (() => void) | null
   start(): void
@@ -46,6 +50,14 @@ export function selectBritishVoice(voices: readonly SpeechSynthesisVoice[]) {
     ukVoices.find((voice) => voice.localService) ??
     ukVoices[0]
   )
+}
+
+export function prepareBritishSpeech(voice: BritishVoice) {
+  if (
+    voice === 'emma' ||
+    !selectBritishVoice(window.speechSynthesis?.getVoices() ?? [])
+  )
+    prepareBritishNeural()
 }
 
 function playBrowserVoice(
@@ -101,6 +113,7 @@ export function speak(
   rate = 0.88,
   update?: (status: PlaybackStatus) => void,
   voice: BritishVoice = 'auto',
+  continuation?: Promise<string>,
 ) {
   stopSpeaking()
   unlockBritishAudio()
@@ -111,6 +124,15 @@ export function speak(
   void play()
 
   async function play() {
+    let status = await playPart(text)
+    if (status === 'ended' && !signal.aborted && continuation) {
+      const rest = await continuation
+      if (rest && !signal.aborted) status = await playPart(rest)
+    }
+    finish(status)
+  }
+
+  async function playPart(part: string): Promise<'ended' | 'blocked' | 'unavailable'> {
     const started = () => {
       if (!signal.aborted) update?.('playing')
     }
@@ -121,16 +143,13 @@ export function speak(
     let blocked = false
     for (const player of players) {
       if (signal.aborted) break
-      const status = await player(text, rate, signal, started).catch(
+      const status = await player(part, rate, signal, started).catch(
         () => 'unavailable' as const,
       )
-      if (status === 'ended') {
-        finish('ended')
-        return
-      }
+      if (status === 'ended') return status
       blocked ||= status === 'blocked'
     }
-    finish(blocked ? 'blocked' : 'unavailable')
+    return blocked ? 'blocked' : 'unavailable'
   }
 
   function finish(status: PlaybackStatus) {
@@ -204,7 +223,11 @@ export async function makeWav(blob: Blob) {
     await context.close()
   }
 }
-import { playBritishNeural, unlockBritishAudio } from './neuralSpeech'
+import {
+  playBritishNeural,
+  prepareBritishNeural,
+  unlockBritishAudio,
+} from './neuralSpeech'
 import { stopDictionaryAudio } from './dictionaryAudio'
 
 export { unlockBritishAudio }

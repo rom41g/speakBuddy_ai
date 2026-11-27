@@ -8,7 +8,9 @@ let queue = Promise.resolve()
 
 scope.onmessage = ({
   data,
-}: MessageEvent<{ id: number; text: string; rate: number }>) => {
+}: MessageEvent<
+  { warmup: true } | { id: number; text: string; rate: number }
+>) => {
   queue = queue.then(async () => {
     try {
       model ??= KokoroTTS.from_pretrained(modelId, {
@@ -16,6 +18,7 @@ scope.onmessage = ({
         device: 'wasm',
       })
       const voice = await model
+      if ('warmup' in data) return
       const audio = await voice.generate(data.text, {
         voice: 'bf_emma',
         speed: data.rate,
@@ -27,7 +30,7 @@ scope.onmessage = ({
       )
     } catch {
       model = undefined
-      scope.postMessage({ id: data.id, failed: true })
+      if ('id' in data) scope.postMessage({ id: data.id, failed: true })
     }
   })
 }
