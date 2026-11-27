@@ -8,27 +8,35 @@ import {
   Square,
   Volume2,
 } from 'lucide-react'
+import { academyPronunciations } from '../shared/academy'
+import type { AcademyUnit } from '../shared/academy'
 import { phrases } from '../shared/lessons'
-import type { Phrase } from '../shared/lessons'
 import { api } from './api'
 import type { Assessment } from './api'
 import type { Progress, Translate } from './App'
-import { makeWav, speak } from './speech'
+import { makeWav, playbackMessage, speak, stopSpeaking } from './speech'
+import type { PlaybackStatus } from './speech'
 
 export default function Pronunciation({
   t,
+  academy,
   showScores,
   provider,
   access,
   report,
 }: {
   t: Translate
+  academy?: AcademyUnit
   showScores: boolean
   provider: 'local' | 'azure' | null
   access: string
   report(change: Partial<Progress>): void
 }) {
-  const [id, setId] = useState<Phrase>('bear')
+  const references: Record<
+    string,
+    { text: string; ru: string; tip: string; ipa: string }
+  > = academy ? academyPronunciations(academy) : phrases
+  const [id, setId] = useState(academy ? 'sentence' : 'bear')
   const [stage, setStage] = useState<
     'idle' | 'starting' | 'recording' | 'stopping' | 'analysis'
   >('idle')
@@ -36,15 +44,17 @@ export default function Pronunciation({
   const [audioUrl, setAudioUrl] = useState('')
   const [result, setResult] = useState<Assessment>()
   const [error, setError] = useState('')
+  const [playback, setPlayback] = useState<PlaybackStatus>()
   const active = useRef<MediaRecorder | null>(null)
   const timer = useRef<number>(0)
   const mounted = useRef(false)
-  const phrase = phrases[id]
+  const phrase = references[id]
 
   useEffect(() => {
     mounted.current = true
     return () => {
       mounted.current = false
+      stopSpeaking()
       window.clearTimeout(timer.current)
       active.current?.stream.getTracks().forEach((track) => track.stop())
     }
@@ -68,10 +78,17 @@ export default function Pronunciation({
     }
   }
 
+  function listen(text: string) {
+    speak(text, 0.76, (status) => {
+      if (mounted.current) setPlayback(status)
+    })
+  }
+
   async function record() {
     setStage('starting')
     setError('')
-    window.speechSynthesis?.cancel()
+    stopSpeaking()
+    setPlayback(undefined)
     let stream: MediaStream | undefined
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -144,10 +161,13 @@ export default function Pronunciation({
       if (!mounted.current) return
       const headers = new Headers({ 'Content-Type': 'audio/wav' })
       if (provider === 'azure') headers.set('X-Demo-Code', access)
-      const assessment = await api<Assessment>(
-        `pronunciation?phrase=${id}&provider=${provider}`,
-        { method: 'POST', headers, body: wav },
-      )
+      const params = new URLSearchParams({ phrase: id, provider })
+      if (academy) params.set('academy', academy.id)
+      const assessment = await api<Assessment>(`pronunciation?${params}`, {
+        method: 'POST',
+        headers,
+        body: wav,
+      })
       if (mounted.current) {
         setResult(assessment)
         report({ analyses: 1 })
@@ -174,6 +194,7 @@ export default function Pronunciation({
     .filter((word) => word.score != null && word.needsPractice)
     .sort((a, b) => a.score! - b.score!)[0]
   const missed = result?.words.find((word) => word.omitted)
+  const audioStatus = playbackMessage(playback, t)
 
   return (
     <div className="pronunciation-grid">
@@ -182,46 +203,48 @@ export default function Pronunciation({
           <Headphones size={25} />
         </span>
         <h2>{t('Послушай и повтори', 'Listen and repeat')}</h2>
-        <label htmlFor="phrase">{t('Выбери фразу', 'Choose a phrase')}</label>
+        <label htmlFor="phrase">
+          {t('Выбери образец', 'Choose an example')}
+        </label>
         <div className="select-wrap">
           <select
             id="phrase"
             value={id}
             disabled={stage !== 'idle'}
             onChange={(event) => {
-              window.speechSynthesis?.cancel()
-              setId(event.target.value as Phrase)
+              stopSpeaking()
+              setPlayback(undefined)
+              setId(event.target.value)
               setAudio(undefined)
               setResult(undefined)
               setError('')
             }}
           >
-            {(Object.keys(phrases) as Phrase[]).map((key) => (
+            {Object.entries(references).map(([key, reference]) => (
               <option key={key} value={key}>
-                {phrases[key].text}
+                {reference.text}
               </option>
             ))}
           </select>
           <ChevronDown size={17} />
         </div>
         <blockquote lang="en">{phrase.text}</blockquote>
-        <p>{t(phrase.ru, 'Try the whole sentence at your own pace.')}</p>
+        {phrase.ru && (
+          <p>{t(phrase.ru, 'Try the whole sentence at your own pace.')}</p>
+        )}
         <button
           className="secondary"
           disabled={stage !== 'idle'}
-          onClick={() => {
-            if (!speak(phrase.text, 0.76))
-              setError(
-                t(
-                  'В браузере нет озвучивания.',
-                  'Speech playback is unavailable.',
-                ),
-              )
-          }}
+          onClick={() => listen(phrase.text)}
         >
           <Volume2 size={19} />
           {t('Послушать образец', 'Hear the example')}
         </button>
+        {audioStatus && (
+          <p className="status" role="status">
+            {audioStatus}
+          </p>
+        )}
         <p className="phrase-tip">
           <Sparkles size={17} />
           <span>
@@ -238,8 +261,8 @@ export default function Pronunciation({
         <h2>{t('Твоя запись', 'Your recording')}</h2>
         <p>
           {t(
-            'Нажми на микрофон, произнеси фразу и останови запись.',
-            'Press the microphone, say the phrase and stop the recording.',
+            'Нажми на микрофон, повтори образец и останови запись.',
+            'Press the microphone, repeat the example and stop the recording.',
           )}
         </p>
         <button
@@ -308,7 +331,7 @@ export default function Pronunciation({
           {(missed || weakest) && (
             <button
               className="secondary"
-              onClick={() => speak((missed ?? weakest)!.word, 0.75)}
+              onClick={() => listen((missed ?? weakest)!.word)}
             >
               <Volume2 size={17} />
               {t('Послушать слово', 'Hear the word')}

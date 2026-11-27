@@ -1,3 +1,6 @@
+import { academyLesson } from './academy'
+import type { AcademyUnit } from './academy'
+
 export const topics = {
   animals: {
     en: 'Animals',
@@ -153,8 +156,8 @@ export const picture = {
 export type Topic = keyof typeof topics
 export type Role = keyof typeof roles
 export type Phrase = keyof typeof phrases
-export type Mode = 'chat' | 'role' | 'pronounce' | 'picture' | 'guess'
-export type ChatMode = 'chat' | 'role' | 'picture'
+export type Mode = ChatMode | 'pronounce' | 'guess'
+export type ChatMode = 'chat' | 'role' | 'picture' | 'free'
 export type Level = 'Pre-A1' | 'A1'
 export type Lang = 'ru' | 'en'
 export type Message = {
@@ -169,9 +172,17 @@ export type ChatRequest = {
   role: Role
   level: Level
   history: Message[]
+  academy?: string
+  step?: number
 }
 
-export function lesson(mode: Mode, topic: Topic, role: Role) {
+export function lesson(
+  mode: Mode,
+  topic: Topic,
+  role: Role,
+  academy?: AcademyUnit,
+) {
+  if (academy) return academyLesson(mode, academy)
   return mode === 'role'
     ? roles[role]
     : mode === 'picture'
@@ -198,15 +209,17 @@ export function scriptReply(
   input: string,
   turn: number,
   target: number,
+  academy?: AcademyUnit,
 ): Message {
   const correction = corrections.find(([pattern]) => pattern.test(input))
-  const script = lesson(mode, topic, role)
+  const script = lesson(mode, topic, role, academy)
   let content =
     turn >= target
       ? 'Great work today! Thanks for talking with me.'
-      : `${turn === 1 ? 'Nice try!' : 'Thanks!'} ${script.next[(turn - 1) % script.next.length]}`
+      : script.next[(turn - 1) % script.next.length]
   if (
     mode === 'chat' &&
+    !academy &&
     topic === 'animals' &&
     turn === 1 &&
     /\bdog\b/i.test(input)

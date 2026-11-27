@@ -25,19 +25,86 @@ export const SpeechRecognition =
   (window as Window & { webkitSpeechRecognition?: new () => Recognition })
     .webkitSpeechRecognition
 
-export function speak(text: string, rate = 0.88) {
-  if (!('speechSynthesis' in window)) return false
-  window.speechSynthesis.cancel()
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = 'en-US'
-  utterance.rate = rate
-  const voices = window.speechSynthesis.getVoices()
+export type PlaybackStatus =
+  'starting' | 'playing' | 'ended' | 'blocked' | 'unavailable'
+
+let playing: { utterance: SpeechSynthesisUtterance; cancel(): void } | undefined
+
+export function stopSpeaking() {
+  playing?.cancel()
+}
+
+export function speak(
+  text: string,
+  rate = 0.88,
+  update?: (status: PlaybackStatus) => void,
+) {
+  stopSpeaking()
+  const synthesis = window.speechSynthesis
+  if (!synthesis || typeof SpeechSynthesisUtterance === 'undefined') {
+    update?.('unavailable')
+    return
+  }
+
+  const voices = synthesis
+    .getVoices()
+    .filter((voice) => /^en(?:[-_]|$)/i.test(voice.lang))
+  const american = (voice: SpeechSynthesisVoice) =>
+    /^en[-_]us$/i.test(voice.lang)
   const voice =
-    voices.find((item) => item.lang === 'en-US' && item.localService) ??
-    voices.find((item) => item.lang === 'en-US')
+    voices.find((item) => american(item) && item.localService) ??
+    voices.find((item) => item.localService) ??
+    voices.find(american) ??
+    voices[0]
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = voice?.lang ?? 'en-US'
+  utterance.rate = rate
   if (voice) utterance.voice = voice
-  window.speechSynthesis.speak(utterance)
-  return true
+
+  const timeout = window.setTimeout(() => finish('unavailable', true), 6000)
+  function finish(status: PlaybackStatus, cancel = false) {
+    if (playing?.utterance !== utterance) return
+    playing = undefined
+    window.clearTimeout(timeout)
+    utterance.onstart = utterance.onend = utterance.onerror = null
+    if (cancel) synthesis.cancel()
+    update?.(status)
+  }
+
+  playing = { utterance, cancel: () => finish('ended', true) }
+  update?.('starting')
+  utterance.onstart = () => {
+    window.clearTimeout(timeout)
+    update?.('playing')
+  }
+  utterance.onend = () => finish('ended')
+  utterance.onerror = (event) =>
+    finish(event.error === 'not-allowed' ? 'blocked' : 'unavailable')
+  try {
+    if (synthesis.paused) synthesis.resume()
+    synthesis.speak(utterance)
+  } catch {
+    finish('unavailable')
+  }
+}
+
+export function playbackMessage(
+  status: PlaybackStatus | undefined,
+  t: (ru: string, en: string) => string,
+) {
+  if (status === 'starting') return t('Готовлю озвучку…', 'Preparing audio…')
+  if (status === 'playing') return t('Бадди говорит…', 'Buddy is speaking…')
+  if (status === 'blocked')
+    return t(
+      'Нажми на динамик рядом с ответом, чтобы запустить звук.',
+      'Press the speaker beside the reply to play it.',
+    )
+  if (status === 'unavailable')
+    return t(
+      'Браузер не смог озвучить текст. Проверь доступность английского голоса.',
+      'The browser could not play speech. Check for an English voice.',
+    )
+  return ''
 }
 
 export async function makeWav(blob: Blob) {

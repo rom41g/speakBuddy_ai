@@ -15,12 +15,15 @@ import {
   Store,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { getAcademyUnit } from '../shared/academy'
 import { roles, topics } from '../shared/lessons'
 import type { Lang, Level, Mode, Role, Topic } from '../shared/lessons'
 import { api } from './api'
 import type { Capabilities } from './api'
+import AcademyPicker from './AcademyPicker'
 import Practice from './Practice'
 import Pronunciation from './Pronunciation'
+import { stopSpeaking } from './speech'
 
 export type Translate = (ru: string, en: string) => string
 export type Progress = {
@@ -37,6 +40,8 @@ export type Settings = {
   enabled: Topic[]
   hints: boolean
   scores: boolean
+  academy: string | null
+  autoSpeak: boolean
 }
 export const emptyProgress: Progress = {
   turns: 0,
@@ -57,16 +62,16 @@ const modes: {
   {
     id: 'chat',
     title: 'AI Conversation',
-    ru: 'Поговори с Бадди на любимую тему.',
-    en: 'Talk to Buddy about a topic you like.',
+    ru: 'Поговори с Бадди и попробуй новые слова.',
+    en: 'Talk to Buddy and try new vocabulary.',
     icon: MessageCircle,
     theme: 'violet',
   },
   {
     id: 'role',
     title: 'Role Play',
-    ru: 'Сыграй в покупателя или познакомься с новым другом.',
-    en: 'Go shopping or meet a new friend.',
+    ru: 'Примерь роль и разыграй сцену с Бадди.',
+    en: 'Take a role and act out a scene with Buddy.',
     icon: Store,
     theme: 'peach',
   },
@@ -89,8 +94,8 @@ const modes: {
   {
     id: 'guess',
     title: 'Guess the Word',
-    ru: 'Задавай вопросы и угадай слово Бадди.',
-    en: 'Ask questions and guess Buddy’s word.',
+    ru: 'Угадай слово Бадди по подсказке.',
+    en: 'Use a clue to guess Buddy’s word.',
     icon: CircleHelp,
     theme: 'pink',
   },
@@ -103,6 +108,8 @@ const defaults: Settings = {
   enabled: Object.keys(topics) as Topic[],
   hints: true,
   scores: false,
+  academy: '1-1',
+  autoSpeak: true,
 }
 function readLocal<T>(key: string, fallback: T): T {
   try {
@@ -144,10 +151,14 @@ export default function App() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const t: Translate = (ru, en) => (settings.lang === 'en' ? en : ru)
   const score = progress.finished + progress.analyses
+  const academy = getAcademyUnit(settings.academy)
 
   useEffect(() => {
     document.documentElement.lang = settings.lang
   }, [settings.lang])
+  useEffect(() => {
+    window.speechSynthesis?.getVoices()
+  }, [])
   useEffect(() => {
     api<Capabilities>('config')
       .then(setCapabilities)
@@ -155,7 +166,7 @@ export default function App() {
   }, [])
 
   function navigate(next: typeof screen) {
-    window.speechSynthesis?.cancel()
+    stopSpeaking()
     setScreen(next)
     setAttempt((current) => current + 1)
     window.scrollTo(0, 0)
@@ -186,7 +197,22 @@ export default function App() {
       })
   }
 
-  const current = modes.find((item) => item.id === screen)
+  const freeTitle = t('Свободный чат', 'Free chat')
+  const current =
+    screen === 'free'
+      ? { id: screen, title: freeTitle }
+      : modes.find((item) => item.id === screen)
+  const curriculumPicker = (
+    <AcademyPicker
+      unit={academy}
+      t={t}
+      showWords={screen === 'teacher'}
+      change={(id) => {
+        stopSpeaking()
+        setSettings((previous) => ({ ...previous, academy: id }))
+      }}
+    />
+  )
 
   return (
     <div className="app-shell">
@@ -207,11 +233,17 @@ export default function App() {
           </button>
           <nav aria-label={t('Основная навигация', 'Main navigation')}>
             <button
-              className={`nav-button ${screen !== 'teacher' ? 'current' : ''}`}
+              className={`nav-button ${screen !== 'teacher' && screen !== 'free' ? 'current' : ''}`}
               onClick={() => navigate('home')}
             >
               <BookOpen size={18} />
               <span>{t('Практика', 'Practice')}</span>
+            </button>
+            <button
+              className={`nav-button ${screen === 'free' ? 'current' : ''}`}
+              onClick={() => navigate('free')}
+            >
+              <MessageCircle size={18} /> <span>{freeTitle}</span>
             </button>
             <button
               className={`nav-button ${screen === 'teacher' ? 'current' : ''}`}
@@ -265,12 +297,20 @@ export default function App() {
                     'Ask questions, play a role and try new phrases with Buddy.',
                   )}
                 </p>
-                <button
-                  className="primary hero-action"
-                  onClick={() => navigate('chat')}
-                >
-                  <Mic size={19} /> {t('Начать разговор', 'Start talking')}
-                </button>
+                <div className="hero-buttons">
+                  <button
+                    className="primary hero-action"
+                    onClick={() => navigate('chat')}
+                  >
+                    <Mic size={19} /> {t('Начать разговор', 'Start talking')}
+                  </button>
+                  <button
+                    className="secondary hero-free"
+                    onClick={() => navigate('free')}
+                  >
+                    <MessageCircle size={19} /> {freeTitle}
+                  </button>
+                </div>
               </div>
               <div className="hero-art" aria-hidden="true">
                 <div className="orbit orbit-outer" />
@@ -293,6 +333,7 @@ export default function App() {
                 </span>
               </div>
             </section>
+            {curriculumPicker}
             <section className="mode-section" aria-labelledby="mode-heading">
               <div className="section-title">
                 <div>
@@ -352,6 +393,7 @@ export default function App() {
             <div className="teacher-grid">
               <section className="panel settings-panel">
                 <h2>{t('Настройки занятия', 'Lesson settings')}</h2>
+                {curriculumPicker}
                 <label htmlFor="level">{t('Сложность', 'Level')}</label>
                 <div className="select-wrap">
                   <select
@@ -369,23 +411,25 @@ export default function App() {
                   </select>
                   <ChevronDown size={17} />
                 </div>
-                <fieldset>
-                  <legend>
-                    {t('Темы для разговора', 'Conversation topics')}
-                  </legend>
-                  <div className="topic-list">
-                    {(Object.keys(topics) as Topic[]).map((id) => (
-                      <button
-                        className={`chip ${settings.enabled.includes(id) ? 'selected' : ''}`}
-                        aria-pressed={settings.enabled.includes(id)}
-                        key={id}
-                        onClick={() => toggleTopic(id)}
-                      >
-                        {topics[id].icon} {t(topics[id].ru, topics[id].en)}
-                      </button>
-                    ))}
-                  </div>
-                </fieldset>
+                {!academy && (
+                  <fieldset>
+                    <legend>
+                      {t('Темы для разговора', 'Conversation topics')}
+                    </legend>
+                    <div className="topic-list">
+                      {(Object.keys(topics) as Topic[]).map((id) => (
+                        <button
+                          className={`chip ${settings.enabled.includes(id) ? 'selected' : ''}`}
+                          aria-pressed={settings.enabled.includes(id)}
+                          key={id}
+                          onClick={() => toggleTopic(id)}
+                        >
+                          {topics[id].icon} {t(topics[id].ru, topics[id].en)}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                )}
                 <label className="check">
                   <input
                     type="checkbox"
@@ -517,7 +561,7 @@ export default function App() {
                   className="page-title"
                   tabIndex={-1}
                   ref={titleRef}
-                  lang="en"
+                  lang={screen === 'free' ? settings.lang : 'en'}
                 >
                   {current.title}
                 </h1>
@@ -526,7 +570,8 @@ export default function App() {
                 <Sparkles size={16} /> {settings.level}
               </span>
             </div>
-            {screen === 'chat' && (
+            {screen !== 'free' && curriculumPicker}
+            {screen === 'chat' && !academy && (
               <div
                 className="topic-list choose-topic"
                 aria-label={t('Выбрать тему', 'Choose a topic')}
@@ -538,7 +583,7 @@ export default function App() {
                     aria-pressed={id === settings.topic}
                     onClick={() => {
                       if (id !== settings.topic) {
-                        window.speechSynthesis?.cancel()
+                        stopSpeaking()
                         setSettings({ ...settings, topic: id })
                       }
                     }}
@@ -548,7 +593,7 @@ export default function App() {
                 ))}
               </div>
             )}
-            {screen === 'role' && (
+            {screen === 'role' && !academy && (
               <div
                 className="topic-list choose-topic"
                 aria-label={t('Выбрать сцену', 'Choose a scene')}
@@ -559,7 +604,7 @@ export default function App() {
                     className={`chip ${role === id ? 'selected' : ''}`}
                     aria-pressed={role === id}
                     onClick={() => {
-                      window.speechSynthesis?.cancel()
+                      stopSpeaking()
                       setRole(id)
                     }}
                   >
@@ -570,7 +615,8 @@ export default function App() {
             )}
             {screen === 'pronounce' ? (
               <Pronunciation
-                key={attempt}
+                key={`${academy?.id ?? 'free'}-${attempt}`}
+                academy={academy}
                 t={t}
                 showScores={settings.scores}
                 provider={
@@ -583,13 +629,21 @@ export default function App() {
               />
             ) : (
               <Practice
-                key={`${screen}-${settings.topic}-${role}-${attempt}`}
+                key={`${screen}-${academy?.id ?? 'free'}-${settings.topic}-${role}-${attempt}`}
                 mode={current.id as Exclude<Mode, 'pronounce'>}
+                academy={screen === 'free' ? undefined : academy}
                 topic={settings.topic}
                 role={role}
                 t={t}
                 level={settings.level}
                 hints={settings.hints}
+                autoSpeak={settings.autoSpeak}
+                changeAutoSpeak={(enabled) =>
+                  setSettings((previous) => ({
+                    ...previous,
+                    autoSpeak: enabled,
+                  }))
+                }
                 access={cloud && capabilities.chat ? access : ''}
                 report={report}
                 restart={() => navigate(current.id)}

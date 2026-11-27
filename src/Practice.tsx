@@ -9,7 +9,16 @@ import {
   Square,
   Star,
   Volume2,
+  VolumeX,
 } from 'lucide-react'
+import { academyGuess } from '../shared/academy'
+import type { AcademyUnit } from '../shared/academy'
+import {
+  freeChatOpening,
+  freePreparedReply,
+  guidedInterruption,
+  socialReply,
+} from '../shared/conversation'
 import {
   containsContact,
   lesson,
@@ -26,8 +35,20 @@ import type {
   Topic,
 } from '../shared/lessons'
 import { api } from './api'
+import {
+  browserChat,
+  browserModelAvailability,
+  enableBrowserModel,
+} from './browserChat'
+import type { ModelAvailability } from './browserChat'
 import type { Progress, Translate } from './App'
-import { speak, SpeechRecognition } from './speech'
+import {
+  playbackMessage,
+  speak,
+  SpeechRecognition,
+  stopSpeaking,
+} from './speech'
+import type { PlaybackStatus } from './speech'
 
 const animals = [
   {
@@ -88,11 +109,14 @@ function guessReply(
 
 type Props = {
   mode: Exclude<Mode, 'pronounce'>
+  academy?: AcademyUnit
   topic: Topic
   role: Role
   level: Level
   t: Translate
   hints: boolean
+  autoSpeak: boolean
+  changeAutoSpeak(enabled: boolean): void
   access: string
   report(change: Partial<Progress>): void
   restart(): void
@@ -100,26 +124,35 @@ type Props = {
 
 export default function Practice({
   mode,
+  academy,
   topic,
   role,
   level,
   t,
   hints,
+  autoSpeak,
+  changeAutoSpeak,
   access,
   report,
   restart,
 }: Props) {
-  const activity = lesson(mode, topic, role)
-  const question =
-    mode === 'guess'
-      ? 'I am thinking of an animal. Ask me a question!'
+  const open = mode === 'free'
+  const activity = lesson(mode, topic, role, academy)
+  const [draw] = useState(() => Math.random())
+  const animal = animals[Math.floor(draw * animals.length)]
+  const card = academy?.cards[Math.floor(draw * academy.cards.length)]
+  const question = open
+    ? freeChatOpening
+    : mode === 'guess'
+      ? card
+        ? `Guess the word! ${card.clue}`
+        : 'I am thinking of an animal. Ask me a question!'
       : activity.question
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: question },
   ])
-  const [animal] = useState(
-    () => animals[Math.floor(Math.random() * animals.length)],
-  )
+  const [turn, setTurn] = useState(0)
+  const [lessonQuestion, setLessonQuestion] = useState(question)
   const [draft, setDraft] = useState('')
   const [voice, setVoice] = useState(false)
   const [listening, setListening] = useState(false)
@@ -129,18 +162,23 @@ export default function Practice({
   const [pending, setPending] = useState(false)
   const [finished, setFinished] = useState(false)
   const [hintShown, setHintShown] = useState(false)
+  const [playback, setPlayback] = useState<PlaybackStatus>()
+  const [availability, setAvailability] =
+    useState<ModelAvailability>('unavailable')
+  const [modelLoading, setModelLoading] = useState(false)
   const recognizer = useRef<InstanceType<
     NonNullable<typeof SpeechRecognition>
   > | null>(null)
   const mounted = useRef(false)
   const transcript = useRef<HTMLDivElement>(null)
-  const turn = messages.filter((item) => item.role === 'user').length
+  const localModel = useRef<AbortController | null>(null)
   const target = level === 'A1' ? 4 : 3
 
   useEffect(() => {
     mounted.current = true
     return () => {
       mounted.current = false
+      stopSpeaking()
       const active = recognizer.current
       if (active) {
         active.onend = active.onerror = active.onresult = null
@@ -149,23 +187,49 @@ export default function Practice({
     }
   }, [])
   useEffect(() => {
+    if (!open) return
+    const controller = new AbortController()
+    localModel.current = controller
+    browserModelAvailability().then((state) => {
+      if (!controller.signal.aborted) setAvailability(state)
+    })
+    return () => controller.abort()
+  }, [open])
+  useEffect(() => {
     if (transcript.current)
       transcript.current.scrollTop = transcript.current.scrollHeight
   }, [messages, pending])
 
   function listen(content: string) {
-    if (!speak(content, level === 'Pre-A1' ? 0.79 : 0.9))
-      setError(
-        t(
-          'В браузере нет озвучивания.',
-          'Speech playback is unavailable in this browser.',
-        ),
-      )
+    speak(content, level === 'Pre-A1' ? 0.79 : 0.9, (status) => {
+      if (mounted.current) setPlayback(status)
+    })
+  }
+
+  async function connectBrowserModel() {
+    const signal = localModel.current?.signal
+    if (!signal || modelLoading) return
+    setModelLoading(true)
+    setError('')
+    try {
+      await enableBrowserModel(signal)
+      if (!signal.aborted) setAvailability('available')
+    } catch {
+      if (!signal.aborted)
+        setError(
+          t(
+            'Браузер не смог запустить локальный ИИ.',
+            'The browser could not start its local model.',
+          ),
+        )
+    } finally {
+      if (!signal.aborted) setModelLoading(false)
+    }
   }
 
   function startMic() {
     if (!SpeechRecognition || recognizer.current) return
-    window.speechSynthesis?.cancel()
+    stopSpeaking()
     setError('')
     const recognition = new SpeechRecognition()
     recognition.lang = 'en-US'
@@ -216,75 +280,143 @@ export default function Practice({
       )
       return
     }
+    stopSpeaking()
+    setPlayback(undefined)
     setError('')
     setDraft('')
     setVoice(false)
     const history: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(history)
     report({ turns: 1, voice: voice ? 1 : 0 })
-    let done: boolean
+    let done = false
     let reply: Message
+    const interruption = open
+      ? socialReply(text)
+      : mode !== 'guess' && guidedInterruption(text, lessonQuestion)
+    const step = turn + 1
 
-    if (mode === 'guess') {
-      const result = guessReply(animal, text, turn + 1)
+    if (interruption) {
+      reply = { role: 'assistant', content: interruption }
+    } else if (mode === 'guess') {
+      const result = card
+        ? academyGuess(card, text, step)
+        : guessReply(animal, text, step)
       done = result.done
       reply = { role: 'assistant', content: result.content }
     } else {
-      done = turn + 1 >= target
-      reply = scriptReply(mode, topic, role, text, turn + 1, target)
-      if (access) {
+      done = !open && step >= target
+      reply = open
+        ? {
+            role: 'assistant',
+            content: freePreparedReply(
+              text,
+              messages[messages.length - 1].content,
+            ),
+          }
+        : scriptReply(mode, topic, role, text, step, target, academy)
+      const browserReady = open && availability === 'available' && !modelLoading
+      if (access || browserReady) {
         setPending(true)
-        const payload: ChatRequest = { mode, topic, role, level, history }
-        try {
-          reply = await api<Message>('chat', {
+        const recent = history.slice(-8)
+        const payload: ChatRequest = {
+          mode,
+          topic,
+          role,
+          level,
+          history: recent,
+          academy: academy?.id,
+          step: open ? undefined : step,
+        }
+        let generated: Message | undefined
+        if (access) {
+          generated = await api<Message>('chat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'X-Demo-Code': access,
             },
             body: JSON.stringify(payload),
-          })
-        } catch {
-          if (mounted.current)
-            setError(
-              t(
-                'ИИ сейчас недоступен. Продолжаем по учебному сценарию.',
-                'AI is unavailable. Continuing with the prepared lesson.',
-              ),
-            )
-        } finally {
-          if (mounted.current) setPending(false)
+          }).catch(() => undefined)
         }
+        if (
+          !generated &&
+          browserReady &&
+          localModel.current &&
+          mounted.current
+        ) {
+          generated = await browserChat(
+            recent,
+            localModel.current.signal,
+          ).catch(() => undefined)
+        }
+        if (!mounted.current) return
+        setPending(false)
+        if (generated) reply = generated
+        else
+          setError(
+            t(
+              'ИИ сейчас недоступен. Включён базовый режим.',
+              'AI is unavailable. Basic mode is active.',
+            ),
+          )
       }
     }
     if (!mounted.current) return
+    if (!open && !interruption) {
+      setTurn(step)
+      setLessonQuestion(reply.content)
+    }
     setMessages([...history, reply])
+    if (autoSpeak)
+      listen([reply.content, reply.correction].filter(Boolean).join(' '))
     if (done) {
       setFinished(true)
       report({ finished: 1 })
     }
   }
 
+  const audioStatus = playbackMessage(playback, t)
+
   return (
     <div className={`activity-layout ${mode === 'picture' ? 'split' : ''}`}>
       {mode === 'picture' && (
         <figure className="panel picture-panel">
-          <img
-            src={`${import.meta.env.BASE_URL}park.webp`}
-            alt={t(
-              'В парке коричневая собака бежит к красному мячу. Рядом с деревом стоит скамейка.',
-              picture.details,
-            )}
-          />
+          {academy ? (
+            <div className="picture-cards">
+              {academy.cards.map((item) => (
+                <span
+                  key={item.word}
+                  role="img"
+                  lang="en"
+                  aria-label={item.clue}
+                >
+                  {item.icon}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <img
+              src={`${import.meta.env.BASE_URL}park.webp`}
+              alt={t(
+                'В парке коричневая собака бежит к красному мячу. Рядом с деревом стоит скамейка.',
+                picture.details,
+              )}
+            />
+          )}
           <figcaption>
-            {t(
-              level === 'A1'
-                ? 'Расскажи, что видишь. Попробуй составить 4–5 фраз.'
-                : 'Назови, что видишь. Добавь цвет или действие.',
-              level === 'A1'
-                ? 'Say what you see. Try four or five sentences.'
-                : 'Name what you see. Add a colour or an action.',
-            )}
+            {academy
+              ? t(
+                  'Опиши обе карточки словами юнита.',
+                  'Describe both cards using words from the unit.',
+                )
+              : t(
+                  level === 'A1'
+                    ? 'Расскажи, что видишь. Попробуй составить 4–5 фраз.'
+                    : 'Назови, что видишь. Добавь цвет или действие.',
+                  level === 'A1'
+                    ? 'Say what you see. Try four or five sentences.'
+                    : 'Name what you see. Add a colour or an action.',
+                )}
           </figcaption>
         </figure>
       )}
@@ -301,14 +433,65 @@ export default function Practice({
             <p>
               {mode !== 'guess' && access
                 ? t('ИИ-режим', 'AI mode')
-                : t('Учебный сценарий', 'Prepared lesson')}
+                : open
+                  ? availability === 'available'
+                    ? t('ИИ в браузере', 'On-device AI')
+                    : t('Базовый чат', 'Basic chat')
+                  : t('Учебный сценарий', 'Prepared lesson')}
             </p>
           </div>
-          <span className="turns">
-            {mode === 'guess' ? `${turn}/6` : `${turn}/${target}`}{' '}
-            {t('реплик', 'replies')}
-          </span>
+          <div className="chat-tools">
+            {!open && (
+              <span className="turns">
+                {mode === 'guess' ? `${turn}/6` : `${turn}/${target}`}{' '}
+                {t('реплик', 'replies')}
+              </span>
+            )}
+            <button
+              className="audio-toggle"
+              type="button"
+              aria-pressed={autoSpeak}
+              onClick={() => {
+                if (autoSpeak) {
+                  stopSpeaking()
+                  setPlayback(undefined)
+                }
+                changeAutoSpeak(!autoSpeak)
+              }}
+            >
+              {autoSpeak ? <Volume2 size={17} /> : <VolumeX size={17} />}
+              {t('Автоозвучка', 'Auto-play replies')}
+            </button>
+            {open && messages.length > 1 && (
+              <button className="audio-toggle" onClick={restart}>
+                <RotateCcw size={16} /> {t('Новый чат', 'New chat')}
+              </button>
+            )}
+          </div>
         </div>
+        {open &&
+          !access &&
+          (modelLoading ||
+            availability === 'downloadable' ||
+            availability === 'downloading') && (
+            <div className="model-prompt">
+              <span>
+                {t(
+                  'Браузер может скачать модель для свободного диалога.',
+                  'Your browser can download a model for open conversation.',
+                )}
+              </span>
+              <button
+                className="secondary"
+                disabled={modelLoading}
+                onClick={connectBrowserModel}
+              >
+                {modelLoading
+                  ? t('Загружаю модель…', 'Loading the model…')
+                  : t('Включить ИИ в браузере', 'Enable on-device AI')}
+              </button>
+            </div>
+          )}
         <div
           className="transcript"
           ref={transcript}
@@ -352,6 +535,11 @@ export default function Practice({
             </p>
           )}
         </div>
+        {audioStatus && (
+          <p className="audio-status status" role="status">
+            {audioStatus}
+          </p>
+        )}
         {finished ? (
           <div className="completion" role="status">
             <Star size={20} fill="currentColor" />
@@ -363,7 +551,7 @@ export default function Practice({
           </div>
         ) : (
           <div className="composer">
-            {hints && (
+            {hints && !open && (
               <>
                 <button
                   className="hint-button"
@@ -373,13 +561,27 @@ export default function Practice({
                   <Lightbulb size={17} /> {t('Подсказка', 'Hint')}
                 </button>
                 {hintShown && (
-                  <p className="hint-text" lang="en">
-                    {mode === 'guess'
-                      ? 'Is it big? Has it got a tail? Is it a …?'
-                      : mode === 'chat' && turn > 0
-                        ? topics[topic].words
-                        : activity.hint}
-                  </p>
+                  <div className="activity-hint" lang="en">
+                    <p className="hint-text">
+                      {mode === 'guess'
+                        ? academy
+                          ? 'What is the first letter? Is it …?'
+                          : 'Is it big? Has it got a tail? Is it a …?'
+                        : !academy && mode === 'chat' && turn > 0
+                          ? topics[topic].words
+                          : activity.hint}
+                    </p>
+                    {academy && (
+                      <ul
+                        className="academy-words"
+                        aria-label="Unit vocabulary"
+                      >
+                        {academy.vocabulary.map((word) => (
+                          <li key={word}>{word}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 )}
               </>
             )}
