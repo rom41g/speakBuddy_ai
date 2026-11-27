@@ -6,6 +6,10 @@ import type { ModelStatus } from './localChat'
 type BrowserMessage = { role: 'system' | 'user' | 'assistant'; content: string }
 type BrowserSession = {
   prompt(input: string, options: { signal: AbortSignal }): Promise<string>
+  promptStreaming?(
+    input: string,
+    options: { signal: AbortSignal },
+  ): ReadableStream<string>
   destroy(): void
 }
 const languageModel = (
@@ -19,6 +23,16 @@ const languageModel = (
     }
   }
 ).LanguageModel
+
+export async function prepareBrowserChat() {
+  if (
+    (await languageModel?.availability().catch(() => 'unavailable')) ===
+    'available'
+  )
+    return
+  const { prepareLocalChat } = await import('./localChat')
+  await prepareLocalChat()
+}
 
 function cleanReply(raw: string, latest: string) {
   let content = raw
@@ -51,10 +65,31 @@ export async function browserChat(
   input: ChatRequest,
   signal: AbortSignal,
   status: (state: ModelStatus) => void,
+  preview?: (content: string) => void,
 ): Promise<Message> {
   status({ phase: 'thinking' })
   const latest = input.history.at(-1)?.content ?? ''
   const correction = grammarHint(latest)
+  let displayed = ''
+  const updatePreview =
+    preview &&
+    ((raw: string) => {
+      if (signal.aborted) return
+      const complete = raw.match(/^[\s\S]*[.!?](?=\s|$)/)?.[0]
+      if (!complete || complete.length < 10) return
+      try {
+        const content = cleanReply(complete, latest)
+        if (
+          content !== displayed &&
+          !input.history.some((message) => message.content === content)
+        ) {
+          displayed = content
+          preview(content)
+        }
+      } catch {
+        // Wait for the complete reply before showing it.
+      }
+    })
   if (languageModel) {
     try {
       if ((await languageModel.availability()) === 'available') {
@@ -72,15 +107,29 @@ export async function browserChat(
           signal: budget,
         })
         try {
-          const content = cleanReply(
-            await session.prompt(last.content, { signal: budget }),
-            latest,
-          )
+          let reply = ''
+          const stream =
+            updatePreview &&
+            session.promptStreaming?.(last.content, { signal: budget })
+          if (stream) {
+            const reader = stream.getReader()
+            try {
+              for (;;) {
+                const chunk = await reader.read()
+                if (chunk.done) break
+                reply += chunk.value
+                updatePreview(reply)
+              }
+            } finally {
+              reader.releaseLock()
+            }
+          } else {
+            reply = await session.prompt(last.content, { signal: budget })
+          }
           return {
             role: 'assistant',
-            content,
+            content: cleanReply(reply, latest),
             correction,
-            source: 'Browser Prompt API',
           }
         } finally {
           session.destroy()
@@ -88,15 +137,18 @@ export async function browserChat(
       }
     } catch {
       // The bundled model also runs in browsers without the Prompt API.
+      preview?.('')
     }
   }
   signal.throwIfAborted()
   const { localReply } = await import('./localChat')
-  const content = cleanReply(await localReply(input, signal, status), latest)
+  const content = cleanReply(
+    await localReply(input, signal, status, updatePreview),
+    latest,
+  )
   return {
     role: 'assistant',
     content,
     correction,
-    source: 'Qwen3-0.6B · local',
   }
 }

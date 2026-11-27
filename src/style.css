@@ -728,11 +728,6 @@ footer button:hover {
 .correction span {
   font-weight: 750;
 }
-.model-id {
-  display: block;
-  margin-top: 6px;
-  color: #656079;
-}
 .composer {
   padding: 12px 17px;
   border-top: 1px solid var(--line);

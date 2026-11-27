@@ -21,6 +21,7 @@ import { roles, topics } from '../shared/lessons'
 import type { Lang, Level, Mode, Role, Topic } from '../shared/lessons'
 import { api } from './api'
 import type { Capabilities } from './api'
+import { prepareBrowserChat } from './browserChat'
 import AcademyPicker from './AcademyPicker'
 import AcademyDictionary from './AcademyDictionary'
 import Practice from './Practice'
@@ -165,6 +166,7 @@ export default function App() {
   }, [settings.lang])
   useEffect(() => {
     window.speechSynthesis?.getVoices()
+    void prepareBrowserChat().catch(() => {})
   }, [])
   useEffect(() => {
     api<Capabilities>('config')

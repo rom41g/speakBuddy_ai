@@ -12,8 +12,7 @@ let engine: Promise<Wllama> | undefined
 let progress: ModelStatus = { phase: 'loading' }
 const listeners = new Set<(status: ModelStatus) => void>()
 
-async function loadModel(status: (status: ModelStatus) => void) {
-  listeners.add(status)
+export function prepareLocalChat() {
   if (!engine) {
     const model = new Wllama(
       { default: wasm },
@@ -24,7 +23,9 @@ async function loadModel(status: (status: ModelStatus) => void) {
     engine = model
       .loadModelFromUrl(modelUrl, {
         n_ctx: 1536,
-        n_batch: 128,
+        n_batch: 256,
+        n_parallel: 1,
+        warmup: true,
         signal: AbortSignal.timeout(600000),
         progressCallback: ({ loaded, total }) => {
           progress = {
@@ -37,27 +38,29 @@ async function loadModel(status: (status: ModelStatus) => void) {
           listeners.forEach((update) => update(progress))
         },
       })
-      .then(() => model)
+      .then(() => {
+        progress = { phase: 'thinking' }
+        return model
+      })
       .catch(async (error: unknown) => {
         engine = undefined
         await model.exit().catch(() => {})
         throw error
       })
   }
-  status(progress)
-  try {
-    return await engine
-  } finally {
-    listeners.delete(status)
-  }
+  return engine
 }
 
 export async function localReply(
   input: ChatRequest,
   signal: AbortSignal,
   update: (status: ModelStatus) => void,
+  preview?: (content: string) => void,
 ) {
-  const model = await loadModel(update)
+  const loading = prepareLocalChat()
+  listeners.add(update)
+  update(progress)
+  const model = await loading.finally(() => listeners.delete(update))
   signal.throwIfAborted()
   update({ phase: 'thinking' })
   const turns = input.history.map(({ role, content }) => ({
@@ -66,7 +69,7 @@ export async function localReply(
   }))
   const instructions = chatPrompt(input)
   const budget = AbortSignal.any([signal, AbortSignal.timeout(60000)])
-  const output = await complete(instructions, turns)
+  const output = await complete(instructions, turns, preview)
   if (
     input.mode !== 'free' &&
     turns.some(
@@ -78,18 +81,36 @@ export async function localReply(
     return complete(
       `${instructions} The learner just answered. Respond to their answer and advance the activity.`,
       turns.slice(-1),
+      preview,
     )
   }
   return output
 
-  async function complete(prompt: string, history: typeof turns) {
-    const result = await model.createChatCompletion({
+  async function complete(
+    prompt: string,
+    history: typeof turns,
+    onPreview?: typeof preview,
+  ) {
+    let content = ''
+    let limited = false
+    await model.createChatCompletion({
       messages: [{ role: 'system', content: prompt }, ...history],
       chat_template_kwargs: { enable_thinking: false },
+      cache_prompt: true,
       temperature: 0.62,
-      max_tokens: 68,
+      max_tokens: input.level === 'Pre-A1' ? 36 : 52,
       abortSignal: budget,
+      stream: true,
+      onData: (chunk) => {
+        const choice = chunk.choices?.[0]
+        if (choice?.finish_reason === 'length') limited = true
+        const delta = choice?.delta.content
+        if (!delta) return
+        content += delta
+        onPreview?.(content)
+      },
     })
-    return result.choices[0]?.message.content?.trim() ?? ''
+    const full = content.trim()
+    return limited ? (full.match(/^[\s\S]*[.!?](?=\s|$)/)?.[0] ?? full) : full
   }
 }

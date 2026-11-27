@@ -119,7 +119,6 @@ function MessageText({
           <span lang="en-GB">{message.correction}</span>
         </p>
       )}
-      {message.source && <small className="model-id">{message.source}</small>}
     </div>
   )
   if (!message.voiceOnly) return text
@@ -190,6 +189,7 @@ export default function Practice({
   const [hintShown, setHintShown] = useState(false)
   const [playback, setPlayback] = useState<PlaybackStatus>()
   const [modelStatus, setModelStatus] = useState<ModelStatus>()
+  const [replyPreview, setReplyPreview] = useState('')
   const recognizer = useRef<InstanceType<
     NonNullable<typeof SpeechRecognition>
   > | null>(null)
@@ -216,7 +216,7 @@ export default function Practice({
   useEffect(() => {
     if (transcript.current)
       transcript.current.scrollTop = transcript.current.scrollHeight
-  }, [messages, pending])
+  }, [messages, pending, replyPreview])
 
   function listen(content: string) {
     speak(
@@ -358,12 +358,22 @@ export default function Practice({
               signal,
             }).catch(() => undefined)
           : undefined) ??
-        (await browserChat(payload, signal, (status) => {
-          if (!signal.aborted) setModelStatus(status)
-        }).catch(() => undefined))
+        (await browserChat(
+          payload,
+          signal,
+          (status) => {
+            if (!signal.aborted) setModelStatus(status)
+          },
+          spoken
+            ? undefined
+            : (content) => {
+                if (!signal.aborted) setReplyPreview(content)
+              },
+        ).catch(() => undefined))
       if (signal.aborted) return
       setPending(false)
       setModelStatus(undefined)
+      setReplyPreview('')
       if (!generated) {
         setMessages(messages)
         setDraft(text)
@@ -524,7 +534,14 @@ export default function Practice({
               )}
             </div>
           ))}
-          {pending && (
+          {replyPreview && (
+            <div className="turn assistant" aria-hidden="true">
+              <div className="message" lang="en-GB">
+                {replyPreview}
+              </div>
+            </div>
+          )}
+          {pending && !replyPreview && (
             <p className="status">
               {modelStatus?.phase === 'loading'
                 ? t(
