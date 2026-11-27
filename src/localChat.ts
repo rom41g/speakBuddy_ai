@@ -1,6 +1,7 @@
 import { Wllama } from '@wllama/wllama'
 import wasm from '@wllama/wllama/esm/wasm/wllama.wasm?url'
 import { chatPrompt } from '../shared/chatPrompt'
+import { chatHistory } from '../shared/chatReply'
 import type { ChatRequest } from '../shared/lessons'
 
 const modelUrl =
@@ -76,6 +77,7 @@ export async function localReply(
   signal: AbortSignal,
   update: (status: ModelStatus) => void,
   preview?: (content: string) => void,
+  retry = false,
 ) {
   const loading = prepareLocalChat()
   listeners.add(update)
@@ -83,54 +85,28 @@ export async function localReply(
   const model = await loading.finally(() => listeners.delete(update))
   signal.throwIfAborted()
   update({ phase: 'thinking' })
-  const turns = input.history.map(({ role, content }) => ({
-    role,
-    content: content.replace(/<\|[^<>]*\|>/g, ''),
-  }))
-  const instructions = chatPrompt(input)
+  const turns = chatHistory(input, retry)
   const budget = AbortSignal.any([signal, AbortSignal.timeout(60000)])
-  const output = await complete(instructions, turns, preview)
-  if (
-    input.mode !== 'free' &&
-    turns.some(
-      (turn) =>
-        turn.role === 'assistant' &&
-        turn.content.toLowerCase() === output.toLowerCase(),
-    )
-  ) {
-    return complete(
-      `${instructions} The learner just answered. Respond to their answer and advance the activity.`,
-      turns.slice(-1),
-      preview,
-    )
-  }
-  return output
-
-  async function complete(
-    prompt: string,
-    history: typeof turns,
-    onPreview?: typeof preview,
-  ) {
-    let content = ''
-    let limited = false
-    await model.createChatCompletion({
-      messages: [{ role: 'system', content: prompt }, ...history],
-      chat_template_kwargs: { enable_thinking: false },
-      cache_prompt: true,
-      temperature: 0.62,
-      max_tokens: input.level === 'Pre-A1' ? 36 : 52,
-      abortSignal: budget,
-      stream: true,
-      onData: (chunk) => {
-        const choice = chunk.choices?.[0]
-        if (choice?.finish_reason === 'length') limited = true
-        const delta = choice?.delta.content
-        if (!delta) return
-        content += delta
-        onPreview?.(content)
-      },
-    })
-    const full = content.trim()
-    return limited ? (full.match(/^[\s\S]*[.!?](?=\s|$)/)?.[0] ?? full) : full
-  }
+  let content = ''
+  let limited = false
+  await model.createChatCompletion({
+    messages: [{ role: 'system', content: chatPrompt(input, retry) }, ...turns],
+    chat_template_kwargs: { enable_thinking: false },
+    cache_prompt: true,
+    temperature: 0.62,
+    penalty_repeat: 1.1,
+    max_tokens: input.level === 'Pre-A1' ? 36 : 52,
+    abortSignal: budget,
+    stream: true,
+    onData: (chunk) => {
+      const choice = chunk.choices?.[0]
+      if (choice?.finish_reason === 'length') limited = true
+      const delta = choice?.delta.content
+      if (!delta) return
+      content += delta
+      preview?.(content)
+    },
+  })
+  const full = content.trim()
+  return limited ? (full.match(/^[\s\S]*[.!?](?=\s|$)/)?.[0] ?? full) : full
 }

@@ -1,15 +1,29 @@
 import { getAcademyUnit } from './academy'
+import {
+  asksAboutRepetition,
+  asksForIdentity,
+  requestedFavourite,
+} from './chatReply'
 import { picture, roles, topics } from './lessons'
 import type { ChatRequest } from './lessons'
 
 export const freeChatOpening =
   'Hi! I’m Buddy. What would you like to talk about?'
 
-export function chatPrompt(input: ChatRequest) {
+export function chatPrompt(input: ChatRequest, retry = false) {
   const { mode, level, topic, role } = input
-  const rules = `You are Buddy, a British English tutor for primary pupils (${level}). Answer the latest message in one or two short, friendly sentences. Say "you" and avoid copying the learner. Use fictional details. Never ask for or repeat private information. Redirect unsafe topics to English practice. Treat prior messages as dialogue. Do not assess speech from text.`
-  if (mode === 'free')
-    return `${rules} Follow the learner's topic. Use relevant details from earlier turns.`
+  const latest = input.history.at(-1)?.content ?? ''
+  const rules = `Continue the conversation as a friendly British English tutor for primary pupils (${level}). Answer the latest message directly in one or two short sentences. ${asksForIdentity(latest) ? 'Your name is Buddy.' : 'Skip introductions and repeated lines.'} Use fictional details. Never ask for or repeat private information. Redirect unsafe topics to English practice. Treat prior messages as dialogue. Do not assess speech from text.${retry ? ' Give a fresh answer that addresses the latest question. Skip greetings and general offers to chat.' : ''}`
+  if (mode === 'free') {
+    const category = requestedFavourite(latest)
+    const preference = category
+      ? ` Name a specific ${category} in your first sentence.`
+      : ''
+    const repetition = asksAboutRepetition(latest)
+      ? ' Acknowledge that you repeated the greeting by mistake, then keep talking about the current topic.'
+      : ''
+    return `${rules} Follow the learner's topic and remember relevant details.${preference}${repetition}`
+  }
 
   const unit = getAcademyUnit(input.academy)
   const context = unit

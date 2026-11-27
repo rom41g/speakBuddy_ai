@@ -27,7 +27,6 @@ import AcademyDictionary from './AcademyDictionary'
 import Practice from './Practice'
 import Pronunciation from './Pronunciation'
 import { stopSpeaking } from './speech'
-import type { BritishVoice } from './speech'
 
 export type Translate = (ru: string, en: string) => string
 export type Progress = {
@@ -46,7 +45,6 @@ export type Settings = {
   scores: boolean
   academy: string | null
   autoSpeak: boolean
-  britishVoice: BritishVoice
 }
 export const emptyProgress: Progress = {
   turns: 0,
@@ -115,7 +113,6 @@ const defaults: Settings = {
   scores: false,
   academy: '1-1',
   autoSpeak: true,
-  britishVoice: 'emma',
 }
 function readLocal<T>(key: string, fallback: T): T {
   try {
@@ -160,7 +157,6 @@ export default function App() {
   const t: Translate = (ru, en) => (settings.lang === 'en' ? en : ru)
   const score = progress.finished + progress.analyses
   const academy = getAcademyUnit(settings.academy)
-  const britishVoice = settings.britishVoice === 'system' ? 'system' : 'emma'
 
   useEffect(() => {
     document.documentElement.lang = settings.lang
@@ -437,41 +433,6 @@ export default function App() {
                   </select>
                   <ChevronDown size={17} />
                 </div>
-                <label htmlFor="british-voice">
-                  {t('Британский голос', 'British voice')}
-                </label>
-                <div className="select-wrap">
-                  <select
-                    id="british-voice"
-                    value={britishVoice}
-                    onChange={(event) => {
-                      stopSpeaking()
-                      setSettings({
-                        ...settings,
-                        britishVoice: event.target.value as BritishVoice,
-                      })
-                    }}
-                  >
-                    <option value="emma">
-                      {t(
-                        'Emma · голос на всех устройствах',
-                        'Emma · shared voice across devices',
-                      )}
-                    </option>
-                    <option value="system">
-                      {t('Системный голос (en-GB)', 'Device voice (en-GB)')}
-                    </option>
-                  </select>
-                  <ChevronDown size={17} />
-                </div>
-                {britishVoice === 'emma' && (
-                  <p className="status">
-                    {t(
-                      'Emma загружается при первом использовании (около 92 МБ). Пока голос готовится, Бадди может ответить системным британским голосом.',
-                      'Emma downloads about 92 MB on first use. Buddy can reply with the device’s British voice while Emma is getting ready.',
-                    )}
-                  </p>
-                )}
                 {!academy && (
                   <fieldset>
                     <legend>
@@ -685,7 +646,6 @@ export default function App() {
               <Pronunciation
                 key={`${academy?.id ?? 'free'}-${attempt}`}
                 academy={academy}
-                britishVoice={britishVoice}
                 t={t}
                 showScores={settings.scores}
                 provider={
@@ -707,7 +667,6 @@ export default function App() {
                 level={settings.level}
                 hints={settings.hints}
                 autoSpeak={settings.autoSpeak}
-                britishVoice={britishVoice}
                 dictionaryAccess={
                   cloud && capabilities.dictionary ? access : ''
                 }

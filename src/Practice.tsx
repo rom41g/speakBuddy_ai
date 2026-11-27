@@ -19,6 +19,7 @@ import {
 } from '../shared/britishDictionary'
 import type { BritishPronunciation } from '../shared/britishDictionary'
 import { freeChatOpening } from '../shared/chatPrompt'
+import { replyFilter } from '../shared/chatReply'
 import { containsContact, lesson, picture, topics } from '../shared/lessons'
 import type {
   ChatRequest,
@@ -37,13 +38,11 @@ import type { Progress, Translate } from './App'
 import {
   britishLocale,
   playbackMessage,
-  prepareBritishSpeech,
   speak,
   SpeechRecognition,
   stopSpeaking,
-  unlockBritishAudio,
 } from './speech'
-import type { BritishVoice, PlaybackStatus, SpeechOptions } from './speech'
+import type { PlaybackStatus } from './speech'
 import { formatSpokenText } from './spokenText'
 
 const animals = [
@@ -141,7 +140,6 @@ type Props = {
   t: Translate
   hints: boolean
   autoSpeak: boolean
-  britishVoice: BritishVoice
   dictionaryAccess: string
   changeAutoSpeak(enabled: boolean): void
   access: string
@@ -158,7 +156,6 @@ export default function Practice({
   t,
   hints,
   autoSpeak,
-  britishVoice,
   dictionaryAccess,
   changeAutoSpeak,
   access,
@@ -200,9 +197,6 @@ export default function Practice({
   const target = level === 'A1' ? 4 : 3
 
   useEffect(() => {
-    if (autoSpeak) prepareBritishSpeech(britishVoice)
-  }, [autoSpeak, britishVoice])
-  useEffect(() => {
     mounted.current = true
     const controller = new AbortController()
     localModel.current = controller
@@ -228,23 +222,20 @@ export default function Practice({
       transcript.current.scrollTop = transcript.current.scrollHeight
   }, [messages, pending, replyPreview])
 
-  function listen(content: string, options?: SpeechOptions) {
+  function listen(content: string, continuation?: Promise<string>) {
     speak(
       content,
       level === 'Pre-A1' ? 0.88 : 0.96,
       (status) => {
         if (mounted.current) setPlayback(status)
       },
-      britishVoice,
-      options,
+      continuation,
     )
   }
 
   function startMic() {
     if (!SpeechRecognition || recognizer.current || pending || finished) return
     stopSpeaking()
-    unlockBritishAudio()
-    prepareBritishSpeech(britishVoice)
     setError('')
     const recognition = new SpeechRecognition()
     recognition.lang = britishLocale
@@ -353,10 +344,6 @@ export default function Practice({
     const text = spoken ? formatSpokenText(raw).slice(0, 300) : raw
     const headword = pronunciationQuestion(text)
     stopSpeaking()
-    if (autoSpeak || spoken) {
-      unlockBritishAudio()
-      if (!headword) prepareBritishSpeech(britishVoice)
-    }
     setPlayback(undefined)
     setError('')
     if (!spoken) setDraft('')
@@ -420,7 +407,12 @@ export default function Practice({
               },
               body: JSON.stringify(payload),
               signal,
-            }).catch(() => undefined)
+            })
+              .then((response) => {
+                const content = replyFilter(payload)(response.content)
+                return content ? { ...response, content } : undefined
+              })
+              .catch(() => undefined)
           : undefined) ??
         (await browserChat(
           payload,
@@ -436,7 +428,7 @@ export default function Practice({
               const continuation = new Promise<string>((resolve) => {
                 resolveAudio = resolve
               })
-              listen(content, { continuation, quickStart: true })
+              listen(content, continuation)
             }
           },
         ).catch(() => undefined))
@@ -452,8 +444,8 @@ export default function Practice({
         setDraft(text)
         setError(
           t(
-            'Не удалось получить ответ ИИ. Проверь подключение и отправь реплику ещё раз.',
-            'Could not get an AI reply. Check your connection and send your message again.',
+            'Бадди не смог ответить. Твоя реплика в поле ввода, её можно отправить ещё раз.',
+            'Buddy could not reply. Your message is still in the input field so you can send it again.',
           ),
         )
         return
@@ -478,7 +470,7 @@ export default function Practice({
           : reply.content
         const audio = [rest, reply.correction].filter(Boolean).join(' ')
         if (resolveAudio) resolveAudio(audio)
-        else listen(audio, { quickStart: true })
+        else listen(audio)
       }
     }
     if (done) {

@@ -30,17 +30,7 @@ export const SpeechRecognition =
     .webkitSpeechRecognition
 
 export type PlaybackStatus =
-  | 'starting'
-  | 'playing'
-  | 'playing-system'
-  | 'ended'
-  | 'blocked'
-  | 'unavailable'
-
-export type SpeechOptions = {
-  continuation?: Promise<string>
-  quickStart?: boolean
-}
+  'starting' | 'playing' | 'ended' | 'blocked' | 'unavailable'
 
 let playing: AbortController | undefined
 let currentUtterance: SpeechSynthesisUtterance | undefined
@@ -53,7 +43,9 @@ export function stopSpeaking() {
 }
 
 export function selectBritishVoice(voices: readonly SpeechSynthesisVoice[]) {
-  const ukVoices = voices.filter((voice) => /^en[-_]gb$/i.test(voice.lang))
+  const ukVoices = voices.filter((voice) =>
+    /^en[-_]gb(?:$|[-_])/i.test(voice.lang),
+  )
   return (
     ukVoices.find((voice) =>
       /natural|neural|enhanced|premium/i.test(voice.name),
@@ -64,24 +56,33 @@ export function selectBritishVoice(voices: readonly SpeechSynthesisVoice[]) {
   )
 }
 
-export function prepareBritishSpeech(voice: BritishVoice) {
-  if (
-    voice === 'emma' ||
-    !selectBritishVoice(window.speechSynthesis?.getVoices() ?? [])
-  )
-    prepareBritishNeural()
-}
-
-function playBrowserVoice(
+async function playBrowserVoice(
   text: string,
   rate: number,
   signal: AbortSignal,
   started: () => void,
 ): Promise<'ended' | 'blocked' | 'unavailable'> {
   const synthesis = window.speechSynthesis
-  const voice = synthesis && selectBritishVoice(synthesis.getVoices())
-  if (!voice || typeof SpeechSynthesisUtterance === 'undefined')
-    return Promise.resolve('unavailable')
+  if (!synthesis || typeof SpeechSynthesisUtterance === 'undefined')
+    return 'unavailable'
+  let voices = synthesis.getVoices()
+  if (!voices.length) {
+    await new Promise<void>((resolve) => {
+      const timer = window.setTimeout(ready, 300)
+      function ready() {
+        window.clearTimeout(timer)
+        synthesis.removeEventListener('voiceschanged', ready)
+        signal.removeEventListener('abort', ready)
+        resolve()
+      }
+      synthesis.addEventListener('voiceschanged', ready, { once: true })
+      signal.addEventListener('abort', ready, { once: true })
+    })
+    voices = synthesis.getVoices()
+  }
+  if (signal.aborted) return 'ended'
+  const voice = selectBritishVoice(voices)
+  if (!voice) return 'unavailable'
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = britishLocale
   utterance.voice = voice
@@ -124,24 +125,12 @@ export function speak(
   text: string,
   rate = 0.88,
   update?: (status: PlaybackStatus) => void,
-  voice: BritishVoice = 'emma',
-  { continuation, quickStart }: SpeechOptions = {},
+  continuation?: Promise<string>,
 ) {
   stopSpeaking()
-  unlockBritishAudio()
   const controller = new AbortController()
   playing = controller
   const { signal } = controller
-  const deviceAvailable = () =>
-    typeof SpeechSynthesisUtterance !== 'undefined' &&
-    Boolean(selectBritishVoice(window.speechSynthesis?.getVoices() ?? []))
-  const useDeviceWhileLoading =
-    quickStart && !britishNeuralReady() && deviceAvailable()
-  const players =
-    voice === 'emma' && !useDeviceWhileLoading
-      ? [playBritishNeural, playBrowserVoice]
-      : [playBrowserVoice, playBritishNeural]
-  let startedAudio = false
   update?.('starting')
   void play()
 
@@ -164,50 +153,9 @@ export function speak(
       .trim()
     if (!/[\p{L}\p{N}]/u.test(spoken)) return 'ended'
 
-    const canStartQuickly =
-      quickStart &&
-      !startedAudio &&
-      players[0] === playBritishNeural &&
-      deviceAvailable()
-    const attempts = canStartQuickly ? [...players, playBritishNeural] : players
-    let delayedEmma = false
-    let blocked = false
-    for (const [index, player] of attempts.entries()) {
-      if (signal.aborted) break
-      if (index === 2 && !delayedEmma) break
-      // Let Emma finish any utterance that has already started playing.
-      const deadline =
-        canStartQuickly && index === 0 ? new AbortController() : undefined
-      const timer = deadline && window.setTimeout(() => deadline.abort(), 800)
-      const started = () => {
-        window.clearTimeout(timer)
-        startedAudio = true
-        if (!signal.aborted)
-          update?.(
-            voice === 'emma' && player === playBrowserVoice
-              ? 'playing-system'
-              : 'playing',
-          )
-      }
-      const status = await player(
-        spoken,
-        rate,
-        deadline ? AbortSignal.any([signal, deadline.signal]) : signal,
-        started,
-      )
-        .catch(() => 'unavailable' as const)
-        .finally(() => window.clearTimeout(timer))
-      if (deadline?.signal.aborted && !signal.aborted) {
-        delayedEmma = true
-        continue
-      }
-      if (status === 'ended') {
-        if (player !== players[0]) players.reverse()
-        return status
-      }
-      blocked ||= status === 'blocked'
-    }
-    return blocked ? 'blocked' : 'unavailable'
+    return playBrowserVoice(spoken, rate, signal, () => {
+      if (!signal.aborted) update?.('playing')
+    }).catch(() => 'unavailable' as const)
   }
 
   function finish(status: PlaybackStatus) {
@@ -224,11 +172,6 @@ export function playbackMessage(
   if (status === 'starting')
     return t('Готовлю британскую озвучку…', 'Preparing British audio…')
   if (status === 'playing') return t('Бадди говорит…', 'Buddy is speaking…')
-  if (status === 'playing-system')
-    return t(
-      'Бадди говорит системным британским голосом…',
-      'Buddy is speaking with the device’s British voice…',
-    )
   if (status === 'blocked')
     return t(
       'Нажми на динамик рядом с ответом, чтобы запустить звук.',
@@ -236,8 +179,8 @@ export function playbackMessage(
     )
   if (status === 'unavailable')
     return t(
-      'Британский голос недоступен. Проверь голос English (United Kingdom) или подключение.',
-      'The British voice is unavailable. Check for an English (United Kingdom) voice or check your connection.',
+      'Британский голос недоступен. Проверь наличие English (United Kingdom) в настройках озвучки устройства.',
+      'No British voice is available. Check for an English (United Kingdom) voice in the device’s speech settings.',
     )
   return ''
 }
@@ -286,14 +229,6 @@ export async function makeWav(blob: Blob) {
     await context.close()
   }
 }
-import {
-  britishNeuralReady,
-  playBritishNeural,
-  prepareBritishNeural,
-  unlockBritishAudio,
-} from './neuralSpeech'
 import { stopDictionaryAudio } from './dictionaryAudio'
 
-export { unlockBritishAudio }
 export const britishLocale = 'en-GB'
-export type BritishVoice = 'emma' | 'system'

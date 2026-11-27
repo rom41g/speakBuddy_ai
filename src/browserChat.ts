@@ -1,5 +1,10 @@
 import { chatPrompt } from '../shared/chatPrompt'
-import { containsContact, grammarHint } from '../shared/lessons'
+import {
+  asksAboutRepetition,
+  chatHistory,
+  replyFilter,
+} from '../shared/chatReply'
+import { grammarHint } from '../shared/lessons'
 import type { ChatRequest, Message } from '../shared/lessons'
 import type { ModelStatus } from './localChat'
 
@@ -34,33 +39,6 @@ export async function prepareBrowserChat() {
   await prepareLocalChat()
 }
 
-function cleanReply(raw: string, latest: string) {
-  let content = raw
-    .replace(/<think>[\s\S]*?<\/think>/gi, '')
-    .trim()
-    .replace(/^(?:Buddy|Assistant):\s*/i, '')
-    .split(/\n\s*(?:User|Learner|Student):/i, 1)[0]
-    .trim()
-  const learner = latest.trim().replace(/[.!?]+$/, '')
-  if (
-    learner.length >= 16 &&
-    content.toLowerCase().startsWith(learner.toLowerCase())
-  ) {
-    const tail = content.slice(learner.length)
-    if (/^[.!?]*$/.test(tail)) throw new Error('copied response')
-    const followUp = tail.match(/^[.!?]+\s+(.+)$/s)?.[1]
-    if (followUp) content = followUp.trim()
-  }
-  if (
-    !content ||
-    content.length > 300 ||
-    /<\/?think>/i.test(content) ||
-    containsContact(content)
-  )
-    throw new Error('invalid response')
-  return content
-}
-
 export async function browserChat(
   input: ChatRequest,
   signal: AbortSignal,
@@ -70,82 +48,86 @@ export async function browserChat(
   status({ phase: 'thinking' })
   const latest = input.history.at(-1)?.content ?? ''
   const correction = grammarHint(latest)
+  const clean = replyFilter(input)
   let displayed = ''
   const updatePreview =
     preview &&
     ((raw: string) => {
       if (signal.aborted) return
-      const complete = raw.match(/^[\s\S]*[.!?](?=\s|$)/)?.[0]
-      if (!complete || complete.length < 10) return
-      try {
-        const content = cleanReply(complete, latest)
-        if (
-          content !== displayed &&
-          !input.history.some((message) => message.content === content)
-        ) {
-          displayed = content
-          preview(content)
-        }
-      } catch {
-        // Wait for the complete reply before showing it.
+      const content = clean(raw, true)
+      if (content && content !== displayed) {
+        displayed = content
+        preview(content)
       }
     })
+
+  async function requestReply(generate: (retry: boolean) => Promise<string>) {
+    for (const retry of [false, true]) {
+      signal.throwIfAborted()
+      if (retry && displayed) return displayed
+      const content = clean(await generate(retry))
+      if (content) return content
+    }
+  }
+
   if (languageModel) {
+    const nativeModel = languageModel
     try {
-      if ((await languageModel.availability()) === 'available') {
+      if ((await nativeModel.availability()) === 'available') {
         const budget = AbortSignal.any([signal, AbortSignal.timeout(12000)])
-        const turns = input.history.map(({ role, content }) => ({
-          role,
-          content,
-        }))
-        const last = turns.pop()!
-        const session = await languageModel.create({
-          initialPrompts: [
-            { role: 'system', content: chatPrompt(input) },
-            ...turns.slice(turns[0]?.role === 'assistant' ? 1 : 0),
-          ],
-          signal: budget,
-        })
-        try {
-          let reply = ''
-          const stream =
-            updatePreview &&
-            session.promptStreaming?.(last.content, { signal: budget })
-          if (stream) {
+        const content = await requestReply(async (retry) => {
+          budget.throwIfAborted()
+          const turns = chatHistory(input, retry)
+          const last = turns.pop()?.content ?? latest
+          const session = await nativeModel.create({
+            initialPrompts: [
+              { role: 'system', content: chatPrompt(input, retry) },
+              ...turns.slice(turns[0]?.role === 'assistant' ? 1 : 0),
+            ],
+            signal: budget,
+          })
+          try {
+            const stream =
+              updatePreview &&
+              session.promptStreaming?.(last, { signal: budget })
+            if (!stream) return await session.prompt(last, { signal: budget })
+            let reply = ''
             const reader = stream.getReader()
             try {
               for (;;) {
                 const chunk = await reader.read()
-                if (chunk.done) break
+                if (chunk.done) return reply
                 reply += chunk.value
                 updatePreview(reply)
               }
             } finally {
               reader.releaseLock()
             }
-          } else {
-            reply = await session.prompt(last.content, { signal: budget })
+          } finally {
+            session.destroy()
           }
-          return {
-            role: 'assistant',
-            content: cleanReply(reply, latest),
-            correction,
-          }
-        } finally {
-          session.destroy()
-        }
+        })
+        if (content) return { role: 'assistant', content, correction }
       }
     } catch {
       // The bundled model also runs in browsers without the Prompt API.
-      preview?.('')
+      signal.throwIfAborted()
+      if (displayed)
+        return { role: 'assistant', content: displayed, correction }
     }
   }
   signal.throwIfAborted()
   const { localReply } = await import('./localChat')
-  const content = cleanReply(
-    await localReply(input, signal, status, updatePreview),
-    latest,
+  const content = await requestReply((retry) =>
+    localReply(input, signal, status, updatePreview, retry),
   )
+  if (!content && asksAboutRepetition(latest))
+    return {
+      role: 'assistant',
+      content:
+        'I got stuck repeating the same phrase. Let’s pick up where we left off.',
+    }
+  if (!content) throw new Error('no usable reply')
   return {
     role: 'assistant',
     content,
