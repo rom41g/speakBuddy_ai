@@ -8,7 +8,18 @@
     <title>SpeakBuddy AI · English speaking practice</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main style="max-width: 36rem; margin: 12vh auto; padding: 1rem; font: 1rem/1.5 system-ui, sans-serif">
+        <h1>SpeakBuddy AI</h1>
+        <p><a id="published-demo" href="https://rom41g.github.io/speakBuddy_ai/">Открыть демоверсию</a></p>
+        <p>Для запуска из рабочей папки на Windows откройте <code>start-speakbuddy.cmd</code>.</p>
+      </main>
+    </div>
+    <script>
+      if (location.protocol === 'file:') {
+        location.replace(document.getElementById('published-demo').href)
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
