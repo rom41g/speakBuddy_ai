@@ -15,11 +15,12 @@ import { api } from './api'
 import type { Assessment } from './api'
 import type { Progress, Translate } from './App'
 import { makeWav, playbackMessage, speak, stopSpeaking } from './speech'
-import type { PlaybackStatus } from './speech'
+import type { BritishVoice, PlaybackStatus } from './speech'
 
 export default function Pronunciation({
   t,
   academy,
+  britishVoice,
   showScores,
   provider,
   access,
@@ -27,6 +28,7 @@ export default function Pronunciation({
 }: {
   t: Translate
   academy?: AcademyUnit
+  britishVoice: BritishVoice
   showScores: boolean
   provider: 'local' | 'azure' | null
   access: string
@@ -79,9 +81,14 @@ export default function Pronunciation({
   }
 
   function listen(text: string) {
-    speak(text, 0.76, (status) => {
-      if (mounted.current) setPlayback(status)
-    })
+    speak(
+      text,
+      0.82,
+      (status) => {
+        if (mounted.current) setPlayback(status)
+      },
+      britishVoice,
+    )
   }
 
   async function record() {

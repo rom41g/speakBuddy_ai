@@ -4,6 +4,7 @@ const endpoint = (
 
 export type Capabilities = {
   chat: boolean
+  dictionary?: boolean
   pronunciation: 'local' | 'azure' | null
 }
 export type Assessment = {

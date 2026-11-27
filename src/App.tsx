@@ -24,6 +24,7 @@ import AcademyPicker from './AcademyPicker'
 import Practice from './Practice'
 import Pronunciation from './Pronunciation'
 import { stopSpeaking } from './speech'
+import type { BritishVoice } from './speech'
 
 export type Translate = (ru: string, en: string) => string
 export type Progress = {
@@ -42,6 +43,7 @@ export type Settings = {
   scores: boolean
   academy: string | null
   autoSpeak: boolean
+  britishVoice: BritishVoice
 }
 export const emptyProgress: Progress = {
   turns: 0,
@@ -110,6 +112,7 @@ const defaults: Settings = {
   scores: false,
   academy: '1-1',
   autoSpeak: true,
+  britishVoice: 'auto',
 }
 function readLocal<T>(key: string, fallback: T): T {
   try {
@@ -411,6 +414,41 @@ export default function App() {
                   </select>
                   <ChevronDown size={17} />
                 </div>
+                <label htmlFor="british-voice">
+                  {t('Британский голос', 'British voice')}
+                </label>
+                <div className="select-wrap">
+                  <select
+                    id="british-voice"
+                    value={settings.britishVoice}
+                    onChange={(event) => {
+                      stopSpeaking()
+                      setSettings({
+                        ...settings,
+                        britishVoice: event.target.value as BritishVoice,
+                      })
+                    }}
+                  >
+                    <option value="auto">
+                      {t('Автоматически (en-GB)', 'Automatic (en-GB)')}
+                    </option>
+                    <option value="emma">
+                      {t(
+                        'Emma · нейроголос Kokoro',
+                        'Emma · Kokoro neural voice',
+                      )}
+                    </option>
+                  </select>
+                  <ChevronDown size={17} />
+                </div>
+                {settings.britishVoice === 'emma' && (
+                  <p className="status">
+                    {t(
+                      'При первом запуске загружается модель голоса (около 92 МБ).',
+                      'The first use downloads the voice model (about 92 MB).',
+                    )}
+                  </p>
+                )}
                 {!academy && (
                   <fieldset>
                     <legend>
@@ -495,8 +533,8 @@ export default function App() {
                 <h2>{t('Облачные функции', 'Cloud features')}</h2>
                 <p>
                   {t(
-                    'Подключение для демонстрации со взрослыми. OpenRouter получает текст диалога, Azure Speech — запись из тренажёра при запуске анализа. Используйте вымышленные данные.',
-                    'For demonstrations with adults. OpenRouter receives conversation text. Azure Speech receives a recording when an assessment is requested. Use fictional details.',
+                    'Подключение для демонстрации со взрослыми. OpenRouter получает текст диалога, Azure Speech получает запись при запуске анализа, а Cambridge Dictionary получает отдельное слово для поиска. Используйте вымышленные данные.',
+                    'For demonstrations with adults. OpenRouter receives conversation text, Azure Speech receives a recording for assessment, and Cambridge Dictionary receives an individual search word. Use fictional details.',
                   )}
                 </p>
                 <div className="cloud-status">
@@ -512,6 +550,12 @@ export default function App() {
                       ? t('доступен', 'available')
                       : t('не подключён', 'unconfigured')}
                   </span>
+                  <span>
+                    Cambridge Dictionary ·{' '}
+                    {capabilities.dictionary
+                      ? t('доступен', 'available')
+                      : t('не подключён', 'unconfigured')}
+                  </span>
                   {capabilities.pronunciation === 'local' && (
                     <span>
                       Pronunciada · {t('локальный анализ', 'local assessment')}
@@ -519,6 +563,7 @@ export default function App() {
                   )}
                 </div>
                 {(capabilities.chat ||
+                  capabilities.dictionary ||
                   capabilities.pronunciation === 'azure') && (
                   <>
                     <label htmlFor="access">
@@ -617,6 +662,7 @@ export default function App() {
               <Pronunciation
                 key={`${academy?.id ?? 'free'}-${attempt}`}
                 academy={academy}
+                britishVoice={settings.britishVoice}
                 t={t}
                 showScores={settings.scores}
                 provider={
@@ -638,6 +684,10 @@ export default function App() {
                 level={settings.level}
                 hints={settings.hints}
                 autoSpeak={settings.autoSpeak}
+                britishVoice={settings.britishVoice}
+                dictionaryAccess={
+                  cloud && capabilities.dictionary ? access : ''
+                }
                 changeAutoSpeak={(enabled) =>
                   setSettings((previous) => ({
                     ...previous,

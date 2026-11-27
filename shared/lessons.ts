@@ -1,5 +1,6 @@
 import { academyLesson } from './academy'
 import type { AcademyUnit } from './academy'
+import type { BritishPronunciation } from './britishDictionary'
 
 export const topics = {
   animals: {
@@ -165,6 +166,8 @@ export type Message = {
   content: string
   correction?: string
   source?: string
+  pronunciation?: BritishPronunciation
+  voiceOnly?: boolean
 }
 export type ChatRequest = {
   mode: ChatMode

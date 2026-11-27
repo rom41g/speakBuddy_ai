@@ -1,6 +1,8 @@
 # Copy as .dev.vars for local use. Use a random access code of at least 16 characters.
 DEMO_ACCESS_CODE=""
 OPENROUTER_API_KEY=""
+CAMBRIDGE_API_KEY=""
+CAMBRIDGE_DICTIONARY="british"
 AZURE_SPEECH_KEY=""
 AZURE_SPEECH_RESOURCE=""
 # Set true only when running Pronunciada on 127.0.0.1:8765 locally.

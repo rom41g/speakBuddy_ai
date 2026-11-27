@@ -1,4 +1,6 @@
 import { academyPronunciations, getAcademyUnit } from '../shared/academy'
+import { normalizedHeadword } from '../shared/britishDictionary'
+import { cambridgePronunciation } from './cambridge'
 import { freeChatInstructions } from '../shared/conversation'
 import {
   containsContact,
@@ -17,11 +19,13 @@ type Env = {
   AZURE_SPEECH_KEY?: string
   AZURE_SPEECH_RESOURCE?: string
   PRONUNCIADA_LOCAL?: string
+  CAMBRIDGE_API_KEY?: string
+  CAMBRIDGE_DICTIONARY?: string
   RATE_LIMITER: { limit(input: { key: string }): Promise<{ success: boolean }> }
 }
 
 const speechRoute =
-  'speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed'
+  'speech/recognition/conversation/cognitiveservices/v1?language=en-GB&format=detailed'
 const preferredModel = 'google/gemma-4-31b-it:free'
 const maxAudio = 480044
 
@@ -283,10 +287,10 @@ async function assessRecording(
         JSON.stringify({
           ReferenceText: reference,
           GradingSystem: 'HundredMark',
-          Granularity: 'Phoneme',
+          Granularity: local ? 'Phoneme' : 'Word',
           Dimension: 'Comprehensive',
           EnableMiscue: true,
-          PhonemeAlphabet: 'IPA',
+          ...(local ? { PhonemeAlphabet: 'IPA' } : {}),
         }),
       ),
     ),
@@ -350,6 +354,7 @@ export default {
       ['127.0.0.1', 'localhost'].includes(url.hostname)
     const hasCode = (env.DEMO_ACCESS_CODE?.length ?? 0) >= 16
     const chat = !!(hasCode && env.OPENROUTER_API_KEY)
+    const dictionary = !!(hasCode && env.CAMBRIDGE_API_KEY)
     const azure = !!(
       hasCode &&
       env.AZURE_SPEECH_KEY &&
@@ -376,10 +381,15 @@ export default {
       }
       return json({
         chat,
+        dictionary,
         pronunciation: ready ? 'local' : azure ? 'azure' : null,
       })
     }
-    if (!['/api/chat', '/api/pronunciation'].includes(url.pathname))
+    if (
+      !['/api/chat', '/api/pronunciation', '/api/dictionary'].includes(
+        url.pathname,
+      )
+    )
       return json({ error: 'not-found' }, 404)
     if (request.method !== 'POST') return json({ error: 'method' }, 405)
     const localAssessment =
@@ -401,6 +411,18 @@ export default {
         key: request.headers.get('CF-Connecting-IP') ?? 'local',
       })
       if (!rate.success) return json({ error: 'limit' }, 429)
+      if (url.pathname === '/api/dictionary') {
+        if (!dictionary) return json({ error: 'unconfigured' }, 503)
+        const word = normalizedHeadword(url.searchParams.get('q') ?? '')
+        if (!word) return json({ error: 'headword' }, 400)
+        return json(
+          await cambridgePronunciation(
+            word,
+            env.CAMBRIDGE_API_KEY!,
+            env.CAMBRIDGE_DICTIONARY || 'british',
+          ),
+        )
+      }
       if (url.pathname === '/api/chat') {
         if (!chat) return json({ error: 'unconfigured' }, 503)
         if (

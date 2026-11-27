@@ -641,6 +641,42 @@ footer button:hover {
   border-color: #e4d8ff;
   border-radius: 13px 0 13px 13px;
 }
+.voice-transcript summary {
+  color: #5532b4;
+  cursor: pointer;
+}
+.voice-transcript[open] summary {
+  margin-bottom: 8px;
+}
+.dictionary-card ul {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+.dictionary-card p {
+  margin: 6px 0;
+}
+.dictionary-card small {
+  display: inline-block;
+  margin-left: 8px;
+  color: #656079;
+}
+.dictionary-card a {
+  color: #5532b4;
+  font-size: 0.88rem;
+  text-decoration: underline;
+}
+.uk-ipa {
+  font-size: 0.76rem;
+  font-weight: 750;
+  color: #5532b4;
+}
+.ipa {
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
 .icon-button {
   display: grid;
   place-items: center;

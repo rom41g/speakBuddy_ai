@@ -28,63 +28,114 @@ export const SpeechRecognition =
 export type PlaybackStatus =
   'starting' | 'playing' | 'ended' | 'blocked' | 'unavailable'
 
-let playing: { utterance: SpeechSynthesisUtterance; cancel(): void } | undefined
+let playing: AbortController | undefined
+let currentUtterance: SpeechSynthesisUtterance | undefined
 
 export function stopSpeaking() {
-  playing?.cancel()
+  playing?.abort()
+}
+
+export function selectBritishVoice(voices: readonly SpeechSynthesisVoice[]) {
+  const ukVoices = voices.filter((voice) => /^en[-_]gb$/i.test(voice.lang))
+  return (
+    ukVoices.find((voice) =>
+      /natural|neural|enhanced|premium/i.test(voice.name),
+    ) ??
+    ukVoices.find((voice) => /google|sonia|ryan/i.test(voice.name)) ??
+    ukVoices.find((voice) => voice.localService) ??
+    ukVoices[0]
+  )
+}
+
+function playBrowserVoice(
+  text: string,
+  rate: number,
+  signal: AbortSignal,
+  started: () => void,
+): Promise<'ended' | 'blocked' | 'unavailable'> {
+  const synthesis = window.speechSynthesis
+  const voice = synthesis && selectBritishVoice(synthesis.getVoices())
+  if (!voice || typeof SpeechSynthesisUtterance === 'undefined')
+    return Promise.resolve('unavailable')
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = britishLocale
+  utterance.voice = voice
+  utterance.rate = rate
+  currentUtterance = utterance
+  return new Promise((resolve) => {
+    const timeout = window.setTimeout(() => finish('unavailable', true), 6000)
+    function cancel() {
+      finish('ended', true)
+    }
+    function finish(
+      status: 'ended' | 'blocked' | 'unavailable',
+      cancelAudio = false,
+    ) {
+      if (currentUtterance === utterance) currentUtterance = undefined
+      window.clearTimeout(timeout)
+      signal.removeEventListener('abort', cancel)
+      utterance.onstart = utterance.onend = utterance.onerror = null
+      if (cancelAudio) synthesis.cancel()
+      resolve(status)
+    }
+    signal.addEventListener('abort', cancel, { once: true })
+    utterance.onstart = () => {
+      window.clearTimeout(timeout)
+      started()
+    }
+    utterance.onend = () => finish('ended')
+    utterance.onerror = (event) =>
+      finish(event.error === 'not-allowed' ? 'blocked' : 'unavailable')
+    try {
+      if (synthesis.paused) synthesis.resume()
+      synthesis.speak(utterance)
+    } catch {
+      finish('unavailable')
+    }
+  })
 }
 
 export function speak(
   text: string,
   rate = 0.88,
   update?: (status: PlaybackStatus) => void,
+  voice: BritishVoice = 'auto',
 ) {
   stopSpeaking()
-  const synthesis = window.speechSynthesis
-  if (!synthesis || typeof SpeechSynthesisUtterance === 'undefined') {
-    update?.('unavailable')
-    return
-  }
-
-  const voices = synthesis
-    .getVoices()
-    .filter((voice) => /^en(?:[-_]|$)/i.test(voice.lang))
-  const american = (voice: SpeechSynthesisVoice) =>
-    /^en[-_]us$/i.test(voice.lang)
-  const voice =
-    voices.find((item) => american(item) && item.localService) ??
-    voices.find((item) => item.localService) ??
-    voices.find(american) ??
-    voices[0]
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = voice?.lang ?? 'en-US'
-  utterance.rate = rate
-  if (voice) utterance.voice = voice
-
-  const timeout = window.setTimeout(() => finish('unavailable', true), 6000)
-  function finish(status: PlaybackStatus, cancel = false) {
-    if (playing?.utterance !== utterance) return
-    playing = undefined
-    window.clearTimeout(timeout)
-    utterance.onstart = utterance.onend = utterance.onerror = null
-    if (cancel) synthesis.cancel()
-    update?.(status)
-  }
-
-  playing = { utterance, cancel: () => finish('ended', true) }
+  unlockBritishAudio()
+  const controller = new AbortController()
+  playing = controller
+  const { signal } = controller
   update?.('starting')
-  utterance.onstart = () => {
-    window.clearTimeout(timeout)
-    update?.('playing')
+  void play()
+
+  async function play() {
+    const started = () => {
+      if (!signal.aborted) update?.('playing')
+    }
+    const players =
+      voice === 'emma'
+        ? [playBritishNeural, playBrowserVoice]
+        : [playBrowserVoice, playBritishNeural]
+    let blocked = false
+    for (const player of players) {
+      if (signal.aborted) break
+      const status = await player(text, rate, signal, started).catch(
+        () => 'unavailable' as const,
+      )
+      if (status === 'ended') {
+        finish('ended')
+        return
+      }
+      blocked ||= status === 'blocked'
+    }
+    finish(blocked ? 'blocked' : 'unavailable')
   }
-  utterance.onend = () => finish('ended')
-  utterance.onerror = (event) =>
-    finish(event.error === 'not-allowed' ? 'blocked' : 'unavailable')
-  try {
-    if (synthesis.paused) synthesis.resume()
-    synthesis.speak(utterance)
-  } catch {
-    finish('unavailable')
+
+  function finish(status: PlaybackStatus) {
+    if (playing !== controller) return
+    playing = undefined
+    update?.(signal.aborted ? 'ended' : status)
   }
 }
 
@@ -92,7 +143,8 @@ export function playbackMessage(
   status: PlaybackStatus | undefined,
   t: (ru: string, en: string) => string,
 ) {
-  if (status === 'starting') return t('Готовлю озвучку…', 'Preparing audio…')
+  if (status === 'starting')
+    return t('Готовлю британскую озвучку…', 'Preparing British audio…')
   if (status === 'playing') return t('Бадди говорит…', 'Buddy is speaking…')
   if (status === 'blocked')
     return t(
@@ -101,8 +153,8 @@ export function playbackMessage(
     )
   if (status === 'unavailable')
     return t(
-      'Браузер не смог озвучить текст. Проверь доступность английского голоса.',
-      'The browser could not play speech. Check for an English voice.',
+      'Британский голос недоступен. Проверь голос English (United Kingdom) или подключение.',
+      'The British voice is unavailable. Check for an English (United Kingdom) voice or check your connection.',
     )
   return ''
 }
@@ -151,3 +203,8 @@ export async function makeWav(blob: Blob) {
     await context.close()
   }
 }
+import { playBritishNeural, unlockBritishAudio } from './neuralSpeech'
+
+export { unlockBritishAudio }
+export const britishLocale = 'en-GB'
+export type BritishVoice = 'auto' | 'emma'

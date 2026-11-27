@@ -14,6 +14,11 @@ import {
 import { academyGuess } from '../shared/academy'
 import type { AcademyUnit } from '../shared/academy'
 import {
+  britishPronunciation,
+  pronunciationQuestion,
+} from '../shared/britishDictionary'
+import type { BritishPronunciation } from '../shared/britishDictionary'
+import {
   freeChatOpening,
   freePreparedReply,
   guidedInterruption,
@@ -35,6 +40,7 @@ import type {
   Topic,
 } from '../shared/lessons'
 import { api } from './api'
+import DictionaryCard from './DictionaryCard'
 import {
   browserChat,
   browserModelAvailability,
@@ -43,12 +49,14 @@ import {
 import type { ModelAvailability } from './browserChat'
 import type { Progress, Translate } from './App'
 import {
+  britishLocale,
   playbackMessage,
   speak,
   SpeechRecognition,
   stopSpeaking,
+  unlockBritishAudio,
 } from './speech'
-import type { PlaybackStatus } from './speech'
+import type { BritishVoice, PlaybackStatus } from './speech'
 
 const animals = [
   {
@@ -107,6 +115,36 @@ function guessReply(
   }
 }
 
+function MessageText({
+  message,
+  t,
+  open,
+}: {
+  message: Message
+  t: Translate
+  open: boolean
+}) {
+  const text = (
+    <div lang="en-GB">
+      {message.content}
+      {message.correction && (
+        <p className="correction" lang={t('ru', 'en')}>
+          <Sparkles size={15} /> {t('Попробуй так', 'Try saying')}{' '}
+          <span lang="en-GB">{message.correction}</span>
+        </p>
+      )}
+      {message.source && <small className="model-id">{message.source}</small>}
+    </div>
+  )
+  if (!message.voiceOnly) return text
+  return (
+    <details className="voice-transcript" open={open || undefined}>
+      <summary>{t('Текст ответа', 'Reply transcript')}</summary>
+      {text}
+    </details>
+  )
+}
+
 type Props = {
   mode: Exclude<Mode, 'pronounce'>
   academy?: AcademyUnit
@@ -116,6 +154,8 @@ type Props = {
   t: Translate
   hints: boolean
   autoSpeak: boolean
+  britishVoice: BritishVoice
+  dictionaryAccess: string
   changeAutoSpeak(enabled: boolean): void
   access: string
   report(change: Partial<Progress>): void
@@ -131,6 +171,8 @@ export default function Practice({
   t,
   hints,
   autoSpeak,
+  britishVoice,
+  dictionaryAccess,
   changeAutoSpeak,
   access,
   report,
@@ -154,7 +196,6 @@ export default function Practice({
   const [turn, setTurn] = useState(0)
   const [lessonQuestion, setLessonQuestion] = useState(question)
   const [draft, setDraft] = useState('')
-  const [voice, setVoice] = useState(false)
   const [listening, setListening] = useState(false)
   const [speechConsent, setSpeechConsent] = useState(false)
   const [showSpeechInfo, setShowSpeechInfo] = useState(false)
@@ -201,9 +242,14 @@ export default function Practice({
   }, [messages, pending])
 
   function listen(content: string) {
-    speak(content, level === 'Pre-A1' ? 0.79 : 0.9, (status) => {
-      if (mounted.current) setPlayback(status)
-    })
+    speak(
+      content,
+      level === 'Pre-A1' ? 0.88 : 0.96,
+      (status) => {
+        if (mounted.current) setPlayback(status)
+      },
+      britishVoice,
+    )
   }
 
   async function connectBrowserModel() {
@@ -228,22 +274,23 @@ export default function Practice({
   }
 
   function startMic() {
-    if (!SpeechRecognition || recognizer.current) return
+    if (!SpeechRecognition || recognizer.current || pending || finished) return
     stopSpeaking()
+    unlockBritishAudio()
     setError('')
     const recognition = new SpeechRecognition()
-    recognition.lang = 'en-US'
+    recognition.lang = britishLocale
     recognition.continuous = false
     recognition.interimResults = false
     recognition.maxAlternatives = 1
+    let spoken = ''
+    let failed = false
     recognition.onresult = (event) => {
-      const result = event.results[0]?.[0]?.transcript.trim()
-      if (result) {
-        setDraft(result.slice(0, 300))
-        setVoice(true)
-      }
+      spoken = event.results[0]?.[0]?.transcript.trim().slice(0, 300) ?? ''
     }
     recognition.onerror = (event) => {
+      failed = true
+      spoken = ''
       if (event.error !== 'aborted')
         setError(
           t(
@@ -253,8 +300,17 @@ export default function Practice({
         )
     }
     recognition.onend = () => {
+      if (recognizer.current !== recognition || !mounted.current) return
       recognizer.current = null
       setListening(false)
+      if (spoken) void submit(spoken, true)
+      else if (!failed)
+        setError(
+          t(
+            'Не удалось разобрать реплику. Попробуй ещё раз.',
+            'No speech was recognised. Please try again.',
+          ),
+        )
     }
     try {
       recognizer.current = recognition
@@ -268,9 +324,9 @@ export default function Practice({
     }
   }
 
-  async function submit() {
-    const text = draft.trim()
-    if (!text || pending || finished || listening) return
+  async function submit(input: string, spoken = false) {
+    const text = input.trim()
+    if (!text || pending || finished || recognizer.current) return
     if (containsContact(text)) {
       setError(
         t(
@@ -281,21 +337,42 @@ export default function Practice({
       return
     }
     stopSpeaking()
+    if (autoSpeak || spoken) unlockBritishAudio()
     setPlayback(undefined)
     setError('')
-    setDraft('')
-    setVoice(false)
+    if (!spoken) setDraft('')
     const history: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(history)
-    report({ turns: 1, voice: voice ? 1 : 0 })
+    report({ turns: 1, voice: spoken ? 1 : 0 })
     let done = false
     let reply: Message
+    const headword = pronunciationQuestion(text)
     const interruption = open
       ? socialReply(text)
       : mode !== 'guess' && guidedInterruption(text, lessonQuestion)
     const step = turn + 1
 
-    if (interruption) {
+    if (headword) {
+      let pronunciation = britishPronunciation(headword)
+      if (!pronunciation.forms.length && dictionaryAccess) {
+        setPending(true)
+        const found = await api<BritishPronunciation>(
+          `dictionary?q=${encodeURIComponent(headword)}`,
+          {
+            method: 'POST',
+            headers: { 'X-Demo-Code': dictionaryAccess },
+          },
+        ).catch(() => undefined)
+        if (!mounted.current) return
+        setPending(false)
+        if (found) pronunciation = found
+      }
+      reply = {
+        role: 'assistant',
+        content: `British pronunciation of ${headword}.`,
+        pronunciation,
+      }
+    } else if (interruption) {
       reply = { role: 'assistant', content: interruption }
     } else if (mode === 'guess') {
       const result = card
@@ -362,13 +439,16 @@ export default function Practice({
       }
     }
     if (!mounted.current) return
-    if (!open && !interruption) {
+    if (!open && !interruption && !headword) {
       setTurn(step)
       setLessonQuestion(reply.content)
     }
-    setMessages([...history, reply])
-    if (autoSpeak)
-      listen([reply.content, reply.correction].filter(Boolean).join(' '))
+    setMessages([...history, { ...reply, voiceOnly: spoken }])
+    if (autoSpeak || spoken)
+      listen(
+        reply.pronunciation?.word ??
+          [reply.content, reply.correction].filter(Boolean).join(' '),
+      )
     if (done) {
       setFinished(true)
       report({ finished: 1 })
@@ -376,6 +456,7 @@ export default function Practice({
   }
 
   const audioStatus = playbackMessage(playback, t)
+  const showAudioFallback = playback === 'blocked' || playback === 'unavailable'
 
   return (
     <div className={`activity-layout ${mode === 'picture' ? 'split' : ''}`}>
@@ -460,7 +541,7 @@ export default function Practice({
               }}
             >
               {autoSpeak ? <Volume2 size={17} /> : <VolumeX size={17} />}
-              {t('Автоозвучка', 'Auto-play replies')}
+              {t('Озвучка текста', 'Read typed replies')}
             </button>
             {open && messages.length > 1 && (
               <button className="audio-toggle" onClick={restart}>
@@ -500,16 +581,15 @@ export default function Practice({
         >
           {messages.map((message, index) => (
             <div className={`turn ${message.role}`} key={index}>
-              <div className="message" lang="en">
-                {message.content}
-                {message.correction && (
-                  <p className="correction" lang={t('ru', 'en')}>
-                    <Sparkles size={15} /> {t('Попробуй так', 'Try saying')}{' '}
-                    <span lang="en">{message.correction}</span>
-                  </p>
-                )}
-                {message.source && (
-                  <small className="model-id">{message.source}</small>
+              <div className="message">
+                {message.pronunciation ? (
+                  <DictionaryCard entry={message.pronunciation} t={t} />
+                ) : (
+                  <MessageText
+                    message={message}
+                    t={t}
+                    open={showAudioFallback && index === messages.length - 1}
+                  />
                 )}
               </div>
               {message.role === 'assistant' && (
@@ -518,9 +598,10 @@ export default function Practice({
                   aria-label={t('Озвучить реплику Бадди', 'Play Buddy’s reply')}
                   onClick={() =>
                     listen(
-                      [message.content, message.correction]
-                        .filter(Boolean)
-                        .join(' '),
+                      message.pronunciation?.word ??
+                        [message.content, message.correction]
+                          .filter(Boolean)
+                          .join(' '),
                     )
                   }
                 >
@@ -589,8 +670,8 @@ export default function Practice({
               <div className="notice">
                 <p>
                   {t(
-                    'Для распознавания речи браузер может отправить звук своему сервису. Используй вымышленные данные.',
-                    'Your browser may send audio to its speech recognition service. Use fictional details.',
+                    'Когда ты закончишь говорить, реплика отправится автоматически. Браузер может передать звук своему сервису распознавания. Используй вымышленные данные.',
+                    'Your reply is sent as soon as you finish speaking. Your browser may send audio to its speech recognition service. Use fictional details.',
                   )}
                 </p>
                 <button
@@ -609,7 +690,7 @@ export default function Practice({
               className="input-row"
               onSubmit={(event) => {
                 event.preventDefault()
-                void submit()
+                void submit(draft)
               }}
             >
               <button
@@ -632,10 +713,7 @@ export default function Practice({
               <input
                 className="text-field"
                 value={draft}
-                onChange={(event) => {
-                  setDraft(event.target.value)
-                  if (!event.target.value) setVoice(false)
-                }}
+                onChange={(event) => setDraft(event.target.value)}
                 maxLength={300}
                 aria-label={t('Твой ответ', 'Your answer')}
                 placeholder={t(
@@ -657,17 +735,12 @@ export default function Practice({
               {error ||
                 (listening
                   ? t('Слушаю…', 'Listening…')
-                  : voice
+                  : !SpeechRecognition
                     ? t(
-                        'Проверь распознанный текст перед отправкой.',
-                        'Check the recognised text before sending.',
+                        'Здесь доступен текстовый ввод.',
+                        'Text input is available in this browser.',
                       )
-                    : !SpeechRecognition
-                      ? t(
-                          'Здесь доступен текстовый ввод.',
-                          'Text input is available in this browser.',
-                        )
-                      : '')}
+                    : '')}
             </p>
           </div>
         )}
