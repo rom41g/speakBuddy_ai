@@ -71,6 +71,8 @@ export const asksHowYouAre = (text: string) =>
   /\bhow are you(?: doing| today)?[?.!\s]*$/i.test(text.trim())
 export const asksBack = (text: string) =>
   /\b(?:and|what about|how about) you[?.!\s]*$/i.test(text.trim())
+export const asksForHelp = (text: string) =>
+  /^(?:(?:ok(?:ay)?|please)[ ,!.]+)*(?:(?:can|could) you )?help(?: me)?(?:[, ]+please)?[.?! ]*$/i.test(text.trim())
 export const requestedFavourite = (text: string) =>
   text
     .match(/\b(?:what|which) ([a-z]+) do you (?:like|prefer)\b/i)?.[1]

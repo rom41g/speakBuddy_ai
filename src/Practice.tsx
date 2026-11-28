@@ -19,7 +19,7 @@ import {
 } from '../shared/britishDictionary'
 import type { BritishPronunciation } from '../shared/britishDictionary'
 import { freeChatOpening } from '../shared/chatPrompt'
-import { replyFilter } from '../shared/chatReply'
+import { asksForHelp, replyFilter } from '../shared/chatReply'
 import { containsContact, lesson, picture, topics } from '../shared/lessons'
 import type {
   ChatRequest,
@@ -345,6 +345,7 @@ export default function Practice({
     }
     const text = spoken ? formatSpokenText(raw).slice(0, 300) : raw
     const headword = pronunciationQuestion(text)
+    const wantsHint = !open && mode !== 'guess' && hints && asksForHelp(text)
     stopSpeaking()
     setPlayback(undefined)
     setError('')
@@ -377,6 +378,8 @@ export default function Practice({
         content: `British pronunciation of ${headword}.`,
         pronunciation,
       }
+    } else if (wantsHint) {
+      reply = { role: 'assistant', content: `Try saying “${activity.hint}”`, hint: true }
     } else if (mode === 'guess') {
       const result = card
         ? academyGuess(card, text, step)
@@ -388,9 +391,10 @@ export default function Practice({
       const signal = localModel.current?.signal
       if (!signal) return
       setPending(true)
-      // Looking up a word pauses the exercise question until the pupil answers it.
+      // A dictionary card or hint pauses the exercise until the pupil answers.
       const dialogue = open ? history : history.filter((message, index) =>
-        !message.pronunciation && !history[index + 1]?.pronunciation,
+        !message.pronunciation && !message.hint &&
+        !history[index + 1]?.pronunciation && !history[index + 1]?.hint,
       )
       const payload: ChatRequest = {
         mode,
@@ -461,7 +465,7 @@ export default function Practice({
     }
     if (!mounted.current) return
     report({ turns: 1, voice: spoken ? 1 : 0 })
-    if (!open && !headword) setTurn(step)
+    if (!open && !headword && !wantsHint) setTurn(step)
     setMessages([...history, { ...reply, voiceOnly: spoken }])
     if (autoSpeak || spoken) {
       const form = reply.pronunciation?.forms[0]
@@ -625,8 +629,8 @@ export default function Practice({
             <p className="status">
               {modelStatus?.phase === 'downloading'
                 ? t(
-                    'Загружаю модель ИИ в браузер (около 397 МБ)',
-                    'Downloading the AI model (about 397 MB)',
+                    `Загружаю модель ИИ в браузер (около ${modelStatus.megabytes} МБ)`,
+                    `Downloading the AI model (about ${modelStatus.megabytes} MB)`,
                   ) +
                   (modelStatus.percent === undefined
                     ? '…'

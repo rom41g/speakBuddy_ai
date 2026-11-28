@@ -167,6 +167,7 @@ export type Message = {
   correction?: string
   source?: string
   pronunciation?: BritishPronunciation
+  hint?: boolean
   voiceOnly?: boolean
 }
 export type ChatRequest = {

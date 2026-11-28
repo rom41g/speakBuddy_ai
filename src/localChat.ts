@@ -5,11 +5,17 @@ import { chatHistory } from '../shared/chatReply'
 import { chatLevel } from '../shared/chatLevel'
 import type { ChatRequest } from '../shared/lessons'
 
-const modelUrl =
-  'https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf'
+const mainModel = {
+  url: 'https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF/resolve/main/LFM2.5-1.2B-Instruct-Q4_K_M.gguf',
+  megabytes: 731,
+}
+const compactModel = {
+  url: 'https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf',
+  megabytes: 397,
+}
 
 export type ModelStatus =
-  | { phase: 'downloading'; percent?: number }
+  | { phase: 'downloading'; megabytes: number; percent?: number }
   | { phase: 'starting' | 'thinking' }
 let engine: Promise<Wllama> | undefined
 let progress: ModelStatus = { phase: 'starting' }
@@ -20,55 +26,62 @@ function setProgress(status: ModelStatus) {
   listeners.forEach((update) => update(status))
 }
 
+async function loadChatModel({ url, megabytes }: typeof mainModel) {
+  const model = new Wllama(
+    { default: wasm },
+    { allowOffline: true, suppressNativeLog: true },
+  )
+  model.setCompat('default')
+  setProgress({ phase: 'starting' })
+
+  async function modelFiles() {
+    const cached = (await model.modelManager.getModels()).find((entry) => entry.url === url)
+    if (cached) return cached.open()
+    setProgress({ phase: 'downloading', megabytes })
+    const downloaded = await model.modelManager.downloadModel(url, {
+      signal: AbortSignal.timeout(600000),
+      progressCallback: ({ loaded, total }) => setProgress({
+        phase: 'downloading',
+        megabytes,
+        percent: total > 0 ? Math.min(100, Math.floor((loaded / total) * 100)) : undefined,
+      }),
+    })
+    return downloaded.open()
+  }
+
+  try {
+    const blobs = await (navigator.locks
+      ? navigator.locks.request(`speakbuddy-chat-model:${url}`, modelFiles)
+      : modelFiles())
+    setProgress({ phase: 'starting' })
+    await model.loadModel(blobs, {
+      n_ctx: 1536,
+      n_batch: 256,
+      n_parallel: 1,
+      warmup: true,
+    })
+    progress = { phase: 'thinking' }
+    return model
+  } catch (error) {
+    await model.exit().catch(() => {})
+    throw error
+  }
+}
+
 export function prepareLocalChat() {
   if (!engine) {
-    const model = new Wllama(
-      { default: wasm },
-      { allowOffline: true, suppressNativeLog: true },
-    )
-    model.setCompat('default')
-    setProgress({ phase: 'starting' })
-    async function modelFiles() {
-      const cached = (await model.modelManager.getModels()).find(
-        (entry) => entry.url === modelUrl,
-      )
-      if (cached) return cached.open()
-      setProgress({ phase: 'downloading' })
-      const downloaded = await model.modelManager.downloadModel(modelUrl, {
-        signal: AbortSignal.timeout(600000),
-        progressCallback: ({ loaded, total }) =>
-          setProgress({
-            phase: 'downloading',
-            percent:
-              total > 0
-                ? Math.min(100, Math.floor((loaded / total) * 100))
-                : undefined,
-          }),
-      })
-      return downloaded.open()
+    const device = navigator as Navigator & {
+      deviceMemory?: number
+      connection?: { saveData?: boolean }
     }
-    const files = navigator.locks
-      ? navigator.locks.request('speakbuddy-chat-model', modelFiles)
-      : modelFiles()
-    engine = files
-      .then((blobs) => {
-        setProgress({ phase: 'starting' })
-        return model.loadModel(blobs, {
-          n_ctx: 1536,
-          n_batch: 256,
-          n_parallel: 1,
-          warmup: true,
-        })
-      })
-      .then(() => {
-        progress = { phase: 'thinking' }
-        return model
-      })
-      .catch(async (error: unknown) => {
-        engine = undefined
-        await model.exit().catch(() => {})
-        throw error
-      })
+    const compact = (device.deviceMemory ?? Infinity) <= 2 || device.connection?.saveData
+    const loading = compact
+      ? loadChatModel(compactModel)
+      : loadChatModel(mainModel).catch(() => loadChatModel(compactModel))
+    engine = loading.catch((error: unknown) => {
+      engine = undefined
+      throw error
+    })
   }
   return engine
 }
