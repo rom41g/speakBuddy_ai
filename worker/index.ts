@@ -1,4 +1,4 @@
-import { academyPronunciations, getAcademyUnit } from '../shared/academy'
+import { academyBooks, academyPronunciations, getAcademyUnit } from '../shared/academy'
 import { normalizedHeadword } from '../shared/britishDictionary'
 import { cambridgePronunciation } from './cambridge'
 import { chatPrompt } from '../shared/chatPrompt'
@@ -62,6 +62,7 @@ function validChat(input: ChatRequest) {
     !['Pre-A1', 'A1'].includes(input.level) ||
     !Object.hasOwn(topics, input.topic) ||
     !Object.hasOwn(roles, input.role) ||
+    (input.book !== undefined && !academyBooks.includes(input.book)) ||
     (input.academy !== undefined &&
       (input.mode === 'free' || !getAcademyUnit(input.academy))) ||
     (input.step !== undefined &&

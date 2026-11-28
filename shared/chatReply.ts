@@ -1,5 +1,6 @@
 import { containsContact } from './lessons'
 import type { ChatRequest, Message } from './lessons'
+import { chatLevel } from './chatLevel'
 
 const sentenceReader =
   typeof Intl.Segmenter === 'function'
@@ -17,10 +18,45 @@ const words = (text: string) =>
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
 const introduction =
-  /^(?:i(?:['’]m| am) buddy|my name is buddy|this is buddy)\b\s*[,!:.–-]?\s*(?:and\s+)?/i
+  /^(?:i(?:['’]m| am) (?:your (?:english )?friend )?buddy|my name(?:['’]s| is) buddy|this is buddy)\b\s*[,!:.–-]?\s*(?:and\s+)?/i
 const greeting = /^(?:hello|hi|hey)(?: there)?(?=[\s,!.?]|$)[\s,!.?]*/i
 const socialFiller =
-  /^(?:i(?:['’]m| am) (?:so |very |really )?(?:happy|glad|excited) to (?:see|meet|talk to) you|i(?:['’]m| am) here to (?:help|chat with) you(?:\b.*)?|what would you like to talk about|how(?:['’]s| is) everything going)[.!?]?$/i
+  /^(?:i(?:['’]m| am) (?:so |very |really )?(?:happy|glad|excited) to (?:see|meet|hear|talk to) you|i(?:['’]m| am) here to (?:help|chat with) you(?:\b.*)?|(?:it(?:['’]s| is) )?(?:nice|good|great|lovely) to (?:see|meet|hear|talk to) you|(?:it(?:['’]s| is) )?fun to talk about(?: it)?|i like your question|(?:good|great|nice) (?:idea|question)|what (?:would you like|do you want) to talk about|how(?:['’]s| is) everything going|(?:well done|great job|good job|nice work))[.!?]?$/i
+
+const simplerWords: [RegExp, string][] = [
+  [/\bfascinated by\b/gi, 'interested in'],
+  [/\bfascinating\b/gi, 'fun'],
+  [/\bexplore\b(?=\s*[.!?]|$)/gi, 'look around'],
+  [/\bexplore\b/gi, 'look at'],
+  [/\bexploring\b/gi, 'looking at'],
+  [/\bexplored\b/gi, 'looked at'],
+  [/\bexplores\b/gi, 'looks at'],
+  [/\b(?:wonderful|fantastic|incredible|amazing|delightful|marvellous|excellent|fabulous)\b/gi, 'great'],
+  [/\b(?:enormous|gigantic|huge)\b/gi, 'big'],
+  [/\b(?:unusual|unique|uncommon)\b/gi, 'different'],
+  [/\b(?:delicious|tasty)\b/gi, 'good'],
+  [/\b(?:adorable|lovely)\b/gi, 'cute'],
+  [/\b(?:perhaps|possibly)\b/gi, 'maybe'],
+  [/\b(?:creatures|wildlife)\b/gi, 'animals'],
+  [/\b(?:creature|species)\b/gi, 'animal'],
+  [/\b(?:habitat|environment)\b/gi, 'home'],
+  [/\b(?:enjoy|adore|prefer)\b/gi, 'like'],
+  [/\b(?:discover|observe)\b/gi, 'see'],
+  [/\b(?:purchase|obtain)\b/gi, 'get'],
+  [/\b(?:absolutely|definitely|certainly)\b(?=\s*[,!.?]|$)/gi, 'yes'],
+  [/\s+(?:absolutely|definitely|certainly)\b/gi, ''],
+]
+
+function simplify(sentence: string) {
+  return simplerWords.reduce(
+    (line, [pattern, replacement]) => line.replace(pattern, (word) =>
+      word[0] === word[0].toUpperCase()
+        ? replacement[0].toUpperCase() + replacement.slice(1)
+        : replacement,
+    ),
+    sentence,
+  )
+}
 export const asksForIdentity = (text: string) =>
   /\b(?:who are you|what(?:['’]s| is) your name|what are you called)\b/i.test(
     text,
@@ -31,6 +67,8 @@ export const asksAboutRepetition = (text: string) =>
   /^why\b.*\byou\b.*\b(?:repeat(?:ed|ing)?|(?:keep|kept) saying the same)\b/i.test(
     text,
   )
+export const asksHowYouAre = (text: string) =>
+  /\bhow are you(?: doing| today)?[?.!\s]*$/i.test(text.trim())
 export const requestedFavourite = (text: string) =>
   text
     .match(/\b(?:what|which) ([a-z]+) do you (?:like|prefer)\b/i)?.[1]
@@ -40,6 +78,7 @@ function trimOpener(sentence: string, keepGreeting = false) {
   const trimmed = sentence
     .replace(greeting, '')
     .replace(introduction, '')
+    .replace(/,\s*Buddy(?=[.!?]|$)/i, '')
     .trim()
   const withoutEmoji = trimmed
     .replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F]+$/gu, '')
@@ -74,6 +113,7 @@ export function chatHistory(input: ChatRequest, retry = false) {
 }
 
 export function replyFilter(input: ChatRequest) {
+  const { sentenceWords, replyWords } = chatLevel(input)
   const latest = input.history.at(-1)?.content ?? ''
   const copiedLearner = words(latest)
   const solicited = asksForIdentity(latest) || asksToRepeat.test(latest)
@@ -92,11 +132,13 @@ export function replyFilter(input: ChatRequest) {
       .filter((message) => message.role === 'assistant')
       .flatMap((message) =>
         sentences(message.content).map((sentence) =>
-          words(trimOpener(sentence)),
+          words(simplify(trimOpener(sentence))),
         ),
       )
-      .filter((line) => line.split(' ').length >= 4),
+      .filter((line) => line.split(' ').length >= 3),
   )
+  const startOfLine = (line: string) => line.split(' ').slice(0, 5).join(' ')
+  const starts = new Set([...earlier].filter((line) => line.split(' ').length >= 6).map(startOfLine))
 
   return (raw: string, partial = false) => {
     const text = raw
@@ -112,18 +154,22 @@ export function replyFilter(input: ChatRequest) {
     if (partial)
       pieces = pieces.filter((sentence) => /[.!?]["”']?$/.test(sentence))
     const unique = new Set<string>()
+    let remaining = replyWords
     const clean = pieces
       .flatMap((sentence) => {
-        const line = solicited ? sentence : trimOpener(sentence, isGreeting)
+        const line = simplify(solicited ? sentence : trimOpener(sentence, isGreeting))
         const key = words(line)
-        if (!key) return !partial && !words(sentence) ? [sentence] : []
+        if (!key || unique.size >= 2) return []
+        const count = key.split(' ').length
         if (
-          (!solicited && earlier.has(key)) ||
+          count > sentenceWords || count > remaining ||
+          (!solicited && (earlier.has(key) || (count >= 6 && starts.has(startOfLine(key))))) ||
           unique.has(key) ||
           (copiedLearner.length >= 16 && copiedLearner === key)
         )
           return []
         unique.add(key)
+        remaining -= count
         return [line]
       })
       .filter(Boolean)
@@ -141,7 +187,7 @@ export function replyFilter(input: ChatRequest) {
       return undefined
     if (
       repetitionQuestion &&
-      !/\b(?:repeat(?:ed|ing)?|same|sorry|again|mistake|stuck)\b/i.test(clean)
+      !/\b(?:repeat(?:ed|ing)?|same|sorry|again|mistake|stuck|twice)\b/i.test(clean)
     )
       return undefined
     return clean

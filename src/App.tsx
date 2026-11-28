@@ -14,9 +14,11 @@ import {
   Sparkles,
   Star,
   Store,
+  UserRound,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { getAcademyUnit } from '../shared/academy'
+import { academyLevels } from '../shared/chatLevel'
 import { roles, topics } from '../shared/lessons'
 import type { Lang, Level, Mode, Role, Topic } from '../shared/lessons'
 import { api } from './api'
@@ -26,6 +28,8 @@ import AcademyPicker from './AcademyPicker'
 import AcademyDictionary from './AcademyDictionary'
 import Practice from './Practice'
 import Pronunciation from './Pronunciation'
+import StudentRegistration from './StudentRegistration'
+import type { Student } from './StudentRegistration'
 import { stopSpeaking } from './speech'
 
 export type Translate = (ru: string, en: string) => string
@@ -137,6 +141,11 @@ function useLocal<T>(key: string, fallback: T) {
 
 export default function App() {
   const [settings, setSettings] = useLocal('speakbuddy-settings-v1', defaults)
+  const [student, setStudent] = useLocal<Student>('speakbuddy-student-v1', {
+    nickname: '',
+    book: null,
+  })
+  const [dictionaryUnit, setDictionaryUnit] = useState(settings.academy)
   const [progress, setProgress] = useLocal(
     'speakbuddy-progress-v1',
     emptyProgress,
@@ -147,8 +156,8 @@ export default function App() {
     pronunciation: null,
   })
   const [screen, setScreen] = useState<
-    Mode | 'home' | 'teacher' | 'dictionary'
-  >('home')
+    Mode | 'home' | 'teacher' | 'dictionary' | 'student'
+  >(() => student.book || student.skipped ? 'home' : 'student')
   const [role, setRole] = useState<Role>('shop')
   const [attempt, setAttempt] = useState(0)
   const [access, setAccess] = useState('')
@@ -157,6 +166,11 @@ export default function App() {
   const t: Translate = (ru, en) => (settings.lang === 'en' ? en : ru)
   const score = progress.finished + progress.analyses
   const academy = getAcademyUnit(settings.academy)
+  const book = screen === 'free'
+    ? student.book ?? academy?.book
+    : academy?.book ?? student.book
+  const level = book ? academyLevels[book] : settings.level
+  const levelLabel = book ? `AS${book} · ${level}` : level
 
   useEffect(() => {
     document.documentElement.lang = settings.lang
@@ -177,6 +191,14 @@ export default function App() {
     setAttempt((current) => current + 1)
     window.scrollTo(0, 0)
     requestAnimationFrame(() => titleRef.current?.focus())
+  }
+
+  function saveStudent(profile: Student) {
+    const id = academy?.book === profile.book ? academy?.id : `${profile.book}-1`
+    setStudent(profile)
+    setSettings((previous) => ({ ...previous, academy: id ?? null }))
+    setDictionaryUnit(id ?? null)
+    navigate('home')
   }
 
   function report(change: Partial<Progress>) {
@@ -239,7 +261,7 @@ export default function App() {
           </button>
           <nav aria-label={t('Основная навигация', 'Main navigation')}>
             <button
-              className={`nav-button ${!['teacher', 'free', 'dictionary'].includes(screen) ? 'current' : ''}`}
+              className={`nav-button ${!['teacher', 'free', 'dictionary', 'student'].includes(screen) ? 'current' : ''}`}
               onClick={() => navigate('home')}
             >
               <BookOpen size={18} />
@@ -263,6 +285,12 @@ export default function App() {
             >
               <GraduationCap size={19} />
               <span>{t('Учителю', 'Teacher')}</span>
+            </button>
+            <button
+              className={`nav-button ${screen === 'student' ? 'current' : ''}`}
+              onClick={() => navigate('student')}
+            >
+              <UserRound size={18} /> <span>{t('Ученик', 'Student')}</span>
             </button>
           </nav>
           <div className="top-actions">
@@ -290,6 +318,17 @@ export default function App() {
       </header>
 
       <main className="container-main">
+        {screen === 'student' && (
+          <>
+            <h1 className="page-title" tabIndex={-1} ref={titleRef}>
+              {student.book ? t('Профиль ученика', 'Student profile') : t('Регистрация ученика', 'Student registration')}
+            </h1>
+            <StudentRegistration student={student} save={saveStudent} t={t} skip={() => {
+              if (!student.book) setStudent({ ...student, skipped: true })
+              navigate('home')
+            }} />
+          </>
+        )}
         {screen === 'home' && (
           <>
             <section className="hero">
@@ -357,7 +396,7 @@ export default function App() {
                   </p>
                 </div>
                 <span className="level">
-                  <Sparkles size={16} /> {settings.level}
+                  <Sparkles size={16} /> {levelLabel}
                 </span>
               </div>
               <div className="mode-grid">
@@ -399,8 +438,8 @@ export default function App() {
             <h1 className="page-title" tabIndex={-1} ref={titleRef}>
               {t('Словарь Academy Stars', 'Academy Stars Dictionary')}
             </h1>
-            {curriculumPicker}
-            <AcademyDictionary unit={academy} t={t} />
+            <AcademyPicker unit={getAcademyUnit(dictionaryUnit)} t={t} change={setDictionaryUnit} />
+            <AcademyDictionary unit={getAcademyUnit(dictionaryUnit)} t={t} />
           </>
         )}
 
@@ -420,7 +459,8 @@ export default function App() {
                 <div className="select-wrap">
                   <select
                     id="level"
-                    value={settings.level}
+                    value={level}
+                    disabled={!!book}
                     onChange={(event) =>
                       setSettings({
                         ...settings,
@@ -596,7 +636,7 @@ export default function App() {
                 </h1>
               </div>
               <span className="level">
-                <Sparkles size={16} /> {settings.level}
+                <Sparkles size={16} /> {levelLabel}
               </span>
             </div>
             {screen !== 'free' && curriculumPicker}
@@ -661,10 +701,11 @@ export default function App() {
                 key={`${screen}-${academy?.id ?? 'free'}-${settings.topic}-${role}-${attempt}`}
                 mode={current.id as Exclude<Mode, 'pronounce'>}
                 academy={screen === 'free' ? undefined : academy}
+                book={book ?? undefined}
                 topic={settings.topic}
                 role={role}
                 t={t}
-                level={settings.level}
+                level={level}
                 hints={settings.hints}
                 autoSpeak={settings.autoSpeak}
                 dictionaryAccess={

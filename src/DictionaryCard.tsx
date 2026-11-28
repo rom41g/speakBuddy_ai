@@ -17,11 +17,7 @@ function WordAudio({
   word: string
   t: Translate
 }) {
-  const [mode, setMode] = useState<
-    'recording' | 'ipa' | 'blocked' | 'unavailable'
-  >()
-  const displayRecording =
-    mode === 'recording' || (mode === undefined && form.audio)
+  const [error, setError] = useState(false)
   return (
     <span className="dictionary-audio">
       <button
@@ -30,23 +26,18 @@ function WordAudio({
         aria-label={`${t('Словарное аудио', 'Dictionary audio')} ${word} /${form.ipa}/`}
         onClick={() => {
           stopSpeaking()
-          void playDictionaryAudio(form).then(setMode)
+          void playDictionaryAudio(form).then((status) =>
+            setError(status === 'blocked' || status === 'unavailable'),
+          )
         }}
       >
         <Volume2 size={17} />
       </button>
-      {displayRecording ? (
-        <a href={form.audioSource} target="_blank" rel="noopener noreferrer">
-          {t('Запись UK', 'UK recording')}
-        </a>
-      ) : (
-        <small>{t('Синтез по IPA', 'Synthesised from IPA')}</small>
-      )}
-      {mode === 'blocked' || mode === 'unavailable' ? (
+      {error && (
         <span role="status">
           {t('Не удалось воспроизвести аудио.', 'Could not play the audio.')}
         </span>
-      ) : null}
+      )}
     </span>
   )
 }
@@ -79,7 +70,7 @@ export default function DictionaryCard({
               <span className="uk-ipa">UK</span>{' '}
               <span className="ipa">/{form.ipa}/</span>
               {form.sense && <small>{senses[form.sense]}</small>}
-              {(form.file || form.audio) && (
+              {form.file && (
                 <WordAudio form={form} word={entry.word} t={t} />
               )}
             </li>
@@ -99,9 +90,11 @@ export default function DictionaryCard({
               'IPA составлена по словарным формам',
               'IPA composed from dictionary forms',
             )
-          : entry.source === 'wiktionary'
-            ? 'Wiktionary'
-            : 'Cambridge Dictionary'}
+          : entry.source === 'phonemized'
+            ? t('Британские фонемы eSpeak NG', 'eSpeak NG British phonemes')
+            : entry.source === 'wiktionary'
+              ? 'Wiktionary'
+              : 'Cambridge Dictionary'}
       </a>
     </div>
   )

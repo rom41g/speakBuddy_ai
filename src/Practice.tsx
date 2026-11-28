@@ -12,7 +12,7 @@ import {
   VolumeX,
 } from 'lucide-react'
 import { academyGuess } from '../shared/academy'
-import type { AcademyUnit } from '../shared/academy'
+import type { AcademyBook, AcademyUnit } from '../shared/academy'
 import {
   britishPronunciation,
   pronunciationQuestion,
@@ -134,6 +134,7 @@ function MessageText({
 type Props = {
   mode: Exclude<Mode, 'pronounce'>
   academy?: AcademyUnit
+  book?: AcademyBook
   topic: Topic
   role: Role
   level: Level
@@ -150,6 +151,7 @@ type Props = {
 export default function Practice({
   mode,
   academy,
+  book,
   topic,
   role,
   level,
@@ -391,6 +393,7 @@ export default function Practice({
         topic,
         role,
         level,
+        book,
         history: history
           .slice(-8)
           .map(({ role, content }) => ({ role, content })),
@@ -458,9 +461,10 @@ export default function Practice({
     setMessages([...history, { ...reply, voiceOnly: spoken }])
     if (autoSpeak || spoken) {
       const form = reply.pronunciation?.forms[0]
-      if (form?.file || form?.audio) {
+      if (form?.file) {
         void playDictionaryAudio(form).then((status) => {
-          if (mounted.current && status === 'blocked') setPlayback('blocked')
+          if (mounted.current && (status === 'blocked' || status === 'unavailable'))
+            setPlayback(status)
         })
       } else if (!reply.pronunciation) {
         const rest = spokenPrefix

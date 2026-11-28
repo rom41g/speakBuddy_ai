@@ -2,6 +2,7 @@ import { Wllama } from '@wllama/wllama'
 import wasm from '@wllama/wllama/esm/wasm/wllama.wasm?url'
 import { chatPrompt } from '../shared/chatPrompt'
 import { chatHistory } from '../shared/chatReply'
+import { chatLevel } from '../shared/chatLevel'
 import type { ChatRequest } from '../shared/lessons'
 
 const modelUrl =
@@ -95,7 +96,7 @@ export async function localReply(
     cache_prompt: true,
     temperature: 0.62,
     penalty_repeat: 1.1,
-    max_tokens: input.level === 'Pre-A1' ? 36 : 52,
+    max_tokens: chatLevel(input).tokens,
     abortSignal: budget,
     stream: true,
     onData: (chunk) => {

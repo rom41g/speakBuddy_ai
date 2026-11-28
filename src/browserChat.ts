@@ -124,8 +124,7 @@ export async function browserChat(
   if (!content && asksAboutRepetition(latest))
     return {
       role: 'assistant',
-      content:
-        'I got stuck repeating the same phrase. Let’s pick up where we left off.',
+      content: 'I said it twice. Let’s go on.',
     }
   if (!content) throw new Error('no usable reply')
   return {

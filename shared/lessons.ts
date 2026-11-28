@@ -1,5 +1,5 @@
 import { academyLesson } from './academy'
-import type { AcademyUnit } from './academy'
+import type { AcademyBook, AcademyUnit } from './academy'
 import type { BritishPronunciation } from './britishDictionary'
 
 export const topics = {
@@ -176,6 +176,7 @@ export type ChatRequest = {
   level: Level
   history: Message[]
   academy?: string
+  book?: AcademyBook
   step?: number
 }
 

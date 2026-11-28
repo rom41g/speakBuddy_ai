@@ -1,21 +1,12 @@
 import { useState } from 'react'
-import { academyBooks, academyUnitsFor } from '../shared/academy'
 import type { AcademyUnit } from '../shared/academy'
-import { britishPronunciation } from '../shared/britishDictionary'
+import { britishPronunciation, dictionaryEntries } from '../shared/britishDictionary'
 import type { Translate } from './App'
 import DictionaryCard from './DictionaryCard'
 
-const allTerms = [
-  ...new Set(
-    academyBooks
-      .flatMap(academyUnitsFor)
-      .flatMap((unit) =>
-        unit.vocabulary.concat(unit.cards.map((card) => card.word)),
-      ),
-  ),
-]
-  .map(britishPronunciation)
-  .sort((a, b) => a.word.localeCompare(b.word, 'en-GB'))
+const allTerms = [...dictionaryEntries()].sort((a, b) =>
+  a.word.localeCompare(b.word, 'en-GB'),
+)
 const searchable = (text: string) =>
   text
     .toLowerCase()

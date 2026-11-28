@@ -9,20 +9,16 @@ export function stopDictionaryAudio() {
 
 export async function playDictionaryAudio(form: BritishForm) {
   stopDictionaryAudio()
-  const audio = new Audio()
+  if (!form.file) return 'unavailable'
+  const audio = new Audio(`${import.meta.env.BASE_URL}dictionary-audio/${form.file}?v=cori`)
   current = audio
-  const backup =
-    form.file && `${import.meta.env.BASE_URL}dictionary-audio/${form.file}`
-  for (const url of [form.audio, backup]) {
-    if (!url || current !== audio) continue
-    audio.src = url
-    try {
-      await audio.play()
-      return url === form.audio ? 'recording' : 'ipa'
-    } catch (error) {
-      if (error instanceof DOMException && error.name === 'NotAllowedError')
-        return 'blocked'
-    }
+  try {
+    await audio.play()
+    return 'playing'
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'NotAllowedError')
+      return 'blocked'
+    if (current !== audio) return 'stopped'
+    return 'unavailable'
   }
-  return 'unavailable'
 }

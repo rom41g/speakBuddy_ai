@@ -101,6 +101,95 @@ a {
   align-items: center;
   gap: 9px;
 }
+.student-form {
+  padding: clamp(16px, 3.5vw, 32px);
+}
+.student-name {
+  display: grid;
+  gap: 7px;
+  max-width: 380px;
+  font-weight: 700;
+}
+.student-books {
+  min-width: 0;
+  margin: 26px 0 22px;
+  padding: 0;
+  border: 0;
+}
+.student-books legend {
+  font-weight: 800;
+  font-size: 1.16rem;
+  padding: 0;
+}
+.student-books p {
+  margin: 4px 0 14px;
+  color: var(--muted);
+}
+.student-book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 20px);
+}
+.student-book {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  min-width: 0;
+}
+.student-book input {
+  position: absolute;
+  opacity: 0;
+}
+.student-book-card {
+  display: grid;
+  position: relative;
+  height: 100%;
+  justify-items: center;
+  align-content: start;
+  gap: 5px;
+  padding: 12px 6px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #fff;
+  text-align: center;
+}
+.student-book-card img {
+  width: min(100%, 158px);
+  aspect-ratio: 7 / 9;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+.student-book-card > span {
+  color: var(--muted);
+  font-size: .88rem;
+}
+.student-book input:checked + span {
+  border-color: var(--violet);
+  box-shadow: inset 0 0 0 1px var(--violet);
+  background: #f5f1ff;
+}
+.student-book input:focus-visible + span {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+.student-book-check {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 2px;
+  border-radius: 50%;
+  color: white;
+  background: var(--violet);
+}
+.student-book input:checked + span .student-book-check {
+  display: block;
+}
+.student-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
 .nav-button,
 .lang-button,
 .stars {
@@ -1032,6 +1121,16 @@ legend {
 .picture-cards span:nth-child(2) {
   background: #e8f6ef;
 }
+@media (max-width: 880px) {
+  .top-inner {
+    flex-wrap: wrap;
+  }
+  .top-inner nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+}
 @media (max-width: 760px) {
   .top-inner {
     padding: 12px 17px;
@@ -1093,6 +1192,9 @@ legend {
   }
 }
 @media (max-width: 510px) {
+  .student-book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .chat-header {
     flex-wrap: wrap;
   }
@@ -1131,6 +1233,10 @@ legend {
   }
   .nav-button {
     flex: 1;
+    flex-direction: column;
+    padding-inline: 1px;
+    text-align: center;
+    font-size: .72rem;
   }
   .hero {
     grid-template-columns: 1fr;

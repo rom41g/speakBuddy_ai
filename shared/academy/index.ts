@@ -2,6 +2,7 @@ import { book1 } from './book1'
 import { book2 } from './book2'
 import { book3 } from './book3'
 import { book4 } from './book4'
+import supplements from './supplements.json'
 import { academyBooks } from './types'
 import type { AcademyBook, AcademyUnit, UnitContent, WordCard } from './types'
 import type { Mode } from '../lessons'
@@ -15,14 +16,19 @@ const content: Record<AcademyBook, readonly UnitContent[]> = {
   3: book3,
   4: book4,
 }
+const extraWords: Record<string, string[]> = supplements
 
 const units = academyBooks.flatMap((book) =>
-  content[book].map((unit, index): AcademyUnit => ({
-    ...unit,
-    id: `${book}-${index + 1}`,
-    book,
-    number: index + 1,
-  })),
+  content[book].map((unit, index): AcademyUnit => {
+    const id = `${book}-${index + 1}`
+    return {
+      ...unit,
+      id,
+      book,
+      number: index + 1,
+      vocabulary: [...new Set([...unit.vocabulary, ...(extraWords[id] ?? [])])],
+    }
+  }),
 )
 
 const unitsById = new Map(units.map((unit) => [unit.id, unit]))

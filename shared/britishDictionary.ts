@@ -4,15 +4,13 @@ export type BritishForm = {
   ipa: string
   sense?: 'base' | 'past' | 'verb' | 'noun'
   file?: string
-  audio?: string
-  audioSource?: string
 }
 export type BritishPronunciation = {
   word: string
   forms: BritishForm[]
   url: string
   ru?: string
-  source?: 'wiktionary' | 'composed'
+  source?: 'wiktionary' | 'composed' | 'phonemized'
 }
 
 const entries = new Map<string, BritishPronunciation>(
@@ -22,14 +20,20 @@ const entries = new Map<string, BritishPronunciation>(
       word,
       forms: entry.forms as BritishForm[],
       url:
-        'compiled' in entry
-          ? 'https://kaikki.org/dictionary/English/'
-          : entry.url,
+        'url' in entry && typeof entry.url === 'string'
+          ? entry.url
+          : 'phonemized' in entry
+            ? 'https://github.com/espeak-ng/espeak-ng'
+            : 'https://kaikki.org/dictionary/English/',
       ru: entry.ru,
-      source: 'compiled' in entry ? 'composed' : 'wiktionary',
+      source: 'phonemized' in entry ? 'phonemized' : 'compiled' in entry ? 'composed' : 'wiktionary',
     },
   ]),
 )
+
+export function dictionaryEntries() {
+  return entries.values()
+}
 
 export function normalizedHeadword(input: string) {
   const word = input
