@@ -36,6 +36,8 @@
 
 Для `thirsty`, `bus stop` и `do up your coat` выбраны синтезированные образцы Southern English Female. Для их повторной генерации рядом с Cori нужны `en_GB-southern_english_female-low.onnx` и соответствующий JSON. Источник голоса — набор британских и ирландских диалектов Google, 2018–2019. Эти три MP3 распространяются по CC BY-SA 4.0. [Модель Southern English Female](https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_GB/southern_english_female/low) · [Набор OpenSLR 83](https://www.openslr.org/83/)
 
+У `shirt` используется запись Judith Franck, Association Shtooka, с нормализацией громкости и конвертацией в MP3. Для пересборки положите исходный `En-uk-shirt.ogg` рядом с моделями Piper. [Оригинальная запись](https://commons.wikimedia.org/wiki/File:En-uk-shirt.ogg) · [Лицензия CC BY 3.0 US](https://creativecommons.org/licenses/by/3.0/us/)
+
 Пункт **Свободная практика** возвращает к общим темам и упражнениям. Для уже развёрнутого Cloudflare Worker повторите развёртывание, чтобы ИИ и фонетический анализ получили новый каталог.
 
 ## Локальный запуск

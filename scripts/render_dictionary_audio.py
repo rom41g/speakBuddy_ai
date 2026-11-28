@@ -121,12 +121,20 @@ def main():
         rate = voice.config.sample_rate
         inventory = voice.config.phoneme_id_map
         for form in entry['forms']:
-            tokens = phonemes(form['ipa'], inventory) + list(punctuation)
-            ids = voice.phonemes_to_ids(tokens)
-            samples, timing = voice.phoneme_ids_to_audio(ids, config, include_alignments=True)
-            if timing is None or len(timing) != len(ids):
-                raise ValueError('Install piper-tts[alignment] to verify phoneme timing')
-            emphasise_consonants(samples, tokens, timing, inventory, rate)
+            if word == 'shirt':
+                source = args.model.with_name('En-uk-shirt.ogg')
+                pcm = subprocess.check_output([
+                    'ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', str(source),
+                    '-f', 'f32le', '-ar', str(rate), '-ac', '1', 'pipe:1',
+                ])
+                samples = np.frombuffer(pcm, dtype='<f4')
+            else:
+                tokens = phonemes(form['ipa'], inventory) + list(punctuation)
+                ids = voice.phonemes_to_ids(tokens)
+                samples, timing = voice.phoneme_ids_to_audio(ids, config, include_alignments=True)
+                if timing is None or len(timing) != len(ids):
+                    raise ValueError('Install piper-tts[alignment] to verify phoneme timing')
+                emphasise_consonants(samples, tokens, timing, inventory, rate)
             samples = normalise(samples, rate)
             output = ROOT / 'public/dictionary-audio' / form['file']
             subprocess.run([
@@ -136,7 +144,7 @@ def main():
             ], input=samples.tobytes(), check=True)
             count += 1
             if args.words:
-                print(f'{word}: /{form["ipa"]}/ {"".join(tokens)} {len(samples) / rate:.2f}s')
+                print(f'{word}: /{form["ipa"]}/ {len(samples) / rate:.2f}s')
     print(f'Rendered {count} audio files.')
 
 
