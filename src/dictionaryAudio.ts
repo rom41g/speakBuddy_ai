@@ -10,7 +10,7 @@ export function stopDictionaryAudio() {
 export async function playDictionaryAudio(form: BritishForm) {
   stopDictionaryAudio()
   if (!form.file) return 'unavailable'
-  const audio = new Audio(`${import.meta.env.BASE_URL}dictionary-audio/${form.file}?v=cori`)
+  const audio = new Audio(`${import.meta.env.BASE_URL}dictionary-audio/${form.file}?v=cori-2`)
   current = audio
   try {
     await audio.play()

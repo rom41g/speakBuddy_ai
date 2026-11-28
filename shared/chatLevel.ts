@@ -11,31 +11,36 @@ export const academyLevels: Record<AcademyBook, Level> = {
 
 const bands = {
   1: {
-    grammar: 'Use I like, I have, it is or can. Use very common words such as friend, bag, run and big. Example: I like cats. Do you?',
+    grammar: 'Use I like, I have, it is or can. Use very common words such as friend, bag, run and big.',
+    example: 'I like cats. Do you?',
     sentenceWords: 7,
     replyWords: 13,
     tokens: 26,
   },
   2: {
-    grammar: 'Use simple present, there is/are, or short phrases about routines. Book words include kangaroo, camera and winter. Example: I play after school. When do you play?',
+    grammar: 'Use simple present, there is/are, or short phrases about routines. Book words include kangaroo, camera and winter.',
+    example: 'I play after school. When do you play?',
     sentenceWords: 9,
     replyWords: 17,
     tokens: 32,
   },
   3: {
-    grammar: 'Use everyday English and simple past when talking about the past. Book words include science, violin and dolphin. Example: I saw a dog. What did you see?',
+    grammar: 'Use everyday English and simple past when talking about the past. Book words include science, violin and dolphin.',
+    example: 'I saw a dog. What did you see?',
     sentenceWords: 11,
     replyWords: 21,
     tokens: 40,
   },
   4: {
-    grammar: 'Use simple present or past. You can add a short reason with because or a plan with going to. Book words include waterfall, cyclist and keyboard. Example: I like cycling because it is fun.',
+    grammar: 'Use simple present or past. You can add a short reason with because or a plan with going to. Book words include waterfall, cyclist and keyboard.',
+    example: 'I like cycling because it is fun.',
     sentenceWords: 13,
     replyWords: 24,
     tokens: 47,
   },
 } satisfies Record<AcademyBook, {
   grammar: string
+  example: string
   sentenceWords: number
   replyWords: number
   tokens: number

@@ -69,6 +69,8 @@ export const asksAboutRepetition = (text: string) =>
   )
 export const asksHowYouAre = (text: string) =>
   /\bhow are you(?: doing| today)?[?.!\s]*$/i.test(text.trim())
+export const asksBack = (text: string) =>
+  /\b(?:and|what about|how about) you[?.!\s]*$/i.test(text.trim())
 export const requestedFavourite = (text: string) =>
   text
     .match(/\b(?:what|which) ([a-z]+) do you (?:like|prefer)\b/i)?.[1]
@@ -92,13 +94,26 @@ function trimOpener(sentence: string, keepGreeting = false) {
     : sentence
 }
 
+function reflectStatement(line: string) {
+  if (
+    !/^I(?:\s|['’](?:m|ve|d|ll)\b)/i.test(line) ||
+    /[?]|\b(?:I|me|myself|mine|you|your)\b/i.test(line.slice(1))
+  ) return ''
+  return line
+    .replace(/^I am\b/i, 'You are')
+    .replace(/^I was\b/i, 'You were')
+    .replace(/^I['’]m\b/i, 'You’re')
+    .replace(/^I\b/i, 'You')
+    .replace(/\bmy\b/gi, 'your')
+}
+
 export function chatHistory(input: ChatRequest, retry = false) {
   const turns: Pick<Message, 'role' | 'content'>[] = []
   const repeating = asksToRepeat.test(input.history.at(-1)?.content ?? '')
   for (const message of input.history) {
     const raw = message.content.replace(/<\|[^<>]*\|>/g, '').trim()
     const content =
-      message.role === 'assistant' && !repeating
+      input.mode === 'free' && message.role === 'assistant' && !repeating
         ? sentences(raw)
             .map((sentence) => trimOpener(sentence))
             .filter(Boolean)
@@ -109,13 +124,20 @@ export function chatHistory(input: ChatRequest, retry = false) {
     if (previous?.role === message.role) previous.content += `\n${content}`
     else turns.push({ role: message.role, content })
   }
-  return retry ? turns.slice(-3) : turns
+
+  const recent = retry ? turns.slice(-3) : turns
+  if (input.mode !== 'free' && recent[0]?.role === 'assistant') {
+    // The exercise opens with Buddy's question before the pupil types anything.
+    recent.unshift({ role: 'user', content: 'Let’s start the exercise.' })
+  }
+  return recent
 }
 
 export function replyFilter(input: ChatRequest) {
   const { sentenceWords, replyWords } = chatLevel(input)
   const latest = input.history.at(-1)?.content ?? ''
   const copiedLearner = words(latest)
+  const answerAboutBuddy = input.mode !== 'free' && asksBack(latest)
   const solicited = asksForIdentity(latest) || asksToRepeat.test(latest)
   const isGreeting = /^(?:hi|hello|hey)(?: there| buddy)?[.!,?]*$/i.test(
     latest.trim(),
@@ -157,15 +179,18 @@ export function replyFilter(input: ChatRequest) {
     let remaining = replyWords
     const clean = pieces
       .flatMap((sentence) => {
-        const line = simplify(solicited ? sentence : trimOpener(sentence, isGreeting))
+        let line = simplify(solicited ? sentence : trimOpener(sentence, isGreeting))
+        if (copiedLearner.length >= 16 && copiedLearner === words(line)) {
+          line = input.mode !== 'free' ? reflectStatement(line) : ''
+        }
         const key = words(line)
         if (!key || unique.size >= 2) return []
+        if (answerAboutBuddy && /^(?:and|what about|how about) you$/.test(key)) return []
         const count = key.split(' ').length
         if (
           count > sentenceWords || count > remaining ||
           (!solicited && (earlier.has(key) || (count >= 6 && starts.has(startOfLine(key))))) ||
-          unique.has(key) ||
-          (copiedLearner.length >= 16 && copiedLearner === key)
+          unique.has(key)
         )
           return []
         unique.add(key)
@@ -176,6 +201,7 @@ export function replyFilter(input: ChatRequest) {
       .join(' ')
       .trim()
     if (!words(clean) || clean.length > 300) return undefined
+    if (answerAboutBuddy && !/^(?:(?:yes|no)[,.! ]+)?I(?:\s|['’])/i.test(clean)) return undefined
     if (
       repeatsBroadTopic &&
       sentences(clean).filter((sentence) => words(sentence)).every(

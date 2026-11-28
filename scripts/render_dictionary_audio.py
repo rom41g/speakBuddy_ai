@@ -8,11 +8,27 @@ from pathlib import Path
 
 import numpy as np
 from piper import PiperVoice, SynthesisConfig
+from piper.phoneme_ids import BOS, PAD
 
 
 ROOT = Path(__file__).resolve().parents[1]
 VOWELS = set('aeiouɑɐɒæəɛɜɪɔʊʌ')
 IPA_TOKEN = re.compile(r'eɪ|aɪ|ɔɪ|aʊ|əʊ|ɪə|eə|ʊə|ɛə|.')
+REVIEWED_TAKES = {
+    'aunt': (1.15, ''),
+    'buy a present': (1.08, '.'),
+    'drama': (1.15, ''),
+    'eat': (1.08, '.'),
+    'eighty': (1.10, '.'),
+    'go sailing': (1.08, '.'),
+    'grandma': (1.08, '.'),
+    'lawyer': (1.15, ''),
+    'lock': (1.08, '.'),
+    'snow': (1.27, '.'),
+    'Thursday': (1.08, '.'),
+    'throw': (1.08, '.'),
+}
+SOUTHERN_TAKES = {'bus stop', 'do up your coat', 'thirsty'}
 
 
 def phonemes(ipa, inventory):
@@ -42,13 +58,40 @@ def normalise(audio, rate):
     if not len(active):
         raise ValueError('Piper returned silent audio')
 
-    # Keep quiet consonants and a small pause for instant mobile playback.
-    start = max(0, (active[0] - 6) * frame)
-    end = min(len(audio), (active[-1] + 9) * frame)
-    samples = audio[start:end]
+    # A level gate is useful for measuring speech but can cut quiet consonants.
     rms = float(np.sqrt(np.mean(levels[active] ** 2)))
-    gain = min(10 ** (-19 / 20) / rms, 10 ** (-2 / 20) / np.max(np.abs(samples)))
-    return np.pad(samples * gain, (4 * frame, 4 * frame)).astype('<f4')
+    gain = min(10 ** (-19 / 20) / rms, 10 ** (-2 / 20) / np.max(np.abs(audio)))
+    return np.pad(audio * gain, (4 * frame, 6 * frame)).astype('<f4')
+
+
+def emphasise_consonants(audio, tokens, sample_counts, inventory, rate):
+    """Raise the soft frication of /θ/ and the release of edge /t/."""
+    edges = np.cumsum([0, *sample_counts])
+    if edges[-1] != len(audio):
+        raise ValueError('Piper phoneme timing does not cover the generated audio')
+
+    pad_size = len(inventory[PAD])
+    index = len(inventory[BOS]) + pad_size
+    for position, token in enumerate(tokens):
+        end = index + len(inventory[token]) + pad_size
+        previous = tokens[position - 1] if position else ' '
+        following = tokens[position + 1] if position + 1 < len(tokens) else '.'
+        edge_t = token == 't' and (following in (' ', '.') or
+                                   (previous == ' ' and following != 'ʃ'))
+        if token == 'θ' or edge_t:
+            span = audio[edges[index]:edges[end]]
+            if len(span) < rate // 100:
+                raise ValueError(f'Consonant /{token}/ has no usable aligned audio')
+            # Smooth both ends so the gain change introduces no click.
+            fade = min(rate // 200, len(span) // 2)
+            ramp = np.sin(np.linspace(0, np.pi / 2, fade)) ** 2
+            envelope = np.ones(len(span))
+            envelope[:fade] = ramp
+            envelope[-fade:] = ramp[::-1]
+            boost = 10 ** ((6 if token == 'θ' else 3) / 20) - 1
+            span *= 1 + boost * envelope
+
+        index = end
 
 
 def main():
@@ -56,16 +99,34 @@ def main():
     parser.add_argument('model', type=Path, help='Path to en_GB-cori-medium.onnx')
     parser.add_argument('words', nargs='*', help='Optional headwords to render')
     args = parser.parse_args()
-    voice = PiperVoice.load(args.model)
-    config = SynthesisConfig(length_scale=1.03, noise_scale=0.55, noise_w_scale=0.65)
-    rate = voice.config.sample_rate
+    cori = PiperVoice.load(args.model, include_alignments=True)
+    southern = None
+    standard = SynthesisConfig(length_scale=1.14, noise_scale=0.28, noise_w_scale=0.22)
     lexicon = json.loads((ROOT / 'shared/academy/lexicon.json').read_text(encoding='utf8'))
     entries = ((word, lexicon[word]) for word in args.words) if args.words else lexicon.items()
     count = 0
     for word, entry in entries:
+        voice = cori
+        if word in SOUTHERN_TAKES:
+            if southern is None:
+                model = args.model.with_name('en_GB-southern_english_female-low.onnx')
+                southern = PiperVoice.load(model, include_alignments=True)
+            voice = southern
+        length, punctuation = (
+            (1.17, '.') if word in SOUTHERN_TAKES else REVIEWED_TAKES.get(word, (None, '.'))
+        )
+        config = standard if length is None else SynthesisConfig(
+            length_scale=length, noise_scale=0, noise_w_scale=0,
+        )
+        rate = voice.config.sample_rate
+        inventory = voice.config.phoneme_id_map
         for form in entry['forms']:
-            tokens = phonemes(form['ipa'], voice.config.phoneme_id_map)
-            samples = voice.phoneme_ids_to_audio(voice.phonemes_to_ids(tokens), config)
+            tokens = phonemes(form['ipa'], inventory) + list(punctuation)
+            ids = voice.phonemes_to_ids(tokens)
+            samples, timing = voice.phoneme_ids_to_audio(ids, config, include_alignments=True)
+            if timing is None or len(timing) != len(ids):
+                raise ValueError('Install piper-tts[alignment] to verify phoneme timing')
+            emphasise_consonants(samples, tokens, timing, inventory, rate)
             samples = normalise(samples, rate)
             output = ROOT / 'public/dictionary-audio' / form['file']
             subprocess.run([

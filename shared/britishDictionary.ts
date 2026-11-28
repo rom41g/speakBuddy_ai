@@ -10,7 +10,7 @@ export type BritishPronunciation = {
   forms: BritishForm[]
   url: string
   ru?: string
-  source?: 'wiktionary' | 'composed' | 'phonemized'
+  source?: 'wiktionary' | 'composed' | 'phonemized' | 'cambridge'
 }
 
 const entries = new Map<string, BritishPronunciation>(
@@ -26,7 +26,11 @@ const entries = new Map<string, BritishPronunciation>(
             ? 'https://github.com/espeak-ng/espeak-ng'
             : 'https://kaikki.org/dictionary/English/',
       ru: entry.ru,
-      source: 'phonemized' in entry ? 'phonemized' : 'compiled' in entry ? 'composed' : 'wiktionary',
+      source: 'phonemized' in entry ? 'phonemized'
+        : 'compiled' in entry ? 'composed'
+        : 'url' in entry && entry.url?.startsWith('https://dictionary.cambridge.org/')
+          ? 'cambridge'
+          : 'wiktionary',
     },
   ]),
 )

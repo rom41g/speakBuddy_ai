@@ -94,7 +94,7 @@ export async function localReply(
     messages: [{ role: 'system', content: chatPrompt(input, retry) }, ...turns],
     chat_template_kwargs: { enable_thinking: false },
     cache_prompt: true,
-    temperature: 0.62,
+    temperature: input.mode === 'free' ? 0.62 : 0.48,
     penalty_repeat: 1.1,
     max_tokens: chatLevel(input).tokens,
     abortSignal: budget,

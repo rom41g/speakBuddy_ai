@@ -388,13 +388,17 @@ export default function Practice({
       const signal = localModel.current?.signal
       if (!signal) return
       setPending(true)
+      // Looking up a word pauses the exercise question until the pupil answers it.
+      const dialogue = open ? history : history.filter((message, index) =>
+        !message.pronunciation && !history[index + 1]?.pronunciation,
+      )
       const payload: ChatRequest = {
         mode,
         topic,
         role,
         level,
         book,
-        history: history
+        history: dialogue
           .slice(-8)
           .map(({ role, content }) => ({ role, content })),
         academy: academy?.id,

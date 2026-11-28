@@ -3,11 +3,11 @@
     "ru": "апрель",
     "forms": [
       {
-        "ipa": "ˈeɪ.pɹɪl",
+        "ipa": "ˈeɪ.pɹəl",
         "file": "april.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/April#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/april"
   },
   "Arabic": {
     "ru": "арабский язык",
@@ -1531,11 +1531,11 @@
     "ru": "монета",
     "forms": [
       {
-        "ipa": "ˈkoɪn",
+        "ipa": "kɔɪn",
         "file": "coin.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/coin#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/coin"
   },
   "cold": {
     "ru": "холодный; холодно",
@@ -2321,11 +2321,11 @@
     "ru": "пятнадцать",
     "forms": [
       {
-        "ipa": "ˈfɪftiːn",
+        "ipa": "ˌfɪfˈtiːn",
         "file": "fifteen.mp3"
       }
     ],
-    "phonemized": true
+    "url": "https://dictionary.cambridge.org/pronunciation/english/fifteen"
   },
   "fifty": {
     "ru": "пятьдесят",
@@ -3588,11 +3588,11 @@
     "ru": "божья коровка",
     "forms": [
       {
-        "ipa": "ˈleɪ.di.bəːd",
+        "ipa": "ˈleɪ.di.bɜːd",
         "file": "ladybird.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/ladybird#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/ladybird"
   },
   "lake": {
     "ru": "озеро",
@@ -3960,11 +3960,11 @@
     "ru": "сурикат",
     "forms": [
       {
-        "ipa": "ˈmɪəkat",
+        "ipa": "ˈmɪə.kæt",
         "file": "meerkat.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/meerkat#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/meerkat"
   },
   "melon": {
     "ru": "дыня",
@@ -5387,7 +5387,7 @@
         "file": "shirt.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/shirt#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/shirt"
   },
   "shoes": {
     "ru": "туфли; обувь",
@@ -5465,11 +5465,11 @@
     "ru": "душ",
     "forms": [
       {
-        "ipa": "ˈʃəʊ.əʳ",
+        "ipa": "ʃaʊə",
         "file": "shower.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/shower#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/shower"
   },
   "sing": {
     "ru": "петь",
@@ -5505,11 +5505,11 @@
     "ru": "шестнадцать",
     "forms": [
       {
-        "ipa": "ˈsɪkstiːn",
+        "ipa": "ˌsɪkˈstiːn",
         "file": "sixteen.mp3"
       }
     ],
-    "phonemized": true
+    "url": "https://dictionary.cambridge.org/pronunciation/english/sixteen"
   },
   "sixty": {
     "ru": "шестьдесят",
@@ -5950,11 +5950,11 @@
     "ru": "солнце",
     "forms": [
       {
-        "ipa": "sʊn",
+        "ipa": "sʌn",
         "file": "sun.mp3"
       }
     ],
-    "url": "https://en.wiktionary.org/wiki/sun#English"
+    "url": "https://dictionary.cambridge.org/pronunciation/english/sun"
   },
   "sunglasses": {
     "ru": "солнцезащитные очки",
